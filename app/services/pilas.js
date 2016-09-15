@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from '../config/environment';
 
 export default Ember.Service.extend({
   iframe: null,
@@ -36,7 +37,7 @@ export default Ember.Service.extend({
         var opciones = {ancho: ${width},
                         alto: ${height},
                         canvas: canvasElement,
-                        data_path: 'data',
+                        data_path: '${ENV.rootURL}data',
                         // imagenesExtra: listaImagenes,
                       };
 
