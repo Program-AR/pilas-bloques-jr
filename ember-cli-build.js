@@ -20,5 +20,8 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+ app.import("bower_components/blockly-package/blockly_compressed.js");
+ app.import("bower_components/blockly-package/blocks_compressed.js");
+ app.import("bower_components/blockly-package/es.js");
   return app.toTree();
 };
