@@ -5,6 +5,9 @@ var Funnel = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
+    fingerprint: {
+      exclude: ['data'],
+    }
   });
 
   process.setMaxListeners(1000);
