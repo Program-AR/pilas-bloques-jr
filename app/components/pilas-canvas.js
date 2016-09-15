@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  classNames: ['pilas-canvas-container'],
   iframeElement: null,
   pilas: Ember.inject.service(),   // Se espera que se defina al llamar al componente.
 

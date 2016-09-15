@@ -1,5 +1,14 @@
 iframe {
-  width: 200px;
-  height: 254px;
+  width: 420px;
+  height: 480px;
   border: 1px solid gray;
+  display: inline-block;
+}
+
+.pilas-canvas-container {
+  display: inline-block;
+}
+
+.ember-blockly-container {
+  display: inline-block;
 }

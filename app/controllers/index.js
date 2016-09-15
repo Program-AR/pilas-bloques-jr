@@ -13,8 +13,6 @@ export default Ember.Controller.extend({
     crearActor(clase) {
       this.get("pilas").evaluar(`
         var actor = new pilas.actores['${clase}'];
-        actor.escala = 0.1;
-        actor.escala = [1];
       `);
     }
   }
