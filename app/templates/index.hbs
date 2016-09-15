@@ -1,5 +1,9 @@
 {{outlet}}
 <h1>Index</h1>
 
+<button class="ui button" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
+<button class="ui button" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
+
+{{pilas-canvas pilas=pilas onReady="onReady"}}
 
 {{ember-blockly blocks=blocks withZoom=true withTrash=true}}
