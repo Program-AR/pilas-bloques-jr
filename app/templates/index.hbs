@@ -1,10 +1,13 @@
 {{outlet}}
 <h1>Index</h1>
 
-<div>
+<div class="min-padding">
   <button class="ui button" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
   <button class="ui button" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
+  <button class="ui button" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
 </div>
+
+{{pilas-modal-fondo name='pilas-modal-fondo' cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
 
 {{pilas-listaDeActores pilas=pilas}}
 

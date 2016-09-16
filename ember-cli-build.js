@@ -7,7 +7,8 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     fingerprint: {
       exclude: ['data'],
-    }
+    },
+    minifyJS: { enabled: false },
   });
 
   process.setMaxListeners(1000);

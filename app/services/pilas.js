@@ -29,17 +29,22 @@ export default Ember.Service.extend(Ember.Evented, {
     return new Ember.RSVP.Promise((success) => {
       let width = options.width;
       let height = options.height;
-      let listaImagenes = ['actor.Fogata.png', 'actor.BoyScout.png'];
+      let listaImagenes = ['fondo.cangrejo_aguafiestas.png',
+                           'fondo.elPlanetaDeNano.png',
+                           'fondo.fiestadracula.png',
+                           'fondo.tito-cuadrado.png',
+                           'fondo.tresNaranjas.png',
+                          ];
       let listaImagenesSerializada = listaImagenes.join("|");
 
       var code = `
         var canvasElement = document.getElementById('canvas');
-        //var listaImagenes = "${listaImagenesSerializada}".split("|");
+        var listaImagenes = "${listaImagenesSerializada}".split("|");
         var opciones = {ancho: ${width},
                         alto: ${height},
                         canvas: canvasElement,
                         data_path: '${ENV.rootURL}data',
-                        // imagenesExtra: listaImagenes,
+                        imagenesExtra: listaImagenes,
                       };
 
         var pilas = pilasengine.iniciar(opciones);
@@ -53,6 +58,8 @@ export default Ember.Service.extend(Ember.Evented, {
       this.conectarEventos();
 
       pilas.onready = () => {
+
+        this.sustituirFondo('fondo.cangrejo_aguafiestas.png');
 
         //this.get('actividad').iniciarEscena();
         //var contenedor = document.getElementById('contenedor-blockly');
@@ -82,12 +89,11 @@ export default Ember.Service.extend(Ember.Evented, {
 
       this.on('seAgregaUnActor', (/*datos*/) => {
         this.set('actores', this.obtenerListaDeActores());
-        //alert("se Agregó un actor!" + datos.actorID);
       });
 
       this.on('seEliminaUnActor', (/*datos*/) => {
-        //alert("Se eliminó un actor");
-      })
+        this.set('actores', this.obtenerListaDeActores());
+      });
 
     });
   },
@@ -250,9 +256,21 @@ export default Ember.Service.extend(Ember.Evented, {
     return iframeElement.contentWindow.eval(codigo);
   },
 
+  sustituirFondo(imagen_de_fondo) {
+    this.evaluar(`
+      pilas.escena_actual().fondo.imagen = "${imagen_de_fondo}";
+      pilas.escena_actual().fondo.z = 2000;
+    `);
+
+  },
+
 
   obtenerListaDeActores() {
-    return this.evaluar(`pilas.obtener_actores_en_la_escena().map((a) => { return a.getClassName() + "-" + a.id} );`);
+    return this.evaluar(`
+      pilas.obtener_actores_en_la_escena().map(function(actor) {
+        return actor.getClassName();
+      });
+    `);
   }
 
 });

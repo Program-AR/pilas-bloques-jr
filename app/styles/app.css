@@ -15,4 +15,21 @@ iframe {
 
 .pilas-lista-de-actores-container {
   display: inline-block;
+  vertical-align: top;
+}
+
+.pilas-lista-de-actores-container ul {
+  vertical-align: text-top;
+  list-style-type: none;
+  padding-left: 15px;
+  width: 100px;
+}
+
+.min-padding {
+  padding: 5px;
+}
+
+.fondo-thumb {
+  width: 150px;
+  cursor: pointer;
 }
