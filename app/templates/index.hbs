@@ -6,6 +6,8 @@
   <button class="ui button" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
 </div>
 
+{{pilas-listaDeActores pilas=pilas}}
+
 {{pilas-canvas pilas=pilas onReady="onReady"}}
 
 {{ember-blockly blocks=blocks class="ember-blockly-container" withZoom=true withTrash=true}}

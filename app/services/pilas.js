@@ -1,12 +1,13 @@
 import Ember from 'ember';
 import ENV from '../config/environment';
 
-export default Ember.Service.extend({
+export default Ember.Service.extend(Ember.Evented, {
   iframe: null,
   actorCounter: 0,
   pilas: null,
   loading: true,
   nombreDeLaEscenaActual: null,
+  actores: [], /* Una lista con los actores de la escena. */
   temporallyCallback: null, /* almacena el callback para avisar si pilas
                                se reinició correctamente. */
 
@@ -79,6 +80,15 @@ export default Ember.Service.extend({
 
       pilas.ejecutar();
 
+      this.on('seAgregaUnActor', (/*datos*/) => {
+        this.set('actores', this.obtenerListaDeActores());
+        //alert("se Agregó un actor!" + datos.actorID);
+      });
+
+      this.on('seEliminaUnActor', (/*datos*/) => {
+        //alert("Se eliminó un actor");
+      })
+
     });
   },
 
@@ -120,7 +130,7 @@ export default Ember.Service.extend({
   conectarEventos() {
     $(window).on("message.fromIframe", (e) => {
       let datos = e.originalEvent.data;
-      this.trigger(datos.tipo, datos.detalle);
+      this.trigger(datos.tipo, datos);
     });
   },
 
@@ -156,18 +166,6 @@ export default Ember.Service.extend({
       iframeElement.contentWindow.eval(codigo);
     });
   },
-
-  /**
-   * Retorna true si el problema está resuelto.
-   *
-   * @method estaResueltoElProblema
-   * @public
-   */
-  estaResueltoElProblema() {
-    return this.evaluar(`pilas.escena_actual().estaResueltoElProblema();`);
-  },
-
-
 
   /**
    * Ejecuta el código reiniciando la escena rápidamente.
@@ -215,22 +213,6 @@ export default Ember.Service.extend({
   },
 
   /**
-   * Modifica la velocidad de las animaciones y la simulación.
-   *
-   * Este método es particularmente útil para ejecutar los tests de integración
-   * super rápido.
-   *
-   * Por omisión pilas utiliza un temporizador a 60 FPS.
-   *
-   * @method cambiarFPS
-   * @public
-   *
-   */
-  cambiarFPS(fps) {
-    this.evaluar(`createjs.Ticker.setFPS(${fps});`);
-  },
-
-  /**
    * Permite reiniciar pilas por completo.
    *
    * La acción de reinicio se realiza re-cargando el iframe
@@ -258,26 +240,6 @@ export default Ember.Service.extend({
   },
 
   /**
-   * Retorna la cantidad de actores en la escena con la etiqueta solicitada.
-   *
-   * @method contarActoresConEtiqueta
-   * @public
-   */
-  contarActoresConEtiqueta(etiqueta) {
-    let codigo = `
-      var actoresEnLaEscena = pilas.escena_actual().actores;
-
-      var actoresConLaEtiqueta = actoresEnLaEscena.filter(function(actor) {
-        return actor.tiene_etiqueta("${etiqueta}");
-      });
-
-      actoresConLaEtiqueta.length;
-    `;
-
-    return this.evaluar(codigo);
-  },
-
-  /**
    * Evalúa código directamente, sin reiniciar de ninguna forma.
    *
    * @method evaluar
@@ -286,6 +248,11 @@ export default Ember.Service.extend({
   evaluar(codigo) {
     let iframeElement = this.get("iframe");
     return iframeElement.contentWindow.eval(codigo);
+  },
+
+
+  obtenerListaDeActores() {
+    return this.evaluar(`pilas.obtener_actores_en_la_escena().map((a) => { return a.getClassName() + "-" + a.id} );`);
   }
 
 });
