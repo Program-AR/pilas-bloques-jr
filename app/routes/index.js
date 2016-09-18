@@ -14,7 +14,8 @@ export default Ember.Route.extend({
       });
 
       projectRecord.get('scenes').createRecord({
-        title: 'main'
+        title: 'main',
+        background: 'fondo.cangrejo_aguafiestas.png'
       }).save();
 
       projectRecord.save().then(() => {
