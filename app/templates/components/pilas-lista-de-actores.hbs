@@ -1,9 +1,7 @@
 {{yield}}
 
-<ul>
-  {{#each actores as |actor|}}
-    <li>{{actor}}</li>
-  {{else}}
-    <p>No hay actores por el momento</p>
-  {{/each}}
-</ul>
+{{#each actores as |actor|}}
+  {{pilas-item-actor actor=actor actorSeleccionado=actorSeleccionado onSelect="onSelect"}}
+{{else}}
+  <p>Sin actores para mostrar</p>
+{{/each}}

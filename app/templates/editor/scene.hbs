@@ -6,13 +6,12 @@
   <button class="ui button primary" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
   <button class="ui button primary" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
   <button class="ui button primary" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
+
 </div>
 
 {{pilas-modal-fondo name='pilas-modal-fondo' cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
 
-<p>cantidad {{model.actors.length}}</p>
-
-{{pilas-listaDeActores pilas=pilas}}
+{{pilas-lista-de-actores actores=model.actors onSelect="onSelect"}}
 
 {{pilas-canvas pilas=pilas onReady="onReady"}}
 

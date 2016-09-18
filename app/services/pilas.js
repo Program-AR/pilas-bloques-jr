@@ -304,6 +304,11 @@ export default Ember.Service.extend(Ember.Evented, {
         return actor.getClassName();
       });
     `);
+  },
+
+  descatarAlActorPorId(idActor) {
+    alert(idActor);
   }
+
 
 });

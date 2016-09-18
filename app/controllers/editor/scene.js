@@ -65,6 +65,11 @@ export default Ember.Controller.extend({
       this.get("pilas").sustituirFondo(nombreCompletoDelFondo);
       this.model.set('background', nombreCompletoDelFondo);
       this.get('remodal').close('pilas-modal-fondo');
+    },
+
+    onSelect(actor) {
+      this.get("pilas").descatarAlActorPorId(actor.id);
+      console.log("Ha seleccionado al actor " + actor);
     }
   }
 });

@@ -65,3 +65,21 @@ iframe {
 .buttons-bar {
   padding-bottom: 10px;
 }
+
+.pilas-lista-de-actores {
+  border: 1px solid green;
+}
+
+.pilas-item-actor-container {
+  border: 1px solid red;
+  margin: 2px;
+  cursor: pointer;
+  display: inline-block;
+  padding-left: 4px;
+  padding-right: 4px;
+  width: 100px;
+}
+
+.pilas-actor-item-seleccionado {
+  background-color: yellow;
+}
