@@ -11,6 +11,7 @@ export default Ember.Route.extend({
     guardarYRegresar() {
       this.get("pilas").obtenerCapturaDePantallaEnMinuatura().then((data) => {
         console.log("Este proyecto es id: " + this.currentModel.get('project.id'));
+        this.get('controller').sincronizarDesdePilasAModelos();
 
         this.currentModel.get('project').set("screenshot", data);
 

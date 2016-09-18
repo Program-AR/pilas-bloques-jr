@@ -1,3 +1,3 @@
 export default [
-  {id: 1, class: 'UnActor', sceneId: 1}
+  {id: 1, actorId: 'pepe', class: 'Mono', x: 100, y: 100, sceneId: 1}
 ];
