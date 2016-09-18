@@ -7,6 +7,10 @@ export default Ember.Component.extend({
   pilas: Ember.inject.service(),   // Se espera que se defina al llamar al componente.
   pilas_iframe_url: `${ENV.rootURL}pilas.html`,
 
+  cargando: true,
+  ocultarSpinner: Ember.computed.not('cargando'),
+
+
   didInsertElement() {
     Ember.run.scheduleOnce('afterRender', this, this.initElement);
   },
@@ -33,6 +37,7 @@ export default Ember.Component.extend({
              */
             if (this.get('onReady')) {
               this.sendAction("onReady", pilas);
+              this.set("cargando", false);
             } else {
               //console.warn("Se a iniciado el componente pilas-canvas sin referencia a la acción onLoad.");
             }

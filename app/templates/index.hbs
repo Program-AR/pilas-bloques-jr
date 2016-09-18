@@ -1,16 +1,9 @@
-{{outlet}}
-<h1>Index</h1>
-
-<div class="min-padding">
-  <button class="ui button" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
-  <button class="ui button" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
-  <button class="ui button" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
+<div class="buttons-bar">
+  {{async-button class="ui button primary" action="crearUnProyectoNuevo" default="Crear un proyecto nuevo" pending="Creando ..."}}
 </div>
 
-{{pilas-modal-fondo name='pilas-modal-fondo' cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
-
-{{pilas-listaDeActores pilas=pilas}}
-
-{{pilas-canvas pilas=pilas onReady="onReady"}}
-
-{{ember-blockly blocks=blocks class="ember-blockly-container" withZoom=true withTrash=true}}
+{{#each model as |project|}}
+  {{pilas-project-thumb project=project}}
+{{else}}
+  <p>No hay proyectos creados aún.</p>
+{{/each}}

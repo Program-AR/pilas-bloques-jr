@@ -7,6 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('editor', {path: "/editor/:project_id"}, function() {
+    this.route('scene', {path: "/scene/:scene_id"});
+  });
 });
 
 export default Router;

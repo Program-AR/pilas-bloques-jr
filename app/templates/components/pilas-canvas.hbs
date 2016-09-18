@@ -1,1 +1,5 @@
-<iframe src={{pilas_iframe_url}} width="100%" height="100%" class="iframe-pilas-canvas" id="innerIframe"></iframe>
+<div class="spinner {{if ocultarSpinner 'hidden'}}">
+  <div class="ui active centered inline loader"></div>
+</div>
+
+<iframe src={{pilas_iframe_url}} width="100%" height="100%" class="iframe-pilas-canvas {{if cargando 'hidden'}}" id="innerIframe"></iframe>

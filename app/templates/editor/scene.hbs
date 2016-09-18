@@ -1,0 +1,19 @@
+{{outlet}}
+<div class="buttons-bar">
+
+  {{async-button class="ui button" action="guardarYRegresar" default="Guardar y regresar" pending="Guardando ..."}}
+
+  <button class="ui button primary" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
+  <button class="ui button primary" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
+  <button class="ui button primary" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
+</div>
+
+{{pilas-modal-fondo name='pilas-modal-fondo' cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
+
+<p>cantidad {{model.actors.length}}</p>
+
+{{pilas-listaDeActores pilas=pilas}}
+
+{{pilas-canvas pilas=pilas onReady="onReady"}}
+
+{{ember-blockly blocks=blocks class="ember-blockly-container" withZoom=true withTrash=true}}

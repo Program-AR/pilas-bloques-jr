@@ -33,3 +33,35 @@ iframe {
   width: 150px;
   cursor: pointer;
 }
+
+.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 420px;
+  height: 480px;
+  border: 1px solid gray;
+  padding-top: 200px;
+}
+
+.application-container {
+  padding: 2em;
+}
+
+.pilas-project-thumb-container {
+  display: inline-block;
+  margin: 5px;
+  width: 133px;
+  height: 200px;
+  text-align: center;
+}
+
+.pilas-project-thumb-container:hover {
+  background-color: white;
+  box-shadow: 0 0 3px gray;
+}
+
+.buttons-bar {
+  padding-bottom: 10px;
+}

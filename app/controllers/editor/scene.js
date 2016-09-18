@@ -6,7 +6,9 @@ export default Ember.Controller.extend({
   remodal: Ember.inject.service(),
 
   actions: {
+
     onReady(/*pilas*/) {
+      this.get("pilas").sustituirFondo(this.model.get('background'));
       //pilas.definir_modo_edicion(true);
       this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
     },
@@ -22,7 +24,10 @@ export default Ember.Controller.extend({
     },
 
     cuandoSeleccionaFondo(fondo) {
-      this.get("pilas").sustituirFondo(fondo.nombre + ".png");
+      let nombreCompletoDelFondo = fondo.nombre + ".png";
+
+      this.get("pilas").sustituirFondo(nombreCompletoDelFondo);
+      this.model.set('background', nombreCompletoDelFondo);
       this.get('remodal').close('pilas-modal-fondo');
     }
   }

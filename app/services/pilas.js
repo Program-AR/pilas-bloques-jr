@@ -59,7 +59,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
       pilas.onready = () => {
 
-        this.sustituirFondo('fondo.cangrejo_aguafiestas.png');
+        //this.sustituirFondo('fondo.cangrejo_aguafiestas.png');
 
         //this.get('actividad').iniciarEscena();
         //var contenedor = document.getElementById('contenedor-blockly');
@@ -204,6 +204,39 @@ export default Ember.Service.extend(Ember.Evented, {
   obtenerCapturaDePantalla() {
     let iframeElement = this.get("iframe");
     return iframeElement.contentWindow.document.getElementById('canvas').toDataURL('image/png');
+  },
+
+  /**
+   * Retorna una captura de pantalla en formato miniatura (105x120)
+   *
+   * @method obtenerCapturaDePantallaEnMinuatura
+   * @public
+   */
+  obtenerCapturaDePantallaEnMinuatura() {
+    return new Ember.RSVP.Promise((success) => {
+
+      function resizedataURL(datas, wantedWidth, wantedHeight) {
+          let img = document.createElement('img');
+
+          img.onload = function() {
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+
+            canvas.width = wantedWidth;
+            canvas.height = wantedHeight;
+
+            ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
+            let dataURI = canvas.toDataURL();
+            success(dataURI);
+            img.src = "";
+          };
+
+          img.src = datas;
+      }
+
+      let data = this.obtenerCapturaDePantalla();
+      resizedataURL(data, 105, 120);
+    });
   },
 
   /**
