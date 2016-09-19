@@ -68,7 +68,7 @@ export default Ember.Controller.extend({
     },
 
     onSelect(actor) {
-      this.get("pilas").descatarAlActorPorId(actor.id);
+      this.get("pilas").descatarAlActorPorId(actor.get('actorId'));
       console.log("Ha seleccionado al actor " + actor);
     }
   }

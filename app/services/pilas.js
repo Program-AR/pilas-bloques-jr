@@ -307,7 +307,35 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   descatarAlActorPorId(idActor) {
-    alert(idActor);
+    return this.evaluar(`
+      var actor = pilas.obtener_actor_por_id("${idActor}");
+      var dt = 100;
+
+      function ponerSombra(actor) {
+        var color = "rgba(0,0,0,0.5)";
+        actor.sprite.shadow = new createjs.Shadow(color, 5, 5, 2);
+      }
+
+      function quitarSombra(actor) {
+        actor.sprite.shadow = null;
+      }
+
+
+      ponerSombra(actor);
+
+      setTimeout(function() {
+        quitarSombra(actor);
+      }, dt);
+
+      setTimeout(function() {
+        ponerSombra(actor);
+      }, dt * 2);
+
+      setTimeout(function() {
+        quitarSombra(actor);
+      }, dt * 3);
+
+    `);
   }
 
 
