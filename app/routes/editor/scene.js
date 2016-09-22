@@ -7,10 +7,14 @@ export default Ember.Route.extend({
     return this.store.find('scene', params.scene_id);
   },
 
+  setupController(controller, model) {
+    controller.set('currentActor', null);
+    controller.set('model', model);
+  },
+
   actions: {
     guardarYRegresar() {
       this.get("pilas").obtenerCapturaDePantallaEnMinuatura().then((data) => {
-        console.log("Este proyecto es id: " + this.currentModel.get('project.id'));
         this.get('controller').sincronizarDesdePilasAModelos();
 
         this.currentModel.get('project').set("screenshot", data);

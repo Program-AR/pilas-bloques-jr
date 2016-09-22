@@ -5,5 +5,6 @@ export default DS.Model.extend({
   actorId: DS.attr('string'),
   x: DS.attr('number'),
   y: DS.attr('number'),
-  scene: DS.belongsTo('scene')
+  scene: DS.belongsTo('scene'),
+  workspaceXMLCode: DS.attr('string')
 });

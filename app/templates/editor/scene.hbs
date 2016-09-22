@@ -10,7 +10,7 @@
   </div>
 
   <div class="button-bar">
-    {{pilas-lista-de-actores actores=model.actors onSelect="onSelect"}}
+    {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect"}}
   </div>
 
   <div class="main-div">
@@ -20,7 +20,7 @@
       </div>
 
       <div class="workspace">
-        {{ember-blockly blocks=blocks class="ember-blockly-container" withZoom=true withTrash=true}}
+        {{ember-blockly blocks=blocksForCurrentActor workspace=currentActor.workspaceXMLCode class="ember-blockly-container" withZoom=true withTrash=true}}
       </div>
     </div>
   </div>

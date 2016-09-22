@@ -6,19 +6,22 @@ moduleForComponent('pilas-item-actor', 'Integration | Component | pilas item act
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
   this.render(hbs`{{pilas-item-actor}}`);
 
   assert.equal(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#pilas-item-actor}}
-      template block text
-    {{/pilas-item-actor}}
-  `);
+  let actor = new Ember.Object({
+    class: 'ClaseDeEjemplo'
+  });
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  this.set('actor', actor);
+  this.render(hbs`{{pilas-item-actor actor=actor}}`);
+
+  assert.equal(this.$().text().trim(), "ClaseDeEjemplo");
+  assert.equal(this.$('p')[0].classList.length, 0, 'No tiene clase signada, no está seleccionado.');
+
+  this.set("actorSeleccionado", actor);
+  this.set('actor', actor);
+  this.render(hbs`{{pilas-item-actor actorSeleccionado=actorSeleccionado actor=actor}}`);
+  assert.equal(this.$('p')[0].classList.length, 1, 'Tiene una clase para indicar que el actor está seleccionado.');
 });

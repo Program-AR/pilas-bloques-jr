@@ -1,9 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  blocks: ['controls_if'],
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
+  currentActor: null,
+
+  /* Retorna los bloques que se podrían utilizar con el actor seleccionado */
+  blocksForCurrentActor: Ember.computed('currentActor', function() {
+
+    if (this.get('currentActor.class') === "Mono") {
+      return ['controls_if'];
+    }
+
+    return [];
+  }),
 
   sincronizarDesdePilasAModelos() {
     this.model.get('actors').forEach((actor) => {
@@ -69,6 +79,7 @@ export default Ember.Controller.extend({
 
     onSelect(actor) {
       this.get("pilas").descatarAlActorPorId(actor.get('actorId'));
+      this.set('currentActor', actor);
       console.log("Ha seleccionado al actor " + actor);
     }
   }
