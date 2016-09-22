@@ -1,18 +1,31 @@
 {{outlet}}
-<div class="buttons-bar">
 
-  {{async-button class="ui button" action="guardarYRegresar" default="Guardar y regresar" pending="Guardando ..."}}
+<div class="vbox">
+  <div class="button-bar">
+    {{async-button class="ui button" action="guardarYRegresar" default="Guardar y regresar" pending="Guardando ..."}}
 
-  <button class="ui button primary" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
-  <button class="ui button primary" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
-  <button class="ui button primary" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
+    <button class="ui button primary" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
+    <button class="ui button primary" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
+    <button class="ui button primary" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
+  </div>
+
+  <div class="button-bar">
+    {{pilas-lista-de-actores actores=model.actors onSelect="onSelect"}}
+  </div>
+
+  <div class="main-div">
+    <div class='hbox'>
+      <div class="game">
+        {{pilas-canvas pilas=pilas onReady="onReady"}}
+      </div>
+
+      <div class="workspace">
+        {{ember-blockly blocks=blocks class="ember-blockly-container" withZoom=true withTrash=true}}
+      </div>
+    </div>
+  </div>
 
 </div>
 
+
 {{pilas-modal-fondo name='pilas-modal-fondo' cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
-
-{{pilas-lista-de-actores actores=model.actors onSelect="onSelect"}}
-
-{{pilas-canvas pilas=pilas onReady="onReady"}}
-
-{{ember-blockly blocks=blocks class="ember-blockly-container" withZoom=true withTrash=true}}

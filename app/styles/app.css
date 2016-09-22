@@ -45,7 +45,8 @@ iframe {
 }
 
 .application-container {
-  padding: 2em;
+  height: 100%;
+  width: 100%;
 }
 
 .pilas-project-thumb-container {
@@ -66,7 +67,6 @@ iframe {
 }
 
 .pilas-lista-de-actores {
-  border: 1px solid green;
 }
 
 .pilas-item-actor-container {
@@ -81,4 +81,45 @@ iframe {
 
 .pilas-actor-item-seleccionado {
   background-color: yellow;
+}
+
+.ember-blockly-container {
+  width: 100%;
+  height: 100%;
+}
+
+.vbox {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  height: 100%;
+}
+
+.vbox .button-bar {
+  flex-grow: 0;
+}
+
+.vbox .main-div {
+  flex-grow: 1;
+  height: 99%;
+}
+
+.hbox {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.hbox .game {
+  flex-grow: 0;
+  padding-right: 5px;
+}
+
+.hbox .workspace {
+  flex-grow: 1;
+}
+
+body > .ember-view {
+  height: 100%;
 }
