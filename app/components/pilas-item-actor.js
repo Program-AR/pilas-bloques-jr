@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['pilas-item-actor-container'],
+  tagName: '',
 
   estaSeleccionado: Ember.computed('actorSeleccionado', 'actor', function() {
     return this.get('actor') === this.get('actorSeleccionado');

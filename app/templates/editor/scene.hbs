@@ -3,23 +3,30 @@
 <div class="vbox">
   <div class="button-bar">
     {{async-button class="ui button" action="guardarYRegresar" default="Guardar y regresar" pending="Guardando ..."}}
-
-    <button class="ui button primary" {{action "crearActor" "Mono"}}>Crear actor Mono</button>
-    <button class="ui button primary" {{action "crearActor" "Aceituna"}}>Crear actor Aceituna</button>
-    <button class="ui button primary" {{action "abrirModalFondo"}}>Cambiar el fondo</button>
-  </div>
-
-  <div class="button-bar">
-    {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect"}}
   </div>
 
   <div class="main-div">
     <div class='hbox'>
       <div class="game">
+
+        <div class="button-game-bar">
+          <button class="ui basic button primary disabled"><i class="play icon"></i> Ejecutar</button>
+
+          <button class="ui basic button" {{action "crearActor" "Mono"}}>+ Mono</button>
+
+          <div class="ui basic buttons">
+            <button class="ui button" {{action "crearActor" "Aceituna"}}><i class="plus icon no-margin"></i></button>
+            <button class="ui button" {{action "abrirModalFondo"}}><i class="image icon no-margin"></i></button>
+          </div>
+
+        </div>
+
         {{pilas-canvas pilas=pilas onReady="onReady"}}
       </div>
 
       <div class="workspace">
+        {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect"}}
+
         {{ember-blockly blocks=blocksForCurrentActor workspace=currentActor.workspaceXMLCode class="ember-blockly-container" withZoom=true withTrash=true}}
       </div>
     </div>
