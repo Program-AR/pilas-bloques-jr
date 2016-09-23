@@ -1,0 +1,9 @@
+{{yield}}
+
+{{#ember-remodal forService=true name='pilas-modal-actores' title="Seleccioná un actor"}}
+
+  {{#each actores as |actor|}}
+    <img src="data/{{actor.nombre}}.png" class="actor-thumb" {{action "seleccionar" actor}}>
+  {{/each}}
+
+{{/ember-remodal}}

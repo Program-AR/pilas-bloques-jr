@@ -24,6 +24,26 @@ export default Ember.Controller.extend({
     });
   },
 
+  crearActor(clase) {
+    let actor = this.get("pilas").evaluar(`
+      var actor = new pilas.actores['${clase}'];
+      actor;
+    `);
+
+    let actorId = actor.id;
+    let data = actor.serializar();
+
+    let record = this.store.createRecord('actor', {
+      class: data.clase,
+      actorId: actorId,
+      x: data.x,
+      y: data.y,
+      scene: this.model
+    });
+
+    record.save();
+  },
+
   actions: {
 
     onReady(/*pilas*/) {
@@ -44,29 +64,12 @@ export default Ember.Controller.extend({
     },
 
 
-    crearActor(clase) {
-      let actor = this.get("pilas").evaluar(`
-        var actor = new pilas.actores['${clase}'];
-        actor;
-      `);
-
-      let actorId = actor.id;
-      let data = actor.serializar();
-
-      let record = this.store.createRecord('actor', {
-        class: data.clase,
-        actorId: actorId,
-        x: data.x,
-        y: data.y,
-        scene: this.model
-      });
-
-      record.save();
-
-    },
-
     abrirModalFondo() {
       this.get('remodal').open('pilas-modal-fondo');
+    },
+
+    abrirModalActores() {
+      this.get('remodal').open('pilas-modal-actores');
     },
 
     cuandoSeleccionaFondo(fondo) {
@@ -75,6 +78,11 @@ export default Ember.Controller.extend({
       this.get("pilas").sustituirFondo(nombreCompletoDelFondo);
       this.model.set('background', nombreCompletoDelFondo);
       this.get('remodal').close('pilas-modal-fondo');
+    },
+
+    cuandoSeleccionaActor(actor) {
+      this.crearActor(actor.clase);
+      this.get('remodal').close('pilas-modal-actores');
     },
 
     onSelect(actor) {

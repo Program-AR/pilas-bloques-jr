@@ -1,18 +1,7 @@
-
-
-
 <div class="ui pointing menu">
 
   {{#each actores as |actor|}}
     {{pilas-item-actor actor=actor actorSeleccionado=actorSeleccionado onSelect="onSelect"}}
-  {{else}}
-    <p>Sin actores para mostrar</p>
   {{/each}}
-
-  <div class="right menu">
-    <div class="item">
-      {{yield}}
-    </div>
-  </div>
 
 </div>

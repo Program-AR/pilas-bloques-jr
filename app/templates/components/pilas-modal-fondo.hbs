@@ -1,6 +1,6 @@
 {{yield}}
 
-{{#ember-remodal forService=true name=name title="Seleccioná un fondo"}}
+{{#ember-remodal forService=true name='pilas-modal-fondo' title="Seleccioná un fondo"}}
 
   {{#each fondos as |fondo|}}
     <img src="data/{{fondo.nombre}}.png" class="fondo-thumb" {{action "seleccionar" fondo}}>

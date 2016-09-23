@@ -32,6 +32,11 @@ iframe {
   cursor: pointer;
 }
 
+.actor-thumb {
+  width: 150px;
+  cursor: pointer;
+}
+
 .hidden {
   display: none;
 }

@@ -12,10 +12,8 @@
         <div class="button-game-bar">
           <button class="ui basic button primary disabled"><i class="play icon"></i> Ejecutar</button>
 
-          <button class="ui basic button" {{action "crearActor" "Mono"}}>+ Mono</button>
-
           <div class="ui basic buttons">
-            <button class="ui button" {{action "crearActor" "Aceituna"}}><i class="plus icon no-margin"></i></button>
+            <button class="ui button" {{action "abrirModalActores"}}><i class="plus icon no-margin"></i></button>
             <button class="ui button" {{action "abrirModalFondo"}}><i class="image icon no-margin"></i></button>
           </div>
 
@@ -35,4 +33,5 @@
 </div>
 
 
-{{pilas-modal-fondo name='pilas-modal-fondo' cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
+{{pilas-modal-fondo cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
+{{pilas-modal-actores cuandoSeleccionaActor="cuandoSeleccionaActor"}}
