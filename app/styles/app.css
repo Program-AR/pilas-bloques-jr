@@ -28,13 +28,25 @@ iframe {
 }
 
 .fondo-thumb {
-  width: 150px;
+  width: 128px;
+  border: 1px solid #eee;
   cursor: pointer;
 }
 
+.fondo-thumb:hover {
+  background-color: yellow;
+  box-shadow: 0 0 6px yellow;
+}
+
 .actor-thumb {
-  width: 150px;
+  width: 64px;
+  border: 1px solid #eee;
   cursor: pointer;
+}
+
+.actor-thumb:hover {
+  background-color: yellow;
+  box-shadow: 0 0 6px yellow;
 }
 
 .hidden {
@@ -126,4 +138,10 @@ body > .ember-view {
 
 .no-margin {
   margin: 0 !important;
+}
+
+.small-icon {
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 7px !important;
 }
