@@ -2,8 +2,8 @@
 
 {{#ember-remodal forService=true name='pilas-modal-actores' title="Seleccioná un actor"}}
 
-  {{#each actores as |actor|}}
-    <img src="data/thumb.{{actor.nombre}}.png" class="actor-thumb" {{action "seleccionar" actor}}>
+  {{#each clasesDeActores as |clase|}}
+    <img src="{{clase.thumbPath}}" class="actor-thumb" {{action "seleccionar" clase}}>
   {{/each}}
 
 {{/ember-remodal}}

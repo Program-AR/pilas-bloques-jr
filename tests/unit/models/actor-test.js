@@ -2,7 +2,7 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('actor', 'Unit | Model | actor', {
   // Specify the other units that are required for this test.
-  needs: ['model:scene']
+  needs: ['model:scene', 'model:class']
 });
 
 test('it exists', function(assert) {

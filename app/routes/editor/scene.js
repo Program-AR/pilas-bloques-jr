@@ -10,6 +10,10 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.set('currentActor', null);
     controller.set('model', model);
+
+    this.store.findAll('class').then((data) => {
+      controller.set('classes', data);
+    });
   },
 
   actions: {

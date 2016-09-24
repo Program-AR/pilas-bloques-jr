@@ -24,7 +24,8 @@ export default Ember.Controller.extend({
     });
   },
 
-  crearActor(clase) {
+  crearActor(claseDeActor) {
+    let clase = claseDeActor.get('className');
     let actor = this.get("pilas").evaluar(`
       var actor = new pilas.actores['${clase}'];
       actor;
@@ -34,14 +35,18 @@ export default Ember.Controller.extend({
     let data = actor.serializar();
 
     let record = this.store.createRecord('actor', {
-      class: data.clase,
+      class: claseDeActor,
       actorId: actorId,
       x: data.x,
       y: data.y,
       scene: this.model
     });
 
-    record.save();
+
+    record.save().then(() => {
+      claseDeActor.get('actors').pushObject(record);
+      claseDeActor.save();
+    });
   },
 
   actions: {
@@ -50,14 +55,19 @@ export default Ember.Controller.extend({
       this.get("pilas").sustituirFondo(this.model.get('background'));
 
       this.model.get('actors').forEach((actor) => {
-        let data = actor.getProperties("class", "x", "y", "actorId");
 
-        this.get("pilas").evaluar(`
-          actor = new pilas.actores['${data.class}']();
-          actor.x = ${data.x};
-          actor.y = ${data.y};
-          actor.id = '${data.actorId}';
-        `);
+        actor.get("class").then(() => {
+          let data = actor.getProperties("class.className", "x", "y", "actorId");
+          let className = actor.get("class.className");
+
+          this.get("pilas").evaluar(`
+            actor = new pilas.actores['${className}']();
+            actor.x = ${data.x};
+            actor.y = ${data.y};
+            actor.id = '${data.actorId}';
+          `);
+        });
+
       });
 
       this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
@@ -80,8 +90,8 @@ export default Ember.Controller.extend({
       this.get('remodal').close('pilas-modal-fondo');
     },
 
-    cuandoSeleccionaActor(actor) {
-      this.crearActor(actor.clase);
+    cuandoSeleccionaActor(claseDeActor) {
+      this.crearActor(claseDeActor);
       this.get('remodal').close('pilas-modal-actores');
     },
 

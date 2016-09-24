@@ -11,11 +11,16 @@ test('it renders', function(assert) {
 
   assert.equal(this.$().text().trim(), '');
 
+
   let actor = new Ember.Object({
-    class: 'ClaseDeEjemplo'
+    id: 1,
+    iconPath: 'data/thumb.actor.mono.png',
+    class: {className: 'ClaseDeEjemplo'}
   });
 
+
   this.set('actor', actor);
+
   this.render(hbs`{{pilas-item-actor actor=actor}}`);
 
   assert.equal(this.$().text().trim(), "ClaseDeEjemplo");
