@@ -1,2 +1,6 @@
+{{#if actor.iconPath}}
 <a {{action "onSelect" actor}} class="item {{if estaSeleccionado 'active'}}">
   <img src={{actor.iconPath}}/ width=14 height=14 class="small-icon">{{actor.class}}</a>
+{{else}}
+  <a class='item'><div class="ui active mini inline loader"></div></a>
+{{/if}}

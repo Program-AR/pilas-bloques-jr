@@ -1,9 +1,10 @@
-{{#unless project.isNew}}
-
-  {{yield}}
-
-  {{#link-to "editor" project}}<img src={{project.screenshot}}>
-  {{project.title}} ({{project.scenes.length}} escenas)
+{{#if project.screenshot}}
+  {{#link-to "editor" project}}
+    <img src={{project.screenshot}}>
+    {{project.title}} ({{project.scenes.length}} escenas)
   {{/link-to}}
-
-{{/unless}}
+{{else}}
+<a href=#>
+  <div class="ui active inline loader"></div>
+</a>
+{{/if}}
