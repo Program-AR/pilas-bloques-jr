@@ -13,14 +13,13 @@ iframe {
 }
 
 .pilas-lista-de-actores {
-  margin-bottom: 15px !important;
+  margin-bottom: 5px !important;
   height: 45px;
 }
 
-
 .button-game-bar {
   height: 45px;
-  margin-bottom: 15px !important;
+  margin-bottom: 5px !important;
 }
 
 .min-padding {
@@ -144,4 +143,11 @@ body > .ember-view {
   width: 14px !important;
   height: 14px !important;
   margin-right: 7px !important;
+}
+
+.padding-button-bar {
+  padding: 6px;
+  padding-left: 0;
+  padding-right: 0;
+  height: 50px;
 }
