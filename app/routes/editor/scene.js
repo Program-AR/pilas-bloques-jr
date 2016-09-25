@@ -10,13 +10,17 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.set('currentActor', null);
     controller.set('model', model);
+    controller.set('classes', model.get('aux-classes'));
+    controller.set('fondosDisponibles', model.get('aux-background'));
+  },
 
-    this.store.findAll('class').then((data) => {
-      controller.set('classes', data);
-    });
-
-    this.store.findAll('background').then((data) => {
-      controller.set('fondosDisponibles', data);
+  afterModel(model) {
+    return Ember.RSVP.hash({
+      classes: this.store.findAll('class'),
+      backgrounds: this.store.findAll('background')
+    }).then((data) => {
+      model.set('aux-classes', data.classes);
+      model.set('aux-background', data.backgrounds);
     });
   },
 

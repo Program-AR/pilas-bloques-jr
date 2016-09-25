@@ -7,12 +7,11 @@ export default Ember.Controller.extend({
 
   /* Retorna los bloques que se podrían utilizar con el actor seleccionado */
   blocksForCurrentActor: Ember.computed('currentActor', function() {
+    return this.get('currentActor.class.blocks');
+  }),
 
-    if (this.get('currentActor.class') === "Mono") {
-      return ['controls_if'];
-    }
-
-    return [];
+  workspaceFromCurrentActor: Ember.computed('currentActor', function() {
+    return this.get('currentActor.workspaceXMLCode');
   }),
 
   sincronizarDesdePilasAModelos() {
@@ -42,10 +41,11 @@ export default Ember.Controller.extend({
       scene: this.model
     });
 
-
     record.save().then(() => {
       claseDeActor.get('actors').pushObject(record);
       claseDeActor.save();
+
+      this.send('onSelect', record);
     });
   },
 
@@ -72,8 +72,17 @@ export default Ember.Controller.extend({
 
         this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
       });
-    },
 
+      this.get("pilas").on('comienzaAMoverUnActor', (evento) => {
+        this.store.findAll('actor').then((actores) => {
+          actores.forEach((actor) => {
+            if (actor.get('actorId') === evento.actorID) {
+              this.set('currentActor', actor);
+            }
+          });
+        });
+      });
+    },
 
     abrirModalFondo() {
       this.get('remodal').open('pilas-modal-fondo');

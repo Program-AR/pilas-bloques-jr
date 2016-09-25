@@ -33,7 +33,7 @@
 
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect"}}
 
-        {{ember-blockly blocks=blocksForCurrentActor workspace=currentActor.workspaceXMLCode class="ember-blockly-container" withZoom=true withTrash=true}}
+        {{ember-blockly blocks=blocksForCurrentActor workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true}}
 
       </div>
     </div>

@@ -5,6 +5,7 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   className: DS.attr('string'),
   actors: DS.hasMany('actor'),
+  blocks: DS.attr(),
 
   thumbPath: Ember.computed('className', function() {
     let nombre = this.get('className').toLowerCase();
