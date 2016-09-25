@@ -1,19 +1,20 @@
 {{outlet}}
 
-
 <div class="vbox">
 
   <div class="main-div">
     <div class='hbox'>
       <div class="game">
-        <div class="padding-button-bar">
-          {{async-button class="ui button basic" action="guardarYRegresar" default="Guardar y regresar" pending="Guardando ..."}}
-        </div>
 
+        <div class="padding-button-bar">
+          {{#async-button class="ui button basic" action="guardarYRegresar"}}
+            <i class="chevron left icon"></i> Guardar y Regresar
+          {{/async-button}}
+        </div>
 
         <div class="button-game-bar">
 
-          <div class="ui basic buttons">
+          <div class="ui basic buttons fixed">
             <button class="ui button" {{action "abrirModalActores"}}><i class="plus icon no-margin"></i></button>
             <button class="ui button" {{action "abrirModalFondo"}}><i class="image icon no-margin"></i></button>
           </div>
@@ -21,9 +22,11 @@
         </div>
 
         {{pilas-canvas pilas=pilas onReady="onReady"}}
+
       </div>
 
       <div class="workspace">
+
         <div class="padding-button-bar">
           <button class="ui basic button primary disabled"><i class="play icon"></i> Ejecutar</button>
         </div>
@@ -31,6 +34,7 @@
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect"}}
 
         {{ember-blockly blocks=blocksForCurrentActor workspace=currentActor.workspaceXMLCode class="ember-blockly-container" withZoom=true withTrash=true}}
+
       </div>
     </div>
   </div>

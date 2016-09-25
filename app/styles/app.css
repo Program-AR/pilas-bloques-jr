@@ -1,3 +1,9 @@
+.application-container {
+  height: 100%;
+  width: 100%;
+  padding: 5px;
+}
+
 iframe {
   width: 420px;
   height: 480px;
@@ -20,6 +26,11 @@ iframe {
 .button-game-bar {
   height: 45px;
   margin-bottom: 5px !important;
+  text-align: center;
+}
+
+.fixed {
+  height: 42px;
 }
 
 .min-padding {
@@ -59,16 +70,13 @@ iframe {
   padding-top: 200px;
 }
 
-.application-container {
-  height: 100%;
-  width: 100%;
-}
 
 .pilas-project-thumb-container {
   display: inline-block;
   margin: 5px;
-  width: 133px;
-  height: 200px;
+  padding: 5px;
+  width: 115px;
+  height: 135px;
   text-align: center;
 }
 
