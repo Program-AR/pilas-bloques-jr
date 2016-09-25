@@ -14,6 +14,10 @@ export default Ember.Route.extend({
     this.store.findAll('class').then((data) => {
       controller.set('classes', data);
     });
+
+    this.store.findAll('background').then((data) => {
+      controller.set('fondosDisponibles', data);
+    });
   },
 
   actions: {

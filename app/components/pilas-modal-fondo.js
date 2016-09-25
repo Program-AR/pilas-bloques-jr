@@ -1,13 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  fondos: [
-      {nombre: "fondo.cangrejo_aguafiestas"},
-      {nombre: "fondo.tresNaranjas"},
-      {nombre: "fondo.tito-cuadrado"},
-      {nombre: "fondo.fiestadracula"},
-      {nombre: "fondo.elPlanetaDeNano"},
-  ],
+  fondosDisponibles: null,
 
   actions: {
     seleccionar(fondo) {

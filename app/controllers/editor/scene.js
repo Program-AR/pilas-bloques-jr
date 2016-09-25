@@ -83,7 +83,7 @@ export default Ember.Controller.extend({
     },
 
     cuandoSeleccionaFondo(fondo) {
-      let nombreCompletoDelFondo = fondo.nombre + ".png";
+      let nombreCompletoDelFondo = fondo.get('fullName');
 
       this.get("pilas").sustituirFondo(nombreCompletoDelFondo);
       this.model.set('background', nombreCompletoDelFondo);

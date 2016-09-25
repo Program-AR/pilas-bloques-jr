@@ -20,7 +20,9 @@ export default function() {
   this.patch('/actors/:id');
 
   this.get('/classes');
-  this.post('/classes');
   this.get('/classes/:id');
   this.patch('/classes/:id');
+
+  this.get('/backgrounds');
+  this.get('/backgrounds/:id');
 }
