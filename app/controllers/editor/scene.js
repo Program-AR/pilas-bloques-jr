@@ -54,23 +54,24 @@ export default Ember.Controller.extend({
     onReady(/*pilas*/) {
       this.get("pilas").sustituirFondo(this.model.get('background'));
 
-      this.model.get('actors').forEach((actor) => {
+      this.model.get('actors').then((data) => {
+        data.forEach((actor) => {
 
-        actor.get("class").then(() => {
-          let data = actor.getProperties("class.className", "x", "y", "actorId");
-          let className = actor.get("class.className");
+          actor.get("class").then(() => {
+            let data = actor.getProperties("class.className", "x", "y", "actorId");
+            let className = actor.get("class.className");
 
-          this.get("pilas").evaluar(`
-            actor = new pilas.actores['${className}']();
-            actor.x = ${data.x};
-            actor.y = ${data.y};
-            actor.id = '${data.actorId}';
-          `);
+            this.get("pilas").evaluar(`
+              actor = new pilas.actores['${className}']();
+              actor.x = ${data.x};
+              actor.y = ${data.y};
+              actor.id = '${data.actorId}';
+            `);
+          });
         });
 
+        this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
       });
-
-      this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
     },
 
 
