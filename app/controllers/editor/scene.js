@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
     return this.get('currentActor.class.blocks');
   }),
 
-  workspaceFromCurrentActor: Ember.computed('currentActor', function() {
+  workspaceFromCurrentActor: Ember.computed('currentActor.id', function() {
     return this.get('currentActor.workspaceXMLCode');
   }),
 
@@ -38,6 +38,7 @@ export default Ember.Controller.extend({
       actorId: actorId,
       x: data.x,
       y: data.y,
+      workspaceXMLCode: '',
       scene: this.model
     });
 
@@ -108,7 +109,10 @@ export default Ember.Controller.extend({
     onSelect(actor) {
       this.get("pilas").descatarAlActorPorId(actor.get('actorId'));
       this.set('currentActor', actor);
-      console.log("Ha seleccionado al actor " + actor);
+    },
+
+    onChangeWorkspace(workspace) {
+      this.set('currentActor.workspaceXMLCode', workspace);
     }
   }
 });
