@@ -4,8 +4,11 @@ export default Ember.Route.extend({
   pilas: Ember.inject.service(),
   blocksGallery: Ember.inject.service(),
 
-  model(params) {
+  activate() {
     this.get("blocksGallery").start();
+  },
+
+  model(params) {
     return this.store.find('scene', params.scene_id);
   },
 
@@ -42,9 +45,20 @@ export default Ember.Route.extend({
     ejecutar() {
       var lang = Blockly.MyLanguage;
       lang.addReservedWords('code');
+      //Blockly.BlockSvg.START_HAT = true;
+
+      var listaDeCodigos = [];
+
+      this.currentModel.get('actors').forEach((actor) => {
+        var headless = new Blockly.Workspace();
+        let xml = actor.get('workspaceXMLCode');
+
+        Blockly.Xml.domToWorkspace(xml, headless);
+        listaDeCodigos.push(lang.workspaceToCode(headless));
+        headless.dispose();
+      });
+
       debugger;
-      var code = lang.workspaceToCode(workspace);
-      console.log(code);
     }
   }
 });

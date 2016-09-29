@@ -40,7 +40,9 @@ export default Ember.Service.extend({
   },
 
   _generarLenguaje() {
-    alert("Generando lenguaje");
+
+    console.warn("Generando lenguaje");
+
     Blockly.MyLanguage = Blockly.JavaScript;
 
     Blockly.MyLanguage['set_color'] = function(block) {
