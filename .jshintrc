@@ -4,7 +4,8 @@
     "document",
     "window",
     "-Promise",
-    "$"
+    "$",
+    "Blockly"
   ],
   "browser": true,
   "boss": true,

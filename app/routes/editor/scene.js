@@ -2,8 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   pilas: Ember.inject.service(),
+  blocksGallery: Ember.inject.service(),
 
   model(params) {
+    this.get("blocksGallery").start();
     return this.store.find('scene', params.scene_id);
   },
 
@@ -35,6 +37,14 @@ export default Ember.Route.extend({
           this.transitionTo('index');
         });
       });
+    },
+
+    ejecutar() {
+      var lang = Blockly.MyLanguage;
+      lang.addReservedWords('code');
+      debugger;
+      var code = lang.workspaceToCode(workspace);
+      console.log(code);
     }
   }
 });

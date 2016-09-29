@@ -28,7 +28,7 @@
       <div class="workspace">
 
         <div class="padding-button-bar">
-          <button class="ui basic button primary disabled"><i class="play icon"></i> Ejecutar</button>
+          <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
         </div>
 
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect"}}

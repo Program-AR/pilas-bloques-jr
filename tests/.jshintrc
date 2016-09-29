@@ -23,7 +23,8 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
-    "pilasengine"
+    "pilasengine",
+    "Blockly"
   ],
   "node": false,
   "browser": false,

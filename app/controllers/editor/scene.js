@@ -113,6 +113,7 @@ export default Ember.Controller.extend({
 
     onChangeWorkspace(workspace) {
       this.set('currentActor.workspaceXMLCode', workspace);
-    }
+    },
+
   }
 });
