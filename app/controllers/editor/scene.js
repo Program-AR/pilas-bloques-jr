@@ -3,16 +3,10 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
-  currentActor: null,
+  currentActor: '',
 
-  /* Retorna los bloques que se podrían utilizar con el actor seleccionado */
-  blocksForCurrentActor: Ember.computed('currentActor', function() {
-    return this.get('currentActor.class.blocks');
-  }),
-
-  workspaceFromCurrentActor: Ember.computed('currentActor.id', function() {
-    return this.get('currentActor.workspaceXMLCode');
-  }),
+  blocksForCurrentActor: Ember.computed.alias('currentActor.class.blocks'),
+  workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
 
   sincronizarDesdePilasAModelos() {
     this.model.get('actors').forEach((actor) => {
@@ -38,7 +32,7 @@ export default Ember.Controller.extend({
       actorId: actorId,
       x: data.x,
       y: data.y,
-      workspaceXMLCode: '',
+      workspaceXMLCode: '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="al_empezar_a_ejecutar" id="aF,i.tK-O(jDm1^GT4bP" deletable="false" x="90" y="40"></block></xml>',
       scene: this.model
     });
 

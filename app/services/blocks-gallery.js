@@ -9,31 +9,36 @@ export default Ember.Service.extend({
 
   _definirBloques() {
 
-    Blockly.Blocks['green_color'] = {
+    Blockly.Blocks['decir'] = {
       init: function() {
         this.jsonInit({
-          "message0": 'Green',
-          "output": "Color",
-          "colour": 200
-        });
-      }
-    };
-
-    Blockly.Blocks['set_color'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Set color to %1',
+          "message0": 'Decir %1',
           "args0": [
             {
               "type": "input_value",
-              "name": "COLOR",
-              "check": "Color"
+              "name": "texto",
+              "check": "String"
             }
           ],
           "previousStatement": true,
           "nextStatement": true,
           "colour": 160
         });
+      }
+    };
+
+
+    Blockly.Blocks['al_empezar_a_ejecutar'] = {
+      init: function() {
+        this.setColour(200);
+
+        this.appendDummyInput().appendField('Al empezar a ejecutar');
+
+        this.appendStatementInput('program');
+        this.setDeletable(false);
+
+        this.setEditable(false);
+        this.setMovable(false);
       }
     };
 
@@ -45,22 +50,24 @@ export default Ember.Service.extend({
 
     Blockly.MyLanguage = Blockly.JavaScript;
 
-    Blockly.MyLanguage['set_color'] = function(block) {
-      var color = Blockly.MyLanguage.valueToCode(block, 'COLOR',
-      Blockly.MyLanguage.ORDER_NONE) || '\'\'';
-      var code = 'setColor('+color+');\n';
-      return code;
+    Blockly.MyLanguage['decir'] = function(block) {
+      var texto = Blockly.MyLanguage.valueToCode(block, 'texto', Blockly.MyLanguage.ORDER_NONE) || '\'\'';
+      return `receptor.decir(${texto});`;
     };
 
-    Blockly.MyLanguage['red_color'] = function(block) {
-      var code = '"red"';
-      return [code, Blockly.MyLanguage.ORDER_ADDITION];
+    Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
+      let programa = Blockly.JavaScript.statementToCode(block, 'program');
+      let codigo = `
+      // CODIGO AL PRINCIPIO
+
+      ${programa}
+
+      // CODIGO AL FINAL
+      `
+
+      return codigo;
     };
 
-    Blockly.MyLanguage['green_color'] = function(block) {
-      var code = '"green"';
-      return [code, Blockly.MyLanguage.ORDER_ADDITION];
-    };
   }
 
 });

@@ -1,5 +1,7 @@
+let bloquesComunes = ['text', 'decir'];
+
 export default [
-  {id: 1, name: 'mono', className: 'Mono', blocks: ['controls_if_else', 'controls_whileUntil']},
-  {id: 2, name: 'aceituna', className: 'Aceituna', blocks: ['controls_if']},
-  {id: 3, name: 'alien', className: 'Alien', blocks: ['green_color', 'set_color']},
+  {id: 1, name: 'mono', className: 'Mono', blocks: bloquesComunes},
+  {id: 2, name: 'aceituna', className: 'Aceituna', blocks: bloquesComunes},
+  {id: 3, name: 'alien', className: 'Alien', blocks: bloquesComunes},
 ];
