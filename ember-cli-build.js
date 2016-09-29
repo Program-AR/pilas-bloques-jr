@@ -4,12 +4,15 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var Funnel = require('broccoli-funnel');
 
 module.exports = function(defaults) {
+
   var app = new EmberApp(defaults, {
     fingerprint: {
       exclude: ['data'],
     },
     minifyJS: { enabled: false },
   });
+
+  app.import('vendor/beautify.js');
 
   process.setMaxListeners(1000);
 
