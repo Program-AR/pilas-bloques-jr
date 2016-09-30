@@ -73,8 +73,6 @@ export default Ember.Route.extend({
           (function () {
             var receptor = pilas.obtener_actor_por_id('${actorId}');   // referencia a ${actorClass};
 
-            console.log(receptor);
-
             ${codigoDesdeWorkspace}
           })();
         `);
@@ -87,6 +85,64 @@ export default Ember.Route.extend({
         console.warn("Comienza el código para un actor:");
         console.log(texto);
       });
+
+      /*
+
+
+
+      window.highlightBlock = function (id) {
+        workspace.highlightBlock(id);
+      };
+
+      //myConsole = interpreter.createObject(interpreter.OBJECT);
+      //interpreter.setProperty(scope, 'console', myConsole);
+
+      //wrapper = function(obj) {
+	    //  return interpreter.createPrimitive(console.log(obj));
+      //};
+
+      //interpreter.setProperty(myConsole, 'log', interpreter.createNativeFunction(wrapper));
+
+
+
+      let pilasService = this.get('pilas');
+
+      var initFunc = function(interpreter, scope) {
+
+        var wrapper = function(id) {
+          id = id ? id.toString() : '';
+          return interpreter.createPrimitive(Blockly.getMainWorkspace().highlightBlock(id));
+        };
+        interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(wrapper));
+
+
+        // en lugar de usar la referencia pilas, en el código de ejemplo
+        // agregar:      var pilas = getPilas();
+
+        var getPilasWrapper = function(id) {
+          id = id ? id.toString() : '';
+          return interpreter.createPrimitive(pilasService.evaluar('pilas'));
+        };
+
+        interpreter.setProperty(scope, 'getPilas', interpreter.createNativeFunction(getPilasWrapper));
+
+        var myConsole = interpreter.createObject(interpreter.OBJECT);
+        interpreter.setProperty(scope, 'console', myConsole);
+
+        var wrapper = function(text) {
+          text = text ? text.toString() : '';
+          return interpreter.createPrimitive(console.log(text));
+        };
+
+        this.setProperty(myConsole, 'log', this.createNativeFunction(wrapper));
+
+      };
+
+      // Instanciar interprete
+      let code = listaDeCodigos.join("");
+      var myInterpreter = new Interpreter(code, initFunc);
+      myInterpreter.run();
+      */
 
       this.get('pilas').evaluar(listaDeCodigos.join(""));
 
