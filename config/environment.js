@@ -41,8 +41,11 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.locationType = 'hash';
     ENV.rootURL = '/pilas-bloques-jr/';
-
+    ENV['ember-cli-mirage'] = {
+      enabled: true
+    };
   }
+
 
   return ENV;
 };
