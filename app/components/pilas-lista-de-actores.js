@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   actorSeleccionado: null,
   actions: {
     onSelect(actor) {
-      this.set('actorSeleccionado', actor);
       this.sendAction("onSelect", actor);
     }
   }

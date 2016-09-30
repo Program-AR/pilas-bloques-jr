@@ -24,7 +24,8 @@
     "currentPath",
     "currentRouteName",
     "pilasengine",
-    "Blockly"
+    "Blockly",
+    "js_beautify"
   ],
   "node": false,
   "browser": false,

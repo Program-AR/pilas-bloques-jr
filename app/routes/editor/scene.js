@@ -17,7 +17,7 @@ export default Ember.Route.extend({
     controller.set('classes', model.get('aux-classes'));
     controller.set('fondosDisponibles', model.get('aux-background'));
 
-    controller.set('currentActor', model.get('actors.firstObject'));
+    controller.set('currentActor', null);
   },
 
   afterModel(model) {
@@ -44,6 +44,8 @@ export default Ember.Route.extend({
     },
 
     ejecutar() {
+      this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
+
       var lang = Blockly.MyLanguage;
       lang.addReservedWords('code');
 

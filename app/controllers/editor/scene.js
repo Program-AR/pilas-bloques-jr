@@ -4,11 +4,18 @@ export default Ember.Controller.extend({
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
   currentActor: '',
+  currentWorkspace: '', // Almacena el workspace mientras se modifica. El valor
+                        // de esta propiedad sustituirá a currentActor.workspaceXMLCode
+                        // cuando se guarde, ejecute o cambie de actor.
+                        //
+                        // (ver el método sincronizarWorkspaceAlActorActual)
 
   blocksForCurrentActor: Ember.computed.alias('currentActor.class.blocks'),
   workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
 
   sincronizarDesdePilasAModelos() {
+    // Guarda en el modelo de datos de ember todos los atributos de cada actor.
+    // (esta sincronización realiza antes de guardar el proyecto)
     this.model.get('actors').forEach((actor) => {
       let actorId = actor.get('actorId');
       let objetoActor = this.get('pilas').evaluar(`pilas.obtener_actor_por_id("${actorId}")`);
@@ -44,6 +51,12 @@ export default Ember.Controller.extend({
     });
   },
 
+  sincronizarWorkspaceAlActorActual() {
+    if (this.get('currentActor')) {
+      this.set('currentActor.workspaceXMLCode', this.get('currentWorkspace'));
+    }
+  },
+
   actions: {
 
     onReady(/*pilas*/) {
@@ -67,6 +80,7 @@ export default Ember.Controller.extend({
 
         this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
       });
+
 
       this.get("pilas").on('comienzaAMoverUnActor', (evento) => {
         this.store.findAll('actor').then((actores) => {
@@ -96,17 +110,19 @@ export default Ember.Controller.extend({
     },
 
     cuandoSeleccionaActor(claseDeActor) {
+      this.sincronizarWorkspaceAlActorActual();
       this.crearActor(claseDeActor);
       this.get('remodal').close('pilas-modal-actores');
     },
 
     onSelect(actor) {
+      this.sincronizarWorkspaceAlActorActual();
       this.get("pilas").descatarAlActorPorId(actor.get('actorId'));
       this.set('currentActor', actor);
     },
 
     onChangeWorkspace(workspace) {
-      this.set('currentActor.workspaceXMLCode', workspace);
+      this.set('currentWorkspace', workspace);
     },
 
   }
