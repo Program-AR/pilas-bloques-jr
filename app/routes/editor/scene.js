@@ -70,13 +70,10 @@ export default Ember.Route.extend({
         let actorClass = actor.get('class.className');
 
         let codigoCompleto = js_beautify(`
-          (function () {
-            var receptor = pilas.obtener_actor_por_id('${actorId}');   // referencia a ${actorClass};
+          var receptor = pilas.obtener_actor_por_id('${actorId}');   // referencia a ${actorClass};
 
-            ${codigoDesdeWorkspace}
-          })();
+          ${codigoDesdeWorkspace}
         `);
-
 
         listaDeCodigos.push(codigoCompleto);
       });
@@ -86,65 +83,28 @@ export default Ember.Route.extend({
         console.log(texto);
       });
 
-      /*
-
-
-
-      window.highlightBlock = function (id) {
-        workspace.highlightBlock(id);
-      };
-
-      //myConsole = interpreter.createObject(interpreter.OBJECT);
-      //interpreter.setProperty(scope, 'console', myConsole);
-
-      //wrapper = function(obj) {
-	    //  return interpreter.createPrimitive(console.log(obj));
-      //};
-
-      //interpreter.setProperty(myConsole, 'log', interpreter.createNativeFunction(wrapper));
-
-
-
       let pilasService = this.get('pilas');
 
-      var initFunc = function(interpreter, scope) {
+      // Para obtener el handle de pilas desde una consola se puede
+      // incluir una linea aquí de tipo: window.pilasService = pilasService
+      // y luego usar algo como: pilas = pilasService.evaluar('pilas')
 
-        var wrapper = function(id) {
+      function initFunction(interpreter, scope) {
+
+        var obtener_actor_por_id_wrapper = function(id) {
           id = id ? id.toString() : '';
-          return interpreter.createPrimitive(Blockly.getMainWorkspace().highlightBlock(id));
-        };
-        interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(wrapper));
-
-
-        // en lugar de usar la referencia pilas, en el código de ejemplo
-        // agregar:      var pilas = getPilas();
-
-        var getPilasWrapper = function(id) {
-          id = id ? id.toString() : '';
-          return interpreter.createPrimitive(pilasService.evaluar('pilas'));
+          return interpreter.createPrimitive(pilasService.evaluar('pilas.obtener_actor_por_id'));
         };
 
-        interpreter.setProperty(scope, 'getPilas', interpreter.createNativeFunction(getPilasWrapper));
+        var pilasObjectWrapper = interpreter.createObject(interpreter.OBJECT);
+        interpreter.setProperty(scope, 'pilas', pilasObjectWrapper);
 
-        var myConsole = interpreter.createObject(interpreter.OBJECT);
-        interpreter.setProperty(scope, 'console', myConsole);
+        interpreter.setProperty(pilasObjectWrapper, 'obtener_actor_por_id', interpreter.createNativeFunction(obtener_actor_por_id_wrapper));
+      }
 
-        var wrapper = function(text) {
-          text = text ? text.toString() : '';
-          return interpreter.createPrimitive(console.log(text));
-        };
-
-        this.setProperty(myConsole, 'log', this.createNativeFunction(wrapper));
-
-      };
-
-      // Instanciar interprete
       let code = listaDeCodigos.join("");
-      var myInterpreter = new Interpreter(code, initFunc);
+      var myInterpreter = new Interpreter(code, initFunction);
       myInterpreter.run();
-      */
-
-      this.get('pilas').evaluar(listaDeCodigos.join(""));
 
     }
   }
