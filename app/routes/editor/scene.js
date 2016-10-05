@@ -30,6 +30,20 @@ export default Ember.Route.extend({
     });
   },
 
+  _obtener_codigo_desde_workspace(workspace_en_formato_xml) {
+    var lang = Blockly.MyLanguage;
+    lang.addReservedWords('code');
+
+    let headless = new Blockly.Workspace();
+    let xml = Blockly.Xml.textToDom(workspace_en_formato_xml);
+
+    Blockly.Xml.domToWorkspace(xml, headless);
+    let codigoDesdeWorkspace = lang.workspaceToCode(headless);
+    headless.dispose();
+
+    return codigoDesdeWorkspace;
+  },
+
   actions: {
     guardarYRegresar() {
       this.get("pilas").obtenerCapturaDePantallaEnMinuatura().then((data) => {
@@ -46,8 +60,6 @@ export default Ember.Route.extend({
     ejecutar() {
       this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
 
-      var lang = Blockly.MyLanguage;
-      lang.addReservedWords('code');
 
       var listaDeCodigos = [];
 
@@ -55,12 +67,7 @@ export default Ember.Route.extend({
       // en la listaDeCodigos.
       this.currentModel.get('actors').forEach((actor) => {
 
-        var headless = new Blockly.Workspace();
-        let xml = Blockly.Xml.textToDom(actor.get('workspaceXMLCode'));
-
-        Blockly.Xml.domToWorkspace(xml, headless);
-        let codigoDesdeWorkspace = lang.workspaceToCode(headless);
-        headless.dispose();
+        let codigoDesdeWorkspace = this._obtener_codigo_desde_workspace(actor.get('workspaceXMLCode'));
 
         // El código completo a ejecutar es exactamente el mismo del workspace,
         // pero con la declaración de una variable 'receptor' que señalará
@@ -72,9 +79,8 @@ export default Ember.Route.extend({
         let codigoCompleto = js_beautify(`
           var actor_id = '${actorId}';   // referencia a ${actorClass};
 
-          function hacer(actor, comportamiento, params)
-          {
-            // Invocar a al accion fuera del interprete
+          function hacer(actor, comportamiento, params) {
+            // Invocar a la accion fuera del interprete
             out_hacer(actor, comportamiento, JSON.stringify(params));;
           }
 
@@ -93,26 +99,30 @@ export default Ember.Route.extend({
 
       let pilasService = this.get('pilas');
 
-      // Para obtener el handle de pilas desde una consola se puede
-      // incluir una linea aquí de tipo: window.pilasService = pilasService
-      // y luego usar algo como: pilas = pilasService.evaluar('pilas')
-
       function initFunction(interpreter, scope) {
         var console_log_wrapper = function(txt) {
             txt = txt ? txt.toString() : '';
             return interpreter.createPrimitive(console.log(txt));
-        }
+        };
+
         interpreter.setProperty(scope, 'console_log', interpreter.createNativeFunction(console_log_wrapper));
 
         // Esto deberia estar en otro lado, es un comportamiento que lo unico que
         // hace es llamar a una funcion
-        var ComportamientoLlamarCallback = function(args)
-        {
+        var ComportamientoLlamarCallback = function(args) {
           this.argumentos = args;
-          this.iniciar = function(r) {};
-          this.actualizar = function() { this.argumentos.callback(); return true };
-          this.eliminar = function() { };
-        }
+
+          this.iniciar = function() {
+          };
+
+          this.actualizar = function() {
+            this.argumentos.callback();
+            return true;
+          };
+
+          this.eliminar = function() {
+          };
+        };
 
         // Agrega un comportamiento a un actor
         // Agrega otro comportamiento luego para hacer correr el callback que indica
@@ -122,31 +132,30 @@ export default Ember.Route.extend({
             comportamiento = comportamiento ? comportamiento.toString() : '';
             params = params ? params.toString() : '';
             params = JSON.parse(params);
-            var actor = pilasService.evaluar('pilas.obtener_actor_por_id("'+actor_id+'")');
-            var clase_comportamiento = pilasService.evaluar('pilas.comportamientos.'+comportamiento);
+            var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
+            var clase_comportamiento = pilasService.evaluar(`pilas.comportamientos.${comportamiento}`);
             actor.hacer_luego(clase_comportamiento, params);
-            actor.hacer_luego(ComportamientoLlamarCallback, {callback:callback});
-        }
+            actor.hacer_luego(ComportamientoLlamarCallback, {callback});
+        };
+
         interpreter.setProperty(scope, 'out_hacer', interpreter.createAsyncFunction(hacer_wrapper));
       }
 
-      function execInterpreterUntilEnd(interpreter)
-      {
-        if(interpreter.run())
-        {  // No termino, esta esperando evento
+      function execInterpreterUntilEnd(interpreter) {
+        if (interpreter.run()) {
+          // No terminó, esta esperando evento
           setTimeout(execInterpreterUntilEnd, 10, interpreter);
         }
       }
 
-      //let code = listaDeCodigos.join("");
       // Crear un interprete por actor y correrlos paralelamente
-      var interpretes = [];
-      listaDeCodigos.forEach((code) => {
-        var myInterpreter = new Interpreter(code, initFunction)
-        interpretes.push(myInterpreter);
+
+      let interpretes = listaDeCodigos.map((codigo) => {
+        return new Interpreter(codigo, initFunction);
       });
 
       // Listos,... preparados, ... ahora corran todos
+
       interpretes.forEach((interprete) => {
         execInterpreterUntilEnd(interprete);
       });
