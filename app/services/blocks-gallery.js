@@ -66,7 +66,7 @@ export default Ember.Service.extend({
       return `receptor.decir(${texto});`;
     };
 
-    Blockly.MyLanguage['saltar'] = function(block) {
+    Blockly.MyLanguage['saltar'] = function(/*block*/) {
       return `hacer(actor_id, "Saltar", {});`;
     };
 
