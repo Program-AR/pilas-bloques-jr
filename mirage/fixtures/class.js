@@ -1,4 +1,4 @@
-let bloquesComunes = ['text', 'decir'];
+let bloquesComunes = ['text', 'decir', 'saltar'];
 
 export default [
   {id: 1, name: 'mono', className: 'Mono', blocks: bloquesComunes},

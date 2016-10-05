@@ -27,6 +27,17 @@ export default Ember.Service.extend({
       }
     };
 
+    Blockly.Blocks['saltar'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'Saltar',
+          "previousStatement": true,
+          "nextStatement": true,
+          "colour": 160
+        });
+      }
+    };
+
 
     Blockly.Blocks['al_empezar_a_ejecutar'] = {
       init: function() {
@@ -54,6 +65,11 @@ export default Ember.Service.extend({
       var texto = Blockly.MyLanguage.valueToCode(block, 'texto', Blockly.MyLanguage.ORDER_NONE) || '\'\'';
       return `receptor.decir(${texto});`;
     };
+
+    Blockly.MyLanguage['saltar'] = function(block) {
+      return `hacer(actor_id, "Saltar", {});`;
+    };
+
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');
