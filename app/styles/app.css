@@ -5,14 +5,12 @@
 }
 
 iframe {
-  width: 420px;
-  height: 480px;
-  border: 1px solid gray;
-  display: inline-block;
+  border: 0;
 }
 
 .pilas-canvas-container {
-  display: inline-block;
+  width: 100%;
+  height: calc(100% - 100px) !important;
 }
 
 .ember-blockly-container {
@@ -133,7 +131,7 @@ iframe {
 
 .hbox .game {
   flex-grow: 0;
-  padding-right: 5px;
+  width: 420px;
 }
 
 .hbox .workspace {
@@ -159,4 +157,35 @@ body > .ember-view {
   padding-left: 0;
   padding-right: 0;
   height: 50px;
+}
+
+
+.pilas-splitter-container {
+  flex-grow: 0;
+  width: 7px;
+}
+
+.pilas-splitter-container:hover {
+  cursor: ew-resize;
+}
+
+.pilas-splitter {
+  display: flex;
+}
+
+.splitter {
+  width: 100%;
+  height: 100%;
+}
+
+
+.over-splitter {
+  cursor: ew-resize;
+  display: none;
+  z-index: 3000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
