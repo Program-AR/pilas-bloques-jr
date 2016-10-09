@@ -17,11 +17,15 @@ export default Ember.Controller.extend({
     // Guarda en el modelo de datos de ember todos los atributos de cada actor.
     // (esta sincronización realiza antes de guardar el proyecto)
     this.model.get('actors').forEach((actor) => {
-      let actorId = actor.get('actorId');
-      let objetoActor = this.get('pilas').evaluar(`pilas.obtener_actor_por_id("${actorId}")`);
+      let objetoActor = this.obtenerObjectoActorDesdePilas(actor);
       actor.set('x', objetoActor.x);
       actor.set('y', objetoActor.y);
     });
+  },
+
+  obtenerObjectoActorDesdePilas(registroActor) {
+    let actorId = registroActor.get('actorId');
+    return this.get('pilas').evaluar(`pilas.obtener_actor_por_id("${actorId}")`);
   },
 
   crearActor(claseDeActor) {
@@ -52,9 +56,28 @@ export default Ember.Controller.extend({
   },
 
   sincronizarWorkspaceAlActorActual() {
-    if (this.get('currentActor')) {
+    if (this.get('currentActor') && ! this.get('currentActor').get('isDeleted')) {
       this.set('currentActor.workspaceXMLCode', this.get('currentWorkspace'));
     }
+  },
+
+  eliminarActor(actor) {
+    let objetoActor = this.obtenerObjectoActorDesdePilas(actor);
+    objetoActor.eliminar();
+    return actor.destroyRecord();
+  },
+
+  preSeleccionarPrimerActor() {
+    this.store.findAll('actor').then(actores => {
+      let primerActor = actores.get('firstObject');
+
+      if (primerActor) {
+        this.send('onSelect', primerActor);
+      } else {
+        this.set('currentActor', null);
+        this.set('currentWorkspace', '');
+      }
+    });
   },
 
   actions: {
@@ -119,6 +142,12 @@ export default Ember.Controller.extend({
       this.sincronizarWorkspaceAlActorActual();
       this.get("pilas").descatarAlActorPorId(actor.get('actorId'));
       this.set('currentActor', actor);
+    },
+
+    onRemove(actor) {
+      this.eliminarActor(actor).then(() => {
+        this.preSeleccionarPrimerActor();
+      });
     },
 
     onChangeWorkspace(workspace) {

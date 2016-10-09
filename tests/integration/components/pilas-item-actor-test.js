@@ -21,6 +21,7 @@ test('it renders', function(assert) {
 
   this.set('actor', actor);
 
+
   this.render(hbs`{{pilas-item-actor actor=actor}}`);
 
   assert.equal(this.$().text().trim(), "ClaseDeEjemplo");
@@ -28,6 +29,10 @@ test('it renders', function(assert) {
 
   this.set("actorSeleccionado", actor);
   this.set('actor', actor);
-  this.render(hbs`{{pilas-item-actor actorSeleccionado=actorSeleccionado actor=actor}}`);
+
+  this.set('onRemove', () => {
+  });
+
+  this.render(hbs`{{pilas-item-actor onRemove=(action onRemove) actorSeleccionado=actorSeleccionado actor=actor}}`);
   assert.equal(this.$('a')[0].classList.length, 2, 'Tiene una clase para indicar que el actor está seleccionado.');
 });
