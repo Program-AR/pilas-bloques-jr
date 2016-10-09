@@ -7,7 +7,13 @@ test('visiting /navegacion-inicial', function(assert) {
   visit('/');
 
   andThen(function() {
-    return pauseTest();
-    assert.equal(currentURL(), '/navegacion-inicial');
+    assert.equal(currentURL(), '/');
+    click("#crear-proyecto");
   });
+
+  andThen(function() {
+    let url = currentURL();
+    assert.ok(url.match(/editor/), "Ingresó al editor");
+  });
+
 });

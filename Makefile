@@ -57,3 +57,5 @@ actualizar_web:
 
 test_travis:
 	time ./node_modules/ember-cli/bin/ember test
+
+test: test_travis
