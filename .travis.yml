@@ -22,7 +22,7 @@ install:
   - bower install
 
 after_success:
-  - ember surge --environment development
+  - make actualizar_web
 
 script:
-  - npm test
+  - make test_travis
