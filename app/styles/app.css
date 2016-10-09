@@ -16,6 +16,7 @@ iframe {
 }
 
 .ember-blockly-container {
+  height: calc(100% - 100px) !important;
 }
 
 .pilas-lista-de-actores {
