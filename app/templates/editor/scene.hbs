@@ -4,7 +4,7 @@
 
   <div class="main-div">
     <div class='hbox'>
-      <div class="game">
+      <div class="game" id="panel-izquierdo">
 
         <div class="padding-button-bar">
           {{#async-button id="guardar-y-regresar" class="ui button basic" action="guardarYRegresar"}}
@@ -25,7 +25,9 @@
 
       </div>
 
-      <div class="workspace">
+      {{pilas-splitter panelIzquierdoID="panel-izquierdo" panelDerechoID="panel-derecho"}}
+
+      <div class="workspace" id="panel-derecho">
 
         <div class="padding-button-bar">
           <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
