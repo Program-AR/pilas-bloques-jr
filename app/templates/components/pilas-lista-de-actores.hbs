@@ -1,7 +1,7 @@
 <div class="ui pointing menu">
 
   {{#each actores as |actor|}}
-    {{pilas-item-actor actor=actor actorSeleccionado=actorSeleccionado onSelect="onSelect"}}
+    {{pilas-item-actor actor=actor actorSeleccionado=actorSeleccionado onSelect="onSelect" onRemove=(action onRemove)}}
   {{/each}}
 
 </div>

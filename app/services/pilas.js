@@ -316,12 +316,16 @@ export default Ember.Service.extend(Ember.Evented, {
       var dt = 100;
 
       function ponerSombra(actor) {
-        var color = "rgba(0,0,0,0.5)";
-        actor.sprite.shadow = new createjs.Shadow(color, 5, 5, 2);
+        if (actor) {
+          var color = "rgba(0,0,0,0.5)";
+          actor.sprite.shadow = new createjs.Shadow(color, 5, 5, 2);
+        }
       }
 
       function quitarSombra(actor) {
-        actor.sprite.shadow = null;
+        if (actor) {
+          actor.sprite.shadow = null;
+        }
       }
 
 

@@ -189,3 +189,25 @@ body > .ember-view {
   left: 0;
   right: 0;
 }
+
+.pilas-item-actor-boton-eliminar {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -4px;
+  color: red;
+  opacity: 0.3;
+  text-align: center;
+}
+
+.pilas-item-actor-boton-eliminar:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+/* Hace que el botón para eliminar actor solo se vea cuando
+ * el mouse pasa sobre la pestaña seleccionada.
+ */
+a.item.active:hover .pilas-item-actor-boton-eliminar {
+  display: block;
+}

@@ -18,6 +18,7 @@ export default function() {
   this.post ('/actors');
   this.get  ('/actors/:id');
   this.patch('/actors/:id');
+  this.delete('/actors/:id');
 
   this.get  ('/classes');
   this.get  ('/classes/:id');

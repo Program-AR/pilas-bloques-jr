@@ -1,6 +1,16 @@
 {{#if actor.iconPath}}
 <a {{action "onSelect" actor}} class="item {{if estaSeleccionado 'active'}}">
-  <img src={{actor.iconPath}}/ width=14 height=14 class="small-icon">{{actor.class.className}}
+
+  {{#if actor.isDeleted}}
+    <div class="ui active mini inline loader"></div>
+  {{else}}
+    <img src={{actor.iconPath}}/ width=14 height=14 class="small-icon">{{actor.class.className}}
+
+    {{#if estaSeleccionado}}
+      <div onclick={{action onRemove actor}} class="pilas-item-actor-boton-eliminar"><i class="close icon"></i></div>
+    {{/if}}
+  {{/if}}
+
 </a>
 {{else}}
   <a class='item'><div class="ui active mini inline loader"></div></a>
