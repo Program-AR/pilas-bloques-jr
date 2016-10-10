@@ -30,7 +30,18 @@
       <div class="workspace" id="panel-derecho">
 
         <div class="padding-button-bar">
-          <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
+          {{#if ejecutando}}
+            <button class="ui basic button primary disabled">
+              <i class="play icon"></i> Ejecutando ...</button>
+          {{else}}
+            <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
+          {{/if}}
+
+
+          {{#if ejecutando}}
+            <button class="ui basic button orange" {{action "detener"}}><i class="stop icon"></i> Detener</button>
+          {{/if}}
+
         </div>
 
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect" onRemove=(action "onRemove")}}

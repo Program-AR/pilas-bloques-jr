@@ -95,9 +95,15 @@ export default Ember.Service.extend(Ember.Evented, {
         this.set('actores', this.obtenerListaDeActores());
       });
 
+      /*
       this.on('comienzaAMoverUnActor', (actor) => {
         console.log(actor);
       });
+
+      this.on('terminaDeMoverUnActor', (actor) => {
+        console.log(actor);
+      });
+      */
 
     });
   },

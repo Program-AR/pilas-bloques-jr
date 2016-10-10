@@ -6,7 +6,8 @@
     "-Promise",
     "$",
     "Blockly",
-    "js_beautify"
+    "js_beautify",
+    "Interpreter"
   ],
   "browser": true,
   "boss": true,
