@@ -1,8 +1,10 @@
 import Ember from 'ember';
+import enviromnent from '../../config/environment';
 
 export default Ember.Route.extend({
   pilas: Ember.inject.service(),
   blocksGallery: Ember.inject.service(),
+  interpreterFactory: Ember.inject.service(),
 
   activate() {
     this.get("blocksGallery").start();
@@ -58,10 +60,13 @@ export default Ember.Route.extend({
     },
 
     ejecutar() {
+      // Una lista con el identificador del actor, su clase y el código del workspace completo.
+      // (por ejemplo [{actorId: 'AA223', clase: 'Aceituna', codigo: 'receptor.decir ....'}])
+      let listaDeCodigos = [];
+
+      // Guarda el workspace del actor actual.
       this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
 
-
-      var listaDeCodigos = [];
 
       // Por cada actor obtiene su workspace como código y lo carga
       // en la listaDeCodigos.
@@ -77,89 +82,99 @@ export default Ember.Route.extend({
         let actorClass = actor.get('class.className');
 
         let codigoCompleto = js_beautify(`
-          var actor_id = '${actorId}';   // referencia a ${actorClass};
+          // -------------------------------------------------------
+          // Comienza el código para el actor de clase ${actorClass}:
+
+          var actor_id = '${actorId}';
 
           function hacer(actor, comportamiento, params) {
             // Invocar a la accion fuera del interprete
             out_hacer(actor, comportamiento, JSON.stringify(params));;
           }
 
-          console_log("volvimos del callback");
-
           ${codigoDesdeWorkspace}
         `);
 
-        listaDeCodigos.push(codigoCompleto);
+        listaDeCodigos.push({actorId: actorId, clase: actorClass, codigo: codigoCompleto, interprete: null});
       });
 
-      listaDeCodigos.forEach((texto) => {
-        console.warn("Comienza el código para un actor:");
-        console.log(texto);
-      });
-
-      let pilasService = this.get('pilas');
-
-      function initFunction(interpreter, scope) {
-        var console_log_wrapper = function(txt) {
-            txt = txt ? txt.toString() : '';
-            return interpreter.createPrimitive(console.log(txt));
-        };
-
-        interpreter.setProperty(scope, 'console_log', interpreter.createNativeFunction(console_log_wrapper));
-
-        // Esto deberia estar en otro lado, es un comportamiento que lo unico que
-        // hace es llamar a una funcion
-        var ComportamientoLlamarCallback = function(args) {
-          this.argumentos = args;
-
-          this.iniciar = function() {
-          };
-
-          this.actualizar = function() {
-            this.argumentos.callback();
-            return true;
-          };
-
-          this.eliminar = function() {
-          };
-        };
-
-        // Agrega un comportamiento a un actor
-        // Agrega otro comportamiento luego para hacer correr el callback que indica
-        // al interprete que la accion async termino.
-        var hacer_wrapper = function(actor_id, comportamiento, params, callback) {
-            actor_id = actor_id ? actor_id.toString() : '';
-            comportamiento = comportamiento ? comportamiento.toString() : '';
-            params = params ? params.toString() : '';
-            params = JSON.parse(params);
-            var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
-            var clase_comportamiento = pilasService.evaluar(`pilas.comportamientos.${comportamiento}`);
-            actor.hacer_luego(clase_comportamiento, params);
-            actor.hacer_luego(ComportamientoLlamarCallback, {callback});
-        };
-
-        interpreter.setProperty(scope, 'out_hacer', interpreter.createAsyncFunction(hacer_wrapper));
-      }
-
-      function execInterpreterUntilEnd(interpreter) {
-        if (interpreter.run()) {
-          // No terminó, esta esperando evento
-          setTimeout(execInterpreterUntilEnd, 10, interpreter);
-        }
+      if (enviromnent.mostrarCodigoAEjecutarEnLaConsola) {
+        listaDeCodigos.map((item) => {
+          console.log(item.codigo);
+        });
       }
 
       // Crear un interprete por actor y correrlos paralelamente
-
-      let interpretes = listaDeCodigos.map((codigo) => {
-        return new Interpreter(codigo, initFunction);
+      listaDeCodigos.forEach((item) => {
+        item.interprete = this.get('interpreterFactory').crearInterprete(item.codigo);
       });
+
+      /*
+       * Ejecuta un intérprete y mantiene una promesa en suspenso hasta
+       * que el intérprete termine de ejecutar todo el código.
+       */
+      function ejecutarInterpreteHastaTerminar(nombreIdentificador, interprete) {
+
+        return new Ember.RSVP.Promise((success, reject) => {
+
+          function execInterpreterUntilEnd(interpreter) {
+            let running;
+
+            try {
+              running = interpreter.run();
+            } catch(e) {
+              reject(e);
+            }
+
+            if (running) {
+              // No terminó, algún comportamiento está en ejecución, así
+              // que se re-planifica para continuar más tarde.
+              setTimeout(execInterpreterUntilEnd, 10, interpreter);
+            } else {
+              success();
+            }
+          }
+
+          execInterpreterUntilEnd(interprete);
+
+        }, `Intérprete para el actor ${nombreIdentificador}`);
+
+      }
+
+
+      this.get('controller').set("ejecutando", true);
 
       // Listos,... preparados, ... ahora corran todos
 
-      interpretes.forEach((interprete) => {
-        execInterpreterUntilEnd(interprete);
+      let promesasDeInterpretes = listaDeCodigos.map((item) => {
+        return ejecutarInterpreteHastaTerminar(item.clase, item.interprete);
       });
 
+      let label = "Contenedor de promesas de intérpretes";
+
+      // Espera a que todos los intérpretes terminen y cambia el estado
+      // de ejecución. Esta promesa siempre retorna exitosamente, incluso
+      // si alguno de los intérpretes falla.
+      Ember.RSVP.allSettled(promesasDeInterpretes, label).then((result) => {
+        this.get('controller').set("ejecutando", false);
+
+        if (result.mapBy('state').indexOf('rejected') > -1) {
+          console.error("Terminó la ejecución pero surgieron los siguientes errores:");
+
+          result.mapBy('reason').forEach((reason) => {
+            if (reason) {
+              console.error(reason);
+            }
+          });
+
+        }
+
+      });
+
+    },
+
+    detener() {
+      alert("no implementado!");
     }
   }
 });
