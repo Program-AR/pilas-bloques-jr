@@ -66,6 +66,7 @@ export default Ember.Route.extend({
 
       // Guarda el workspace del actor actual.
       this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
+      this.get('controller').definir_modo_edicion(false);
 
       this.get('controller').set("ejecutando", true);
 
@@ -166,6 +167,7 @@ export default Ember.Route.extend({
       // si alguno de los intérpretes falla.
       Ember.RSVP.allSettled(promesasDeInterpretes, label).then((result) => {
         this.get('controller').set("ejecutando", false);
+        this.get('controller').definir_modo_edicion(true);
 
         if (result.mapBy('state').indexOf('rejected') > -1) {
           console.error("Terminó la ejecución pero surgieron los siguientes errores:");
@@ -184,6 +186,7 @@ export default Ember.Route.extend({
     detener() {
       this.get('controller').reiniciar();
       this.get('controller').set("ejecutando", false);
+      this.get('controller').definir_modo_edicion(true);
     }
   }
 });

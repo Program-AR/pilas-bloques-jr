@@ -119,6 +119,10 @@ export default Ember.Controller.extend({
     this.crearEscenaConActoresDesdeEstadoInicial();
   },
 
+  definir_modo_edicion(estado) {
+    this.get("pilas").evaluar(`pilas.definir_modo_edicion(${estado});`);
+  },
+
   crearEscenaConActoresDesdeEstadoInicial() {
     this.get("pilas").sustituirFondo(this.model.get('background'));
 
@@ -138,7 +142,7 @@ export default Ember.Controller.extend({
           });
         });
 
-        this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
+        this.definir_modo_edicion(true);
       });
 
       this.get("pilas").on('comienzaAMoverUnActor', (evento) => {
