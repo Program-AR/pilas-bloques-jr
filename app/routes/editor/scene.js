@@ -173,7 +173,8 @@ export default Ember.Route.extend({
     },
 
     detener() {
-      alert("no implementado!");
+      this.get('controller').reiniciar();
+      this.get('controller').set("ejecutando", false);
     }
   }
 });
