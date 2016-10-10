@@ -57,8 +57,6 @@ export default Ember.Service.extend({
 
   _generarLenguaje() {
 
-    console.warn("Generando lenguaje");
-
     Blockly.MyLanguage = Blockly.JavaScript;
 
     Blockly.MyLanguage['decir'] = function(block) {
@@ -70,16 +68,9 @@ export default Ember.Service.extend({
       return `hacer(actor_id, "Saltar", {});`;
     };
 
-
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');
-      let codigo = `
-      // CODIGO AL PRINCIPIO
-
-      ${programa}
-
-      // CODIGO AL FINAL
-      `;
+      let codigo = `${programa}`;
 
       return codigo;
     };

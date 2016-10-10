@@ -88,7 +88,6 @@ export default Ember.Route.extend({
           var actor_id = '${actorId}';
 
           function hacer(actor, comportamiento, params) {
-            // Invocar a la accion fuera del interprete
             out_hacer(actor, comportamiento, JSON.stringify(params));;
           }
 
