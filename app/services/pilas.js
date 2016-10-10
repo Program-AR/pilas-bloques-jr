@@ -334,20 +334,16 @@ export default Ember.Service.extend(Ember.Evented, {
         }
       }
 
+      var tareas = [
+        {funcion: ponerSombra,  demora: dt * 0},
+        {funcion: quitarSombra, demora: dt * 1},
+        {funcion: ponerSombra,  demora: dt * 2},
+        {funcion: quitarSombra, demora: dt * 3},
+      ]
 
-      ponerSombra(actor);
-
-      setTimeout(function() {
-        quitarSombra(actor);
-      }, dt);
-
-      setTimeout(function() {
-        ponerSombra(actor);
-      }, dt * 2);
-
-      setTimeout(function() {
-        quitarSombra(actor);
-      }, dt * 3);
+      tareas.map(function(tarea) {
+        setTimeout(tarea.funcion, tarea.demora, actor);
+      });
 
     `);
   }
