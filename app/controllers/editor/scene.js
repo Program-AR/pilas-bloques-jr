@@ -13,17 +13,43 @@ export default Ember.Controller.extend({
   blocksForCurrentActor: Ember.computed.alias('currentActor.class.blocks'),
   workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
 
+  /*
+   * Guarda en el modelo de datos de ember todos los atributos de cada actor.
+   *
+   * Esta sincronización realiza antes de guardar el proyecto.
+   */
   sincronizarDesdePilasAModelos() {
-    // Guarda en el modelo de datos de ember todos los atributos de cada actor.
-    // (esta sincronización realiza antes de guardar el proyecto)
     this.model.get('actors').forEach((actor) => {
-      let actorId = actor.get('actorId');
-      let objetoActor = this.get('pilas').evaluar(`pilas.obtener_actor_por_id("${actorId}")`);
-      actor.set('x', objetoActor.x);
-      actor.set('y', objetoActor.y);
+      this.sincronizarRegistroActorDesdePilas(actor);
     });
   },
 
+  /*
+   * Actualiza el registro Actor de ember-data con información
+   * real del actor en la escena de pilas.
+   *
+   * Esta función se suele llamar cuando se termina de modificar el contexto
+   * de pilasweb y se quiere respaldar esa información en ember-data. Por ejemplo
+   * cuando se termina de arrastrar y soltar un actor o cuando se quiere guardar
+   * la escena completa en ember-data.
+   */
+  sincronizarRegistroActorDesdePilas(actor) {
+    let actorId = actor.get('actorId');
+    let objetoActor = this.get('pilas').evaluar(`pilas.obtener_actor_por_id("${actorId}")`);
+    actor.set('x', objetoActor.x);
+    actor.set('y', objetoActor.y);
+  },
+
+  /*
+   * Construye un actor a partir de su clase.
+   *
+   * El actor generado se va a generar tanto dentro
+   * del modelo de datos de ember (ember-data) como en
+   * la escena de pilasweb.
+   *
+   * Por último, una vez generado el actor se va a pre-seleccionar
+   * para que el usuario pueda comenzar a definirle acciones.
+   */
   crearActor(claseDeActor) {
     let clase = claseDeActor.get('className');
     let actor = this.get("pilas").evaluar(`
@@ -51,6 +77,13 @@ export default Ember.Controller.extend({
     });
   },
 
+  /*
+   * Guarda el workspace dentro del modelo de datos de ember para que se pueda
+   * enlazar a un actor.
+   *
+   * Esta función se creó para que los cambios de blockly queden en un
+   * buffer y solo se guarden en el actor cuando sea necesario.
+   */
   sincronizarWorkspaceAlActorActual() {
     if (this.get('currentActor')) {
       this.set('currentActor.workspaceXMLCode', this.get('currentWorkspace'));
@@ -84,16 +117,38 @@ export default Ember.Controller.extend({
         this.get("pilas").evaluar(`pilas.definir_modo_edicion(true);`);
       });
 
-
       this.get("pilas").on('comienzaAMoverUnActor', (evento) => {
-        this.store.findAll('actor').then((actores) => {
-          actores.forEach((actor) => {
-            if (actor.get('actorId') === evento.actorID) {
-              this.set('currentActor', actor);
-            }
-          });
+
+        this.obtenerActorPorId(evento.actorID).then((actor) => {
+          this.set('currentActor', actor);
         });
       });
+
+      this.get("pilas").on('terminaDeMoverUnActor', (evento) => {
+        this.obtenerActorPorId(evento.actorID).then((actor) => {
+          this.sincronizarRegistroActorDesdePilas(actor);
+        });
+      });
+  },
+
+  /*
+   * Retorna un registro de actor desde ember-data desde un identificador de actor.
+   *
+   * Esta operación debería poder reemplazarse con un 'findRecord' de ember-data,
+   * pero por causa de un bug en mirage lo tenemos que hacer de esta forma :(
+   */
+  obtenerActorPorId(actorID) {
+    return new Ember.RSVP.Promise((success) => {
+
+      this.store.findAll('actor').then((actores) => {
+        actores.forEach((actor) => {
+          if (actor.get('actorId') === actorID) {
+            success(actor);
+          }
+        });
+      });
+
+    });
   },
 
   actions: {

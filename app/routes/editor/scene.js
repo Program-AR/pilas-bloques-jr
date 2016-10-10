@@ -67,6 +67,7 @@ export default Ember.Route.extend({
       // Guarda el workspace del actor actual.
       this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
 
+      this.get('controller').set("ejecutando", true);
 
       // Por cada actor obtiene su workspace como código y lo carga
       // en la listaDeCodigos.
@@ -112,12 +113,19 @@ export default Ember.Route.extend({
        * Ejecuta un intérprete y mantiene una promesa en suspenso hasta
        * que el intérprete termine de ejecutar todo el código.
        */
-      function ejecutarInterpreteHastaTerminar(nombreIdentificador, interprete) {
+      function ejecutarInterpreteHastaTerminar(nombreIdentificador, interprete, condicion_de_corte) {
 
         return new Ember.RSVP.Promise((success, reject) => {
 
           function execInterpreterUntilEnd(interpreter) {
             let running;
+
+            // Si el usuario solicitó terminar el programa deja
+            // de ejecutar el intérprete.
+            if (condicion_de_corte()) {
+              success();
+              return;
+            }
 
             try {
               running = interpreter.run();
@@ -141,12 +149,14 @@ export default Ember.Route.extend({
       }
 
 
-      this.get('controller').set("ejecutando", true);
-
       // Listos,... preparados, ... ahora corran todos
 
+      let condicion_de_corte = () => {
+        return ! this.get('controller').get("ejecutando");
+      };
+
       let promesasDeInterpretes = listaDeCodigos.map((item) => {
-        return ejecutarInterpreteHastaTerminar(item.clase, item.interprete);
+        return ejecutarInterpreteHastaTerminar(item.clase, item.interprete, condicion_de_corte);
       });
 
       let label = "Contenedor de promesas de intérpretes";
@@ -165,7 +175,6 @@ export default Ember.Route.extend({
               console.error(reason);
             }
           });
-
         }
 
       });
