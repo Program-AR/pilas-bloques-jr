@@ -20,6 +20,7 @@ iframe {
 .pilas-lista-de-actores {
   margin-bottom: 5px !important;
   height: 45px;
+  margin-left: 1px;
 }
 
 .button-game-bar {
@@ -163,6 +164,7 @@ body > .ember-view {
 .pilas-splitter-container {
   flex-grow: 0;
   width: 7px;
+  padding: 1px;
 }
 
 .pilas-splitter-container:hover {
@@ -176,6 +178,10 @@ body > .ember-view {
 .splitter {
   width: 100%;
   height: 100%;
+}
+
+.splitter:hover {
+  background-color: #eee;
 }
 
 
