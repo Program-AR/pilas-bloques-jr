@@ -9,6 +9,6 @@ export default DS.Model.extend({
 
   thumbPath: Ember.computed('className', function() {
     let nombre = this.get('className').toLowerCase();
-    return `data/thumb.actor.${nombre}.png`;
+    return `data/miniaturas/actores/miniatura.actor.${nombre}.png`;
   })
 });

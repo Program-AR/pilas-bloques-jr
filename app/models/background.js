@@ -11,6 +11,6 @@ export default DS.Model.extend({
 
   thumbPath: Ember.computed('fullName', function() {
     let fullName = this.get('fullName');
-    return `data/thumb.${fullName}`;
+    return `data/miniaturas/fondos/miniatura.${fullName}`;
   })
 });
