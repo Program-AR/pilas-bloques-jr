@@ -10,7 +10,11 @@ export default Ember.Controller.extend({
                         //
                         // (ver el método sincronizarWorkspaceAlActorActual)
 
-  blocksForCurrentActor: Ember.computed.alias('currentActor.class.blocks'),
+  blocksForCurrentActor: Ember.computed('currentActor.class.blocks', function() {
+    let bloques = this.get('currentActor.class.blocks');
+    let bloquesSiNoHayActorSeleccionado = [{category: '...', blocks: []}];
+    return bloques || bloquesSiNoHayActorSeleccionado;
+  }),
   workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
 
   /*

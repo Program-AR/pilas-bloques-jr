@@ -1,4 +1,7 @@
-let bloquesComunes = ['text', 'decir', 'saltar'];
+let bloquesComunes = [{
+  category: 'Demo',
+  blocks: ['text', 'decir', 'saltar']
+}];
 
 export default [
   {id: 1, name: 'mono', className: 'Mono', blocks: bloquesComunes},
