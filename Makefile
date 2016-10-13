@@ -13,12 +13,17 @@ comandos:
 	@echo ""
 	@echo "${B}Comandos disponibles para ${G}${NOMBRE}${N} - ${Y} versión ${VERSION}${N}"
 	@echo ""
-	@echo "  ${Y}Para desarrolladores${N}"
+	@echo "  ${Y}Para desarrolladores de la aplicación ember${N}"
 	@echo ""
 	@echo "    ${G}iniciar${N}         Instala dependencias."
 	@echo "    ${G}compilar${N}        Genera los archivos compilados."
 	@echo "    ${G}compilar_live${N}   Compila de forma contínua."
 	@echo "    ${G}test_travis${N}     Ejecuta las mismas pruebas que travis."
+	@echo ""
+	@echo "  ${Y}Para desarrolladores de pilasweb${N}"
+	@echo ""
+	@echo "    ${G}compilar_extras${N}      Compila la extensión de pilasweb en public/libs."
+	@echo "    ${G}compilar_extras_live${N} Compila de forma contínua la extensión de pilasweb."
 	@echo ""
 	@echo "  ${Y}Para distribuir${N}"
 	@echo ""
@@ -57,5 +62,11 @@ actualizar_web:
 
 test_travis:
 	./node_modules/ember-cli/bin/ember test
+
+compilar_extras:
+	./node_modules/typescript/bin/tsc --pretty
+
+compilar_extras_live:
+	./node_modules/typescript/bin/tsc --watch --pretty
 
 test: test_travis

@@ -1,0 +1,14 @@
+{
+"compilerOptions": {
+    "target": "es5",
+    "module": "amd",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "outFile": "public/libs/pilasweb-extras.js"
+},
+"exclude": ["node_modules", "bower_components", "app", "dist", "public", "tmp"],
+"filesGlob": [
+    "pilasweb-extras/**/*.ts"
+]}
