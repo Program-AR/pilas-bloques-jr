@@ -62,7 +62,14 @@ export default Ember.Controller.extend({
   crearActor(claseDeActor) {
     let clase = claseDeActor.get('className');
     let actor = this.get("pilas").evaluar(`
-      var actor = new pilas.actores['${clase}'];
+      var actor = null;
+
+      if (pilas.actores['${clase}']) {
+        actor = new pilas.actores['${clase}'];
+      } else {
+        actor = new ${clase};
+      }
+
       actor;
     `);
 
@@ -138,7 +145,13 @@ export default Ember.Controller.extend({
           let className = actor.get("class.className");
 
           this.get("pilas").evaluar(`
-            actor = new pilas.actores['${className}']();
+            
+            if (pilas.actores['${className}']) {
+              actor = new pilas.actores['${className}']();
+            } else {
+              actor = new ${className}();
+            }
+
             actor.x = ${data.x};
             actor.y = ${data.y};
             actor.id = '${data.actorId}';

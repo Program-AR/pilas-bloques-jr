@@ -71,7 +71,22 @@ export default Ember.Service.extend({
       params = params ? params.toString() : '';
       params = JSON.parse(params);
       var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
-      var clase_comportamiento = pilasService.evaluar(`pilas.comportamientos.${comportamiento}`);
+      var clase_comportamiento = pilasService.evaluar(`
+        var comportamiento = null;
+
+        if (pilas.comportamientos['${comportamiento}']) {
+          comportamiento = pilas.comportamientos['${comportamiento}'];
+        } else {
+          if (window['${comportamiento}']) {
+            comportamiento = ${comportamiento};
+          } else {
+            throw new Error("No existe un comportamiento llamado '${comportamiento}'.");
+          }
+        }
+
+        comportamiento;
+      `);
+
       actor.hacer_luego(clase_comportamiento, params);
       actor.hacer_luego(ComportamientoLlamarCallback, {callback});
     };
