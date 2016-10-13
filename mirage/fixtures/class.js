@@ -11,6 +11,7 @@ let bloquesComunes = [
 
 export default [
   {id: 3, name: 'cangrejo', className: 'Cangrejo', blocks: bloquesComunes},
+  {id: 4, name: 'sandia', className: 'Sandia', blocks: bloquesComunes},
 
   /*
   {id: 2, name: 'mono', className: 'Mono', blocks: bloquesComunes},
