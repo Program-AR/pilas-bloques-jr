@@ -18,6 +18,7 @@ class SaltarNuevo extends ComportamientoAnimado {
     // Si toca el suelo detiene el comportamiento.
     if (this.receptor.y < this.posicionInicialY) {
       this.receptor.y = this.posicionInicialY;
+      this.receptor.cargarAnimacion('parado');
       return true;
     }
   }

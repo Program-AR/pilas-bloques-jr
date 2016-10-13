@@ -42,6 +42,7 @@ var Cangrejo = (function (_super) {
         this.definirAnimacion("correr", [9, 10, 11, 12, 13], 12);
         this.definirAnimacion("recoger", [17, 18, 19, 20, 21, 21, 21, 19, 19], 6);
         this.definirAnimacion("saltar", [20, 20], 6);
+        this.definirAnimacion("hablar", [17, 18, 19, 20, 21, 21, 21, 19, 19], 30);
     }
     Cangrejo.prototype.avanzarAnimacion = function () {
         return this._imagen.avanzar();
@@ -81,9 +82,11 @@ var DecirMensaje = (function (_super) {
         _super.prototype.iniciar.call(this, receptor);
         var mensaje = this.obtenerArgumento('mensaje');
         this.globo = new pilas.actores.Globo(this.receptor, mensaje);
+        this.receptor.cargarAnimacion('hablar');
     };
     DecirMensaje.prototype.actualizar = function () {
         _super.prototype.actualizar.call(this);
+        this.avanzarAnimacion();
         this.tiempoParaAvanzar -= 1 / 60;
         if (this.tiempoParaAvanzar < 0) {
             return true;
@@ -127,6 +130,7 @@ var SaltarNuevo = (function (_super) {
         this.receptor.y += this.velocidadVertical;
         if (this.receptor.y < this.posicionInicialY) {
             this.receptor.y = this.posicionInicialY;
+            this.receptor.cargarAnimacion('parado');
             return true;
         }
     };

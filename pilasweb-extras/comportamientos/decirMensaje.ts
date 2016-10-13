@@ -6,10 +6,12 @@ class DecirMensaje extends ComportamientoAnimado {
     super.iniciar(receptor);
     let mensaje = this.obtenerArgumento('mensaje');
     this.globo = new pilas.actores.Globo(this.receptor, mensaje);
+    this.receptor.cargarAnimacion('hablar');
   }
 
   actualizar() {
     super.actualizar();
+    this.avanzarAnimacion();
 
     this.tiempoParaAvanzar -= 1/60;
 
