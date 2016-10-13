@@ -11,6 +11,6 @@ export default DS.Model.extend({
 
   iconPath: Ember.computed('class.className', function() {
     let name = this.get('class.className').toLowerCase();
-    return `data/icono.${name}.png`;
+    return `data/miniaturas/iconos/icono.${name}.png`;
   })
 });
