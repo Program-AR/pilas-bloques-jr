@@ -70,8 +70,12 @@ export default Ember.Controller.extend({
         actor = new ${clase};
       }
 
+      actor.z = 5;
+
       actor;
     `);
+
+    console.warn(`Asumiendo que el actor ${clase} tiene z = 5.`);
 
     let actorId = actor.id;
     let data = actor.serializar();
