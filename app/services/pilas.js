@@ -46,6 +46,7 @@ export default Ember.Service.extend(Ember.Evented, {
                         canvas: canvasElement,
                         data_path: '${ENV.rootURL}data',
                         imagenesExtra: listaImagenes,
+                        detener_ante_error: true
                       };
 
         var pilas = pilasengine.iniciar(opciones);
@@ -86,7 +87,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
       };
 
-      pilas.ejecutar();
+      // pilas.ejecutar();
 
       this.on('seAgregaUnActor', (/*datos*/) => {
         this.set('actores', this.obtenerListaDeActores());

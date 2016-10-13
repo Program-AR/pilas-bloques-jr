@@ -177,6 +177,8 @@ export default Ember.Route.extend({
               console.error(reason);
             }
           });
+
+          console.error("Se detendrá la ejecución completa del programa.");
         }
 
       });

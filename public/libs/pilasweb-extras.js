@@ -52,7 +52,7 @@ var ComportamientoAnimado = (function (_super) {
         _super.prototype.iniciar.call(this, receptor);
     };
     ComportamientoAnimado.prototype.obtenerArgumento = function (nombre) {
-        if (!this.argumentos[nombre]) {
+        if (this.argumentos[nombre] === undefined) {
             throw new Error("Falta el argumento obligatorio '" + nombre + "'.");
         }
         return this.argumentos[nombre];
@@ -72,8 +72,10 @@ var EsperarSegundos = (function (_super) {
         this.segundosAEsperar = this.obtenerArgumento('segundos');
     };
     EsperarSegundos.prototype.actualizar = function () {
-        this.contadorDeSegundos += 1 / 100.0;
-        this.receptor.avanzarAnimacion();
+        this.contadorDeSegundos += 1 / 60.0;
+        if (this.receptor['avanzarAnimacion']) {
+            this.receptor.avanzarAnimacion();
+        }
         if (this.contadorDeSegundos > this.segundosAEsperar) {
             return true;
         }

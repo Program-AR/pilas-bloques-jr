@@ -21,7 +21,7 @@ class ComportamientoAnimado extends Comportamiento {
    *  >> this.obtenerArgumento('otro')     ->  ARROJARÁ UN ERROR
    */
   obtenerArgumento(nombre) {
-    if (!this.argumentos[nombre]) {
+    if (this.argumentos[nombre] === undefined) {
       throw new Error(`Falta el argumento obligatorio '${nombre}'.`);
     }
 
