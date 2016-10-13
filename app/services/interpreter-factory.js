@@ -74,11 +74,11 @@ export default Ember.Service.extend({
       var clase_comportamiento = pilasService.evaluar(`
         var comportamiento = null;
 
-        if (pilas.comportamientos['${comportamiento}']) {
-          comportamiento = pilas.comportamientos['${comportamiento}'];
+        if (window['${comportamiento}']) {
+          comportamiento = ${comportamiento};
         } else {
-          if (window['${comportamiento}']) {
-            comportamiento = ${comportamiento};
+          if (pilas.comportamientos['${comportamiento}']) {
+            comportamiento = pilas.comportamientos['${comportamiento}'];
           } else {
             throw new Error("No existe un comportamiento llamado '${comportamiento}'.");
           }

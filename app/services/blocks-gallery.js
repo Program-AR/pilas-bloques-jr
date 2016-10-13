@@ -93,7 +93,7 @@ export default Ember.Service.extend({
     };
 
     Blockly.MyLanguage['saltar'] = function(/*block*/) {
-      return `hacer(actor_id, "Saltar", {});`;
+      return `hacer(actor_id, "SaltarNuevo", {});`;
     };
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
