@@ -30,4 +30,15 @@ class ComportamientoAnimado extends Comportamiento {
 
   actualizar() {
   }
+
+  /**
+   * Intenta avanzar la animación actual si el actor entiene el mensaje.
+   *
+   * Si el actor no admite animaciones evita dar un error.
+   */
+  avanzarAnimacion() {
+    if (this.receptor['avanzarAnimacion']) {
+      return this.receptor.avanzarAnimacion();
+    }
+  }
 }

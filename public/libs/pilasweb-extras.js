@@ -23,6 +23,10 @@ var ActorAnimado = (function (_super) {
         }
     };
     ActorAnimado.prototype.cargarAnimacion = function (nombre) {
+        if (!this._imagen.animaciones[nombre]) {
+            console.warn("No se puede cargar la animaci\u00F3n '" + nombre + "', se ignorar\u00E1 la llamada a 'cargarAnimacion'.");
+            return;
+        }
         this._imagen.cargar_animacion(nombre);
     };
     ActorAnimado.prototype.animacionPara = function (nombre) {
@@ -37,6 +41,7 @@ var Cangrejo = (function (_super) {
         this.definirAnimacion("parado", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
         this.definirAnimacion("correr", [9, 10, 11, 12, 13], 12);
         this.definirAnimacion("recoger", [17, 18, 19, 20, 21, 21, 21, 19, 19], 6);
+        this.definirAnimacion("saltar", [20, 20], 6);
     }
     Cangrejo.prototype.avanzarAnimacion = function () {
         return this._imagen.avanzar();
@@ -58,6 +63,11 @@ var ComportamientoAnimado = (function (_super) {
         return this.argumentos[nombre];
     };
     ComportamientoAnimado.prototype.actualizar = function () {
+    };
+    ComportamientoAnimado.prototype.avanzarAnimacion = function () {
+        if (this.receptor['avanzarAnimacion']) {
+            return this.receptor.avanzarAnimacion();
+        }
     };
     return ComportamientoAnimado;
 }(Comportamiento));
@@ -93,9 +103,7 @@ var EsperarSegundos = (function (_super) {
     };
     EsperarSegundos.prototype.actualizar = function () {
         this.contadorDeSegundos += 1 / 60.0;
-        if (this.receptor['avanzarAnimacion']) {
-            this.receptor.avanzarAnimacion();
-        }
+        this.avanzarAnimacion();
         if (this.contadorDeSegundos > this.segundosAEsperar) {
             return true;
         }
@@ -111,8 +119,10 @@ var SaltarNuevo = (function (_super) {
         _super.prototype.iniciar.call(this, receptor);
         this.posicionInicialY = receptor.y;
         this.velocidadVertical = 15;
+        this.receptor.cargarAnimacion('saltar');
     };
     SaltarNuevo.prototype.actualizar = function () {
+        this.avanzarAnimacion();
         this.velocidadVertical -= 0.5;
         this.receptor.y += this.velocidadVertical;
         if (this.receptor.y < this.posicionInicialY) {

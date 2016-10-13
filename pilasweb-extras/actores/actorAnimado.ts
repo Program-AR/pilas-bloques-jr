@@ -27,6 +27,11 @@ class ActorAnimado extends Actor {
   }
 
   cargarAnimacion(nombre) {
+    if (!this._imagen.animaciones[nombre]) {
+      console.warn(`No se puede cargar la animación '${nombre}', se ignorará la llamada a 'cargarAnimacion'.`);
+      return;
+    }
+
     this._imagen.cargar_animacion(nombre);
   }
 

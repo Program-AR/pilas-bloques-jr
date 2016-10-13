@@ -10,10 +10,7 @@ class EsperarSegundos extends ComportamientoAnimado {
 
   actualizar() {
     this.contadorDeSegundos += 1/60.0;
-
-    if (this.receptor['avanzarAnimacion']) {
-      this.receptor.avanzarAnimacion();
-    }
+    this.avanzarAnimacion();
 
     if (this.contadorDeSegundos > this.segundosAEsperar) {
       return true;
