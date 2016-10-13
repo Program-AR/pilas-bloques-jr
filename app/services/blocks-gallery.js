@@ -30,7 +30,7 @@ export default Ember.Service.extend({
     Blockly.Blocks['esperar'] = {
       init: function() {
         this.jsonInit({
-          "message0": 'EsperarSegundos %1',
+          "message0": 'Esperar %1 segundos',
           "args0": [
             {
               "type": "input_value",
@@ -77,12 +77,18 @@ export default Ember.Service.extend({
     Blockly.MyLanguage = Blockly.JavaScript;
 
     Blockly.MyLanguage['decir'] = function(block) {
-      var texto = Blockly.MyLanguage.valueToCode(block, 'texto', Blockly.MyLanguage.ORDER_NONE) || '\'\'';
+      var texto = Blockly.MyLanguage.valueToCode(block, 'texto', Blockly.MyLanguage.ORDER_NONE) || "'\'\''";
       return `receptor.decir(${texto});`;
     };
 
     Blockly.MyLanguage['esperar'] = function(block) {
-      var segundos = Blockly.MyLanguage.valueToCode(block, 'segundos', Blockly.MyLanguage.ORDER_NONE) || '\'\'';
+      var segundos = Blockly.MyLanguage.valueToCode(block, 'segundos') || null;
+
+      if (!segundos) {
+        console.warn("No se especificó la cantidad de segundos a esperar, aplicando el valor por omisión 1.");
+        segundos = '1';
+      }
+
       return `hacer(actor_id, "EsperarSegundos", {segundos: ${segundos}});`;
     };
 
