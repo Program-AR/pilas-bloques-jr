@@ -34,6 +34,7 @@ export default Ember.Service.extend(Ember.Evented, {
                            'fondo.fiestadracula.png',
                            'fondo.tito-cuadrado.png',
                            'fondo.tresNaranjas.png',
+                           'actores/cangrejo.png'
                           ];
       let listaImagenesSerializada = listaImagenes.join("|");
 
