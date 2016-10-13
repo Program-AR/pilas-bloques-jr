@@ -127,6 +127,8 @@ export default Ember.Controller.extend({
 
   reiniciar() {
     this.get("pilas").evaluar(`pilas.reiniciar();`);
+    console.warn("TODO: evitar la llamada a pilas.ejecutar(), el mainloop debería lanzarse de nuevo directamente en pilasweb, solo cuando se invoca a reiniciar luego de un error.");
+    this.get("pilas").evaluar(`pilas.ejecutar();`);
     this.crearEscenaConActoresDesdeEstadoInicial();
   },
 
@@ -140,12 +142,14 @@ export default Ember.Controller.extend({
     this.model.get('actors').then((data) => {
       data.forEach((actor) => {
 
+        console.warn("Asumiendo que todos los actores tienen z=5, ese atributo se debería serializar en el modelo de datos.");
+
         actor.get("class").then(() => {
           let data = actor.getProperties("class.className", "x", "y", "actorId");
           let className = actor.get("class.className");
 
           this.get("pilas").evaluar(`
-            
+
             if (pilas.actores['${className}']) {
               actor = new pilas.actores['${className}']();
             } else {
@@ -154,6 +158,7 @@ export default Ember.Controller.extend({
 
             actor.x = ${data.x};
             actor.y = ${data.y};
+            actor.z = 5;
             actor.id = '${data.actorId}';
             `);
           });
