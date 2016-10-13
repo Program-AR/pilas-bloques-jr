@@ -7,7 +7,7 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'hash',
     desactivarLogsDeMirage: true,
-    mostrarCodigoAEjecutarEnLaConsola: false,
+    mostrarCodigoAEjecutarEnLaConsola: true,
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
