@@ -9,9 +9,19 @@ let bloquesComunes = [
   }
 ];
 
+
+let bloquesSandia = [
+  {
+    category: 'Primitivas',
+    blocks: ['math_number', 'esperar', 'consumir'],
+  }
+];
+
+
+
 export default [
   {id: 3, name: 'cangrejo', className: 'Cangrejo', blocks: bloquesComunes},
-  {id: 4, name: 'sandia', className: 'Sandia', blocks: bloquesComunes},
+  {id: 4, name: 'sandia', className: 'Sandia', blocks: bloquesSandia},
 
   /*
   {id: 2, name: 'mono', className: 'Mono', blocks: bloquesComunes},

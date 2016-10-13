@@ -32,6 +32,9 @@ var ActorAnimado = (function (_super) {
     ActorAnimado.prototype.animacionPara = function (nombre) {
         return pilas.imagenes.cargar_animacion(nombre, this.opciones.cantColumnas, this.opciones.cantFilas);
     };
+    ActorAnimado.prototype.avanzarAnimacion = function () {
+        return this._imagen.avanzar();
+    };
     return ActorAnimado;
 }(Actor));
 var Cangrejo = (function (_super) {
@@ -39,15 +42,22 @@ var Cangrejo = (function (_super) {
     function Cangrejo(x, y) {
         _super.call(this, x, y, { grilla: 'actores/cangrejo.png', cantColumnas: 8, cantFilas: 3 });
         this.definirAnimacion("parado", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
-        this.definirAnimacion("correr", [9, 10, 11, 12, 13], 12);
-        this.definirAnimacion("recoger", [17, 18, 19, 20, 21, 21, 21, 19, 19], 6);
         this.definirAnimacion("saltar", [20, 20], 6);
         this.definirAnimacion("hablar", [17, 18, 19, 20, 21, 21, 21, 19, 19], 30);
     }
-    Cangrejo.prototype.avanzarAnimacion = function () {
-        return this._imagen.avanzar();
-    };
     return Cangrejo;
+}(ActorAnimado));
+var Sandia = (function (_super) {
+    __extends(Sandia, _super);
+    function Sandia(x, y) {
+        _super.call(this, x, y, { grilla: 'actores/sandia.png', cantColumnas: 5, cantFilas: 1 });
+        this.definirAnimacion("parado", [0], 6, true);
+        this.definirAnimacion("comida", [1], 12);
+    }
+    Sandia.prototype.consumir = function () {
+        this.cargarAnimacion('comida');
+    };
+    return Sandia;
 }(ActorAnimado));
 var ComportamientoAnimado = (function (_super) {
     __extends(ComportamientoAnimado, _super);
@@ -72,6 +82,30 @@ var ComportamientoAnimado = (function (_super) {
     };
     return ComportamientoAnimado;
 }(Comportamiento));
+var Consumir = (function (_super) {
+    __extends(Consumir, _super);
+    function Consumir() {
+        _super.apply(this, arguments);
+    }
+    Consumir.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+        this.contadorDeSegundos = 0;
+        this.segundosAEsperar = 1;
+        if (this.receptor['consumir']) {
+            this.receptor.consumir();
+        }
+        else {
+            throw new Error("No se puede consumir el actor indicado.");
+        }
+    };
+    Consumir.prototype.actualizar = function () {
+        this.contadorDeSegundos += 1 / 60.0;
+        if (this.contadorDeSegundos > this.segundosAEsperar) {
+            return true;
+        }
+    };
+    return Consumir;
+}(ComportamientoAnimado));
 var DecirMensaje = (function (_super) {
     __extends(DecirMensaje, _super);
     function DecirMensaje() {

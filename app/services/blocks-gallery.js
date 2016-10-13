@@ -56,6 +56,17 @@ export default Ember.Service.extend({
       }
     };
 
+    Blockly.Blocks['consumir'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'Consumir',
+          "previousStatement": true,
+          "nextStatement": true,
+          "colour": 160
+        });
+      }
+    };
+
     Blockly.Blocks['al_empezar_a_ejecutar'] = {
       init: function() {
         this.setColour(200);
@@ -100,6 +111,10 @@ export default Ember.Service.extend({
 
     Blockly.MyLanguage['saltar'] = function(/*block*/) {
       return `hacer(actor_id, "SaltarNuevo", {});`;
+    };
+
+    Blockly.MyLanguage['consumir'] = function() {
+      return `hacer(actor_id, "Consumir", {});`;
     };
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
