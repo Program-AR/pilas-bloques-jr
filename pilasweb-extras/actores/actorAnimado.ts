@@ -38,4 +38,9 @@ class ActorAnimado extends Actor {
   animacionPara(nombre) {
     return pilas.imagenes.cargar_animacion(nombre, this.opciones.cantColumnas, this.opciones.cantFilas);
   }
+
+  avanzarAnimacion() {
+    return this._imagen.avanzar();
+  }
+  
 }
