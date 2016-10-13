@@ -27,6 +27,24 @@ export default Ember.Service.extend({
       }
     };
 
+    Blockly.Blocks['esperar'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'EsperarSegundos %1',
+          "args0": [
+            {
+              "type": "input_value",
+              "name": "segundos",
+              "check": "Number"
+            }
+          ],
+          "previousStatement": true,
+          "nextStatement": true,
+          "colour": 160
+        });
+      }
+    };
+
     Blockly.Blocks['saltar'] = {
       init: function() {
         this.jsonInit({
@@ -37,7 +55,6 @@ export default Ember.Service.extend({
         });
       }
     };
-
 
     Blockly.Blocks['al_empezar_a_ejecutar'] = {
       init: function() {
@@ -62,6 +79,11 @@ export default Ember.Service.extend({
     Blockly.MyLanguage['decir'] = function(block) {
       var texto = Blockly.MyLanguage.valueToCode(block, 'texto', Blockly.MyLanguage.ORDER_NONE) || '\'\'';
       return `receptor.decir(${texto});`;
+    };
+
+    Blockly.MyLanguage['esperar'] = function(block) {
+      var segundos = Blockly.MyLanguage.valueToCode(block, 'segundos', Blockly.MyLanguage.ORDER_NONE) || '\'\'';
+      return `hacer(actor_id, "EsperarSegundos", {segundos: ${segundos}});`;
     };
 
     Blockly.MyLanguage['saltar'] = function(/*block*/) {
