@@ -16,7 +16,7 @@ export default Ember.Service.extend({
           "args0": [
             {
               "type": "input_value",
-              "name": "texto",
+              "name": "mensaje",
               "check": "String"
             }
           ],
@@ -77,8 +77,14 @@ export default Ember.Service.extend({
     Blockly.MyLanguage = Blockly.JavaScript;
 
     Blockly.MyLanguage['decir'] = function(block) {
-      var texto = Blockly.MyLanguage.valueToCode(block, 'texto', Blockly.MyLanguage.ORDER_NONE) || "'\'\''";
-      return `receptor.decir(${texto});`;
+      let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
+
+      if (!mensaje) {
+        console.warn("No se especificó el mensaje, mostrando 'Sin mensaje ...'");
+        mensaje = "'Sin mensaje ...'";
+      }
+
+      return `hacer(actor_id, "DecirMensaje", {mensaje: ${mensaje}});`;
     };
 
     Blockly.MyLanguage['esperar'] = function(block) {

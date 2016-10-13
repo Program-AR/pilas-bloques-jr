@@ -61,6 +61,26 @@ var ComportamientoAnimado = (function (_super) {
     };
     return ComportamientoAnimado;
 }(Comportamiento));
+var DecirMensaje = (function (_super) {
+    __extends(DecirMensaje, _super);
+    function DecirMensaje() {
+        _super.apply(this, arguments);
+        this.tiempoParaAvanzar = 3;
+    }
+    DecirMensaje.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+        var mensaje = this.obtenerArgumento('mensaje');
+        this.globo = new pilas.actores.Globo(this.receptor, mensaje);
+    };
+    DecirMensaje.prototype.actualizar = function () {
+        _super.prototype.actualizar.call(this);
+        this.tiempoParaAvanzar -= 1 / 60;
+        if (this.tiempoParaAvanzar < 0) {
+            return true;
+        }
+    };
+    return DecirMensaje;
+}(ComportamientoAnimado));
 var EsperarSegundos = (function (_super) {
     __extends(EsperarSegundos, _super);
     function EsperarSegundos() {
@@ -81,4 +101,24 @@ var EsperarSegundos = (function (_super) {
         }
     };
     return EsperarSegundos;
+}(ComportamientoAnimado));
+var SaltarNuevo = (function (_super) {
+    __extends(SaltarNuevo, _super);
+    function SaltarNuevo() {
+        _super.apply(this, arguments);
+    }
+    SaltarNuevo.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+        this.posicionInicialY = receptor.y;
+        this.velocidadVertical = 15;
+    };
+    SaltarNuevo.prototype.actualizar = function () {
+        this.velocidadVertical -= 0.5;
+        this.receptor.y += this.velocidadVertical;
+        if (this.receptor.y < this.posicionInicialY) {
+            this.receptor.y = this.posicionInicialY;
+            return true;
+        }
+    };
+    return SaltarNuevo;
 }(ComportamientoAnimado));
