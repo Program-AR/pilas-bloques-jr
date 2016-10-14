@@ -22,6 +22,7 @@ let bloquesSandia = [
 export default [
   {id: 3, name: 'cangrejo', className: 'Cangrejo', blocks: bloquesComunes},
   {id: 4, name: 'sandia', className: 'Sandia', blocks: bloquesSandia},
+  {id: 5, name: 'gato', className: 'GatoAnimado', blocks: bloquesComunes},
 
   /*
   {id: 2, name: 'mono', className: 'Mono', blocks: bloquesComunes},

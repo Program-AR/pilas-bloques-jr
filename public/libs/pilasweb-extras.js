@@ -40,17 +40,27 @@ var ActorAnimado = (function (_super) {
 var Cangrejo = (function (_super) {
     __extends(Cangrejo, _super);
     function Cangrejo(x, y) {
-        _super.call(this, x, y, { grilla: 'actores/cangrejo.png', cantColumnas: 8, cantFilas: 3 });
+        _super.call(this, x, y, { grilla: 'actores/actor.CangrejoAnimado.png', cantColumnas: 8, cantFilas: 3 });
         this.definirAnimacion("parado", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
-        this.definirAnimacion("saltar", [20, 20], 6);
-        this.definirAnimacion("hablar", [17, 18, 19, 20, 21, 21, 21, 19, 19], 30);
+        this.definirAnimacion("saltar", [8], 6);
+        this.definirAnimacion("hablar", [14, 15, 22, 15], 5);
     }
     return Cangrejo;
+}(ActorAnimado));
+var GatoAnimado = (function (_super) {
+    __extends(GatoAnimado, _super);
+    function GatoAnimado(x, y) {
+        _super.call(this, x, y, { grilla: 'actores/actor.GatoAnimado.png', cantColumnas: 7, cantFilas: 7 });
+        this.definirAnimacion("parado", [0], 6, true);
+        this.definirAnimacion("saltar", [46], 6);
+        this.definirAnimacion("hablar", [3, 5, 4, 5], 8);
+    }
+    return GatoAnimado;
 }(ActorAnimado));
 var Sandia = (function (_super) {
     __extends(Sandia, _super);
     function Sandia(x, y) {
-        _super.call(this, x, y, { grilla: 'actores/sandia.png', cantColumnas: 5, cantFilas: 1 });
+        _super.call(this, x, y, { grilla: 'actores/actor.Sandia.png', cantColumnas: 5, cantFilas: 1 });
         this.definirAnimacion("parado", [0], 6, true);
         this.definirAnimacion("comida", [1], 12);
     }
