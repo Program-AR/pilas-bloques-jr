@@ -226,3 +226,9 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
   padding: 4px;
   color: #a0a01d;
 }
+
+
+.nota-version {
+  margin-top: 2em;
+  color: gray;
+}
