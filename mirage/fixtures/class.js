@@ -14,6 +14,10 @@ let bloquesSandia = [
   {
     category: 'Primitivas',
     blocks: ['math_number', 'esperar', 'consumir'],
+  },
+  {
+    category: 'Repeticiones',
+    blocks: ['controls_repeat']
   }
 ];
 
