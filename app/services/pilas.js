@@ -41,6 +41,12 @@ export default Ember.Service.extend(Ember.Evented, {
                            'actores/actor.CangrejoAnimado.png',
                            'actores/actor.Sandia.png',
                            'actores/actor.GatoAnimado.png',
+
+                           'balloon.png',
+                           'balloon-tip-think-right.png',
+                           'balloon-tip-think-left.png',
+                           'balloon-tip-right.png',
+                           'balloon-tip-left.png',
                           ];
       let listaImagenesSerializada = listaImagenes.join("|");
 
