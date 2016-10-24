@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ActorAnimado = (function (_super) {
     __extends(ActorAnimado, _super);
     function ActorAnimado(x, y, opciones) {
-        _super.call(this, "aceituna.png", x, y);
+        _super.call(this, "sin_imagen.png", x, y);
         this.sanitizarOpciones(opciones);
         this.imagen = this.animacionPara(this.opciones.grilla);
     }

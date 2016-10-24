@@ -47,6 +47,7 @@ export default Ember.Service.extend(Ember.Evented, {
                         canvas: canvasElement,
                         data_path: '${ENV.rootURL}data',
                         imagenesExtra: listaImagenes,
+                        cargar_imagenes_estandar: false,
                         detener_ante_error: true
                       };
 

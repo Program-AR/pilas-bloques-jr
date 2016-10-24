@@ -4,7 +4,7 @@ class ActorAnimado extends Actor {
   opciones;
 
   constructor(x, y, opciones) {
-    super("aceituna.png", x, y);
+    super("sin_imagen.png", x, y);
 
     this.sanitizarOpciones(opciones);
     this.imagen = this.animacionPara(this.opciones.grilla);
@@ -42,5 +42,5 @@ class ActorAnimado extends Actor {
   avanzarAnimacion() {
     return this._imagen.avanzar();
   }
-  
+
 }
