@@ -23,6 +23,15 @@
 
         {{pilas-canvas pilas=pilas onReady="onReady"}}
 
+        {{#if estadoFinalNoEditable}}
+          <div class="nota-finalizaEjecucion">
+            Finalizó la ejecución.
+            <br/><br/>
+            Pulsá 'reiniciar' para volver<br/>
+            a editar la escena.
+          </div>
+        {{/if}}
+
       </div>
 
       {{pilas-splitter panelIzquierdoID="panel-izquierdo" panelDerechoID="panel-derecho"}}
@@ -30,11 +39,16 @@
       <div class="workspace" id="panel-derecho">
 
         <div class="padding-button-bar">
+
           {{#if ejecutando}}
             <button class="ui basic button primary disabled">
               <i class="play icon"></i> Ejecutando ...</button>
           {{else}}
-            <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
+            {{#if finalizado}}
+              <button class="ui basic button warning" {{action "reiniciar"}}><i class="refresh icon"></i> Reiniciar</button>
+            {{else}}
+              <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
+            {{/if}}
           {{/if}}
 
 

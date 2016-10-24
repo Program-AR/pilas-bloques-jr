@@ -4,6 +4,8 @@ export default Ember.Controller.extend({
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
   currentActor: '',
+  ejecutando: false,
+  finalizado: false,
   currentWorkspace: '', // Almacena el workspace mientras se modifica. El valor
                         // de esta propiedad sustituirá a currentActor.workspaceXMLCode
                         // cuando se guarde, ejecute o cambie de actor.
@@ -16,6 +18,10 @@ export default Ember.Controller.extend({
     return bloques || bloquesSiNoHayActorSeleccionado;
   }),
   workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
+
+  estadoFinalNoEditable: Ember.computed('ejecutando', 'finalizado', function() {
+    return (!this.get('ejecutando') && this.get('finalizado'));
+  }),
 
   /*
    * Guarda en el modelo de datos de ember todos los atributos de cada actor.

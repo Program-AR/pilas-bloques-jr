@@ -10,7 +10,7 @@ export default DS.Model.extend({
   workspaceXMLCode: DS.attr('string'),
 
   iconPath: Ember.computed('class.className', function() {
-    let name = this.get('class.className').toLowerCase();
+    let name = this.get('class.className');
     return `data/miniaturas/iconos/icono.${name}.png`;
   })
 });

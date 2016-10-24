@@ -29,13 +29,18 @@ export default Ember.Service.extend(Ember.Evented, {
     return new Ember.RSVP.Promise((success) => {
       let width = options.width;
       let height = options.height;
-      let listaImagenes = ['fondo.cangrejo_aguafiestas.png',
-                           'fondo.elPlanetaDeNano.png',
-                           'fondo.fiestadracula.png',
-                           'fondo.tito-cuadrado.png',
-                           'fondo.tresNaranjas.png',
-                           'actores/cangrejo.png',
-                           'actores/sandia.png',
+      let listaImagenes = [
+                           'fondos/fondo.cangrejo_aguafiestas.png',
+                           'fondos/fondo.elPlanetaDeNano.png',
+                           'fondos/fondo.fiestadracula.png',
+                           'fondos/fondo.tito-cuadrado.png',
+                           'fondos/fondo.tresNaranjas.png',
+                           'fondos/fondo.Cueva.png',
+                           'fondos/fondo.FondoMarino.png',
+
+                           'actores/actor.CangrejoAnimado.png',
+                           'actores/actor.Sandia.png',
+                           'actores/actor.GatoAnimado.png',
                           ];
       let listaImagenesSerializada = listaImagenes.join("|");
 
@@ -305,7 +310,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   sustituirFondo(imagen_de_fondo) {
     this.evaluar(`
-      pilas.escena_actual().fondo.imagen = "${imagen_de_fondo}";
+      pilas.escena_actual().fondo.imagen = "fondos/${imagen_de_fondo}";
       pilas.escena_actual().fondo.z = 2000;
     `);
 

@@ -68,6 +68,7 @@ export default Ember.Route.extend({
       this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
       this.get('controller').definir_modo_edicion(false);
 
+
       this.get('controller').set("ejecutando", true);
 
       // Por cada actor obtiene su workspace como código y lo carga
@@ -100,6 +101,8 @@ export default Ember.Route.extend({
       });
 
       if (enviromnent.mostrarCodigoAEjecutarEnLaConsola) {
+        console.warn("Mostrando código generado a continuación porque se activó 'mostrarCodigoAEjecutarEnLaConsola' en las preferencias de entorno:");
+
         listaDeCodigos.map((item) => {
           console.log(item.codigo);
         });
@@ -166,8 +169,17 @@ export default Ember.Route.extend({
       // de ejecución. Esta promesa siempre retorna exitosamente, incluso
       // si alguno de los intérpretes falla.
       Ember.RSVP.allSettled(promesasDeInterpretes, label).then((result) => {
+
+        // Detecta si finalizó por una interrupción del usuario.
+        if (this.get('controller').get("ejecutando")) {
+          // En este caso, el usuario interrumpió pulsando el botón detener.
+          this.get('controller').set("finalizado", true);
+        } else {
+          // En este caso, finalizó porque ya se ejecutó todo el código.
+          this.get('controller').set("finalizado", false);
+        }
+
         this.get('controller').set("ejecutando", false);
-        this.get('controller').definir_modo_edicion(true);
 
         if (result.mapBy('state').indexOf('rejected') > -1) {
           console.error("Terminó la ejecución pero surgieron los siguientes errores:");
@@ -188,7 +200,12 @@ export default Ember.Route.extend({
     detener() {
       this.get('controller').reiniciar();
       this.get('controller').set("ejecutando", false);
+      this.get('controller').set("finalizado", false);
       this.get('controller').definir_modo_edicion(true);
+    },
+
+    reiniciar() {
+      this.send('detener');
     }
   }
 });

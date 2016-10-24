@@ -217,3 +217,26 @@ body > .ember-view {
 a.item.active:hover .pilas-item-actor-boton-eliminar {
   display: block;
 }
+
+.nota-finalizaEjecucion {
+  position: absolute;
+  top: 108px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.83);
+  padding: 4px;
+  color: #a0a01d;
+}
+
+
+.nota-version {
+  margin-top: 2em;
+  color: gray;
+}
+
+.nota-prototipo {
+  padding: 1em;
+  margin: auto;
+  background-color: rgba(226, 226, 226, 0.52);
+  border: 2px solid rgba(195, 195, 195, 0.33);
+  width: 80%;
+}
