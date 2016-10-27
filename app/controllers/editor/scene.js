@@ -17,6 +17,7 @@ export default Ember.Controller.extend({
     let bloquesSiNoHayActorSeleccionado = [{category: '...', blocks: []}];
     return bloques || bloquesSiNoHayActorSeleccionado;
   }),
+  
   workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
 
   estadoFinalNoEditable: Ember.computed('ejecutando', 'finalizado', function() {

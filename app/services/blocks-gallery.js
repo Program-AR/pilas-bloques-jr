@@ -81,6 +81,29 @@ export default Ember.Service.extend({
       }
     };
 
+
+    Blockly.Blocks['caminar_hacia_la_derecha'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'CaminarHaciaLaDerecha',
+          "previousStatement": true,
+          "nextStatement": true,
+          "colour": 160
+        });
+      }
+    };
+
+    Blockly.Blocks['decir_posicion'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'DecirPosicion',
+          "previousStatement": true,
+          "nextStatement": true,
+          "colour": 160
+        });
+      }
+    };
+
   },
 
   _generarLenguaje() {
@@ -115,6 +138,14 @@ export default Ember.Service.extend({
 
     Blockly.MyLanguage['consumir'] = function() {
       return `hacer(actor_id, "Consumir", {});`;
+    };
+
+    Blockly.MyLanguage['caminar_hacia_la_derecha'] = function() {
+      return `hacer(actor_id, "CaminarHaciaLaDerecha", {});`;
+    };
+
+    Blockly.MyLanguage['decir_posicion'] = function() {
+      return `hacer(actor_id, "DecirPosicion", {});`;
     };
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {

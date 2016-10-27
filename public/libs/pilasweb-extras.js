@@ -101,6 +101,29 @@ var ComportamientoAnimado = (function (_super) {
     };
     return ComportamientoAnimado;
 }(Comportamiento));
+var CaminarHaciaLaDerecha = (function (_super) {
+    __extends(CaminarHaciaLaDerecha, _super);
+    function CaminarHaciaLaDerecha() {
+        _super.apply(this, arguments);
+    }
+    CaminarHaciaLaDerecha.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+        this.receptor.cargarAnimacion('caminar');
+        this.contador = 0;
+        this.velocidad = 3;
+        this.longitud = 40;
+    };
+    CaminarHaciaLaDerecha.prototype.actualizar = function () {
+        this.avanzarAnimacion();
+        this.receptor.x += this.velocidad;
+        this.contador += 1;
+        if (this.contador > this.longitud) {
+            this.receptor.cargarAnimacion('parado');
+            return true;
+        }
+    };
+    return CaminarHaciaLaDerecha;
+}(ComportamientoAnimado));
 var Consumir = (function (_super) {
     __extends(Consumir, _super);
     function Consumir() {
@@ -129,24 +152,40 @@ var DecirMensaje = (function (_super) {
     __extends(DecirMensaje, _super);
     function DecirMensaje() {
         _super.apply(this, arguments);
-        this.tiempoParaAvanzar = 3;
+        this.tiempoParaAvanzar = 3.2;
     }
     DecirMensaje.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
-        var mensaje = this.obtenerArgumento('mensaje');
+        var mensaje = this.obtener_mensaje();
         this.globo = new pilas.actores.Globo(this.receptor, mensaje);
         this.receptor.cargarAnimacion('hablar');
+    };
+    DecirMensaje.prototype.obtener_mensaje = function () {
+        return this.obtenerArgumento('mensaje');
     };
     DecirMensaje.prototype.actualizar = function () {
         _super.prototype.actualizar.call(this);
         this.avanzarAnimacion();
         this.tiempoParaAvanzar -= 1 / 60;
         if (this.tiempoParaAvanzar < 0) {
+            this.receptor.cargarAnimacion('parado');
             return true;
         }
     };
     return DecirMensaje;
 }(ComportamientoAnimado));
+var DecirPosicion = (function (_super) {
+    __extends(DecirPosicion, _super);
+    function DecirPosicion() {
+        _super.apply(this, arguments);
+    }
+    DecirPosicion.prototype.obtener_mensaje = function () {
+        var x = this.receptor.x;
+        var y = this.receptor.y;
+        return "Mi posici\u00F3n es (" + x + ", " + y + ")";
+    };
+    return DecirPosicion;
+}(DecirMensaje));
 var EsperarSegundos = (function (_super) {
     __extends(EsperarSegundos, _super);
     function EsperarSegundos() {

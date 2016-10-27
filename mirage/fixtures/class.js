@@ -1,11 +1,15 @@
 let bloquesComunes = [
   {
     category: 'Primitivas',
-    blocks: ['text', 'math_number', 'esperar', 'decir', 'saltar']
+    blocks: ['text', 'math_number', 'esperar', 'decir', 'saltar', 'caminar_hacia_la_derecha', 'decir_posicion']
   },
   {
     category: 'Repeticiones',
-    blocks: ['controls_repeat']
+    blocks: ['controls_repeat', 'controls_repeat_ext']
+  },
+  {
+    category: 'Otros',
+    blocks: ['procedures_defnoreturn']
   }
 ];
 
