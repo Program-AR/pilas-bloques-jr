@@ -10,6 +10,10 @@ let bloquesComunes = [
   {
     category: 'Otros',
     blocks: ['procedures_defnoreturn']
+  },
+  {
+    category: 'Mis Procedimientos',
+    blocks: ['procedures_defnoreturn', 'procedures_defreturn']
   }
 ];
 
@@ -22,6 +26,10 @@ let bloquesSandia = [
   {
     category: 'Repeticiones',
     blocks: ['controls_repeat']
+  },
+  {
+    category: 'Mis Procedimientos',
+    blocks: ['procedures_defnoreturn', 'procedures_defreturn']
   }
 ];
 
