@@ -24,5 +24,9 @@ install:
 after_success:
   - make actualizar_web
 
+after_success:
+  - test $TRAVIS_BRANCH = "develop" && ./node_modules/ember-cli/bin/ember surge --environment development --new-domain develop-pilas-bloques-jr.surge.sh
+  - test $TRAVIS_BRANCH = "master" &&  ./node_modules/ember-cli/bin/ember surge --environment development --new-domain pilas-bloques-jr.surge.sh
+
 script:
   - make test_travis
