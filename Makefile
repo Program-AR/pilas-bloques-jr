@@ -32,7 +32,7 @@ comandos:
 	@echo "    ${G}version_major${N}     Genera una versión (MAJOR.0.0)."
 	@echo ""
 	@echo "    ${G}actualizar_web${N}    Sube a surge la versión online actual."
-	@echo "    ${G}${N}                  Nota: no se suele usar, lo invoca travis."
+	@echo "    ${G}${N}                  Nota: en desuso, el deploy se realiza en travis."
 	@echo ""
 	@echo ""
 
@@ -58,7 +58,7 @@ version_major:
 	./node_modules/ember-cli/bin/ember release --major
 
 actualizar_web:
-	./node_modules/ember-cli/bin/ember surge --environment development
+	@echo "Este comando está deshabilitado, mirar el archivo .travis.yml"
 
 test_travis:
 	./node_modules/ember-cli/bin/ember test
