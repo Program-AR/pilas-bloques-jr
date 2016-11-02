@@ -60,7 +60,13 @@
 
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect" onRemove=(action "onRemove")}}
 
-        {{ember-blockly blocks=blocksForCurrentActor onChangeWorkspace="onChangeWorkspace" workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true}}
+        {{ember-blockly blocks=blocksForCurrentActor onChangeWorkspace="onChangeWorkspace" workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true
+          media="blockly-package/media/"
+          duplicate=false
+          help=false
+          disableBlock=false
+          comment=false
+        }}
 
       </div>
     </div>
