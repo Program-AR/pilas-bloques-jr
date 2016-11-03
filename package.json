@@ -1,6 +1,6 @@
 {
   "name": "pilas-bloques-jr",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Small description for pilas-bloques-jr goes here",
   "private": true,
   "main": "electron.js",
