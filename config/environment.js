@@ -7,6 +7,7 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'hash',
     desactivarLogsDeMirage: true,
+    electronLiveReload: false,
     mostrarCodigoAEjecutarEnLaConsola: true,
     EmberENV: {
       FEATURES: {
@@ -20,6 +21,24 @@ module.exports = function(environment) {
       // when it is created
     }
   };
+
+  if (environment === 'electron') {
+    delete ENV['rootURL'];
+    ENV.electronLiveReload = true;
+
+    ENV['ember-cli-mirage'] = {
+      enabled: true
+    };
+  }
+
+  if (environment === 'electron-production') {
+    delete ENV['rootURL'];
+    ENV.electronLiveReload = false;
+
+    ENV['ember-cli-mirage'] = {
+      enabled: true
+    };
+  }
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

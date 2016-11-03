@@ -1,32 +1,49 @@
----
-language: node_js
-node_js:
-  - "4"
-
+language: objective-c
 sudo: false
-
 cache:
   directories:
-    - node_modules
-
-before_install:
-  - npm config set spin false
-  - npm install -g bower
-  - npm install --save-dev surge
-  - bower --version
-  - npm install phantomjs-prebuilt
-  - node_modules/phantomjs-prebuilt/bin/phantomjs --version
-
+  - node_modules
+  - bower_components
+  - "$HOME/.npm"
+  - "$HOME/.cache"
+  - cache
 install:
   - npm install
   - bower install
-
-after_success:
-  - make actualizar_web
-
+before_install:
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - source ~/.nvm/nvm.sh
+  - nvm install 4.2
+  - nvm use 4.2
+  - npm config set spin false
+  - npm install -g bower
+  - npm install -g phantomjs-prebuilt
+  - npm install -g grunt-cli
+  - npm install -g node-gyp
+  - npm install -g ember-cli
+  - npm install --save-dev surge
+before_deploy:
+  - brew install curl
+  - cd $TRAVIS_BUILD_DIR && travis/download-homebrew
+  - brew install makensis
+  - VERSION=$(sh scripts/obtenerVersion.sh)
+  - echo "Detectando version $VERSION para compilar"
+  - make binarios
 after_success:
   - test $TRAVIS_BRANCH = "develop" && ./node_modules/ember-cli/bin/ember surge --environment development --new-domain develop-pilas-bloques-jr.surge.sh
   - test $TRAVIS_BRANCH = "master" &&  ./node_modules/ember-cli/bin/ember surge --environment development --new-domain pilas-bloques-jr.surge.sh
-
 script:
   - make test_travis
+deploy:
+  skip_cleanup: true
+  provider: releases
+  prerelease: true
+  api_key:
+    secure: TRs6OH5ojnmY96gaFivSLBuwGfPZI6NnrsI++2kD5KZ7ZF7GEWTT/TsnciTCrvPud2EL/TQLYK5iVJ0QPZwePE8R8eROSw6ks54EhiuNcwZ76sNgHb+k26qTvC6C4B9gbrAwALIowPx698RIJnAnQDutdiB6NUtuAeX9VRhonTL3+r7CkdEZReagH1TRrsyqCN50KvAM3vk6AfZOMwICdGueLswLexvJ25HfK4yqC0CPajbxsiXwHsxyesrGROjPKiDAqlJAIInCZWdzJyuQh2bc7FC7lmiF3n8g1LvFDFrEe8emmsvd/vfanHp3de5T186Wsn+gnM6XbLP8hwm12ERHu7178zUXcgJwl+q8105grgvcm88HSJpWHqCCU7UDWLyrPtUpiZ6aWYIjq9VQzR3DMv1fGxKny7ckP7lN5OFXqROhtEs8efmld9un/UdPPYMsejqo3YOmwh+2Cbra8VLz1yaBlPpVLErjBEQlbvX9ZH+6HBRYe3nZJIqA1zFuN1AsRm7SE7zTAkq+RMvSh/DcalVQRawtJBkucLb1fSXS0Z8chcrI0bX6GgMgOpJKqqM+JtUoodftO2sRAbksz1VHip/unlJrhJUGqxsRutLsbKTgyfcF4f2K2UqgJf1t6shtdCqHclp8cJwfg0dn4mSpl+O3q6MWR1DnX1vpg4U=
+  file:
+    - "binarios/pilas-bloques-jr-${VERSION}.dmg"
+    - "binarios/pilas-bloques-jr-${VERSION}.exe"
+  on:
+    tags: true
+    all_branches: true

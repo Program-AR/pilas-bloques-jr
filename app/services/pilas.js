@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import ENV from '../config/environment';
 
+const PATH_PREFIX = ENV.rootURL || "";
+
 export default Ember.Service.extend(Ember.Evented, {
   iframe: null,
   actorCounter: 0,
@@ -56,7 +58,7 @@ export default Ember.Service.extend(Ember.Evented, {
         var opciones = {ancho: ${width},
                         alto: ${height},
                         canvas: canvasElement,
-                        data_path: '${ENV.rootURL}data',
+                        data_path: '${PATH_PREFIX}data',
                         imagenesExtra: listaImagenes,
                         cargar_imagenes_estandar: false,
                         detener_ante_error: true
