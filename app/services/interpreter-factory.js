@@ -13,9 +13,9 @@ export default Ember.Service.extend({
    * así que las únicas funciones a las que podrá acceder están detalladas
    * en la función _initFunction, que aparece más abajo.
    */
-  crearInterprete(codigo) {
+  crearInterprete(codigo, callback_cuando_ejecuta_bloque) {
     return new Interpreter(codigo, (interpreter, scope) => {
-      return this._initFunction(interpreter, scope);
+      return this._initFunction(interpreter, scope, callback_cuando_ejecuta_bloque);
     });
   },
 
@@ -23,7 +23,7 @@ export default Ember.Service.extend({
    * Inicializa el intérprete y su scope inicial, para que
    * pueda usar funcioens como "hacer", "console.log" etc..
    */
-  _initFunction(interpreter, scope) {
+  _initFunction(interpreter, scope, callback_cuando_ejecuta_bloque) {
 
     var console_log_wrapper = function(txt) {
       txt = txt ? txt.toString() : '';
@@ -92,6 +92,13 @@ export default Ember.Service.extend({
     };
 
     interpreter.setProperty(scope, 'out_hacer', interpreter.createAsyncFunction(hacer_wrapper));
+
+    function wrapper(id) {
+      id = id ? id.toString() : '';
+      return interpreter.createPrimitive(callback_cuando_ejecuta_bloque.call(this, id));
+    }
+
+    interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(wrapper));
   }
 
 });

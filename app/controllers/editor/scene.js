@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   currentActor: '',
   ejecutando: false,
   finalizado: false,
+  highlightedBlockForCurrentActor: null,
   currentWorkspace: '', // Almacena el workspace mientras se modifica. El valor
                         // de esta propiedad sustituirá a currentActor.workspaceXMLCode
                         // cuando se guarde, ejecute o cambie de actor.
@@ -17,12 +18,25 @@ export default Ember.Controller.extend({
     let bloquesSiNoHayActorSeleccionado = [{category: '...', blocks: []}];
     return bloques || bloquesSiNoHayActorSeleccionado;
   }),
-  
+
   workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
 
   estadoFinalNoEditable: Ember.computed('ejecutando', 'finalizado', function() {
     return (!this.get('ejecutando') && this.get('finalizado'));
   }),
+
+  /**
+   * Se invoca automáticamente cuando algún intérprete evalúa una sentencia
+   * nueva.
+   *
+   * Este método se podría llamar varias veces, porque podría haber varios
+   * intérpretes corriendo al mismo tiempo.
+   */
+  cuando_se_ejecuta_bloque(bloque_id, actorId_que_ejecuta_el_bloque) {
+    if (this.get('currentActor.actorId') === actorId_que_ejecuta_el_bloque) {
+      this.set('highlightedBlockForCurrentActor', bloque_id);
+    }
+  },
 
   /*
    * Guarda en el modelo de datos de ember todos los atributos de cada actor.

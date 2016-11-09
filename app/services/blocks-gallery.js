@@ -155,8 +155,8 @@ export default Ember.Service.extend({
       return codigo;
     };
 
-    // Blockly.MyLanguage.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-    // Blockly.MyLanguage.addReservedWords('highlightBlock');
+    Blockly.MyLanguage.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+    Blockly.MyLanguage.addReservedWords('highlightBlock');
   }
 
 });

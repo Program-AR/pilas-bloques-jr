@@ -110,7 +110,9 @@ export default Ember.Route.extend({
 
       // Crear un interprete por actor y correrlos paralelamente
       listaDeCodigos.forEach((item) => {
-        item.interprete = this.get('interpreterFactory').crearInterprete(item.codigo);
+        item.interprete = this.get('interpreterFactory').crearInterprete(item.codigo, (pieza) => {
+          this.get('controller').cuando_se_ejecuta_bloque(pieza, item.actorId);
+        });
       });
 
       /*
