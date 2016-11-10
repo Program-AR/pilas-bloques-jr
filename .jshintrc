@@ -10,7 +10,8 @@
     "Interpreter",
     "requireNode",
     "inElectron",
-    "process"
+    "process",
+    "require"
   ],
   "browser": true,
   "boss": true,

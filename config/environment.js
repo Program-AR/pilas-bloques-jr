@@ -9,6 +9,8 @@ module.exports = function(environment) {
     desactivarLogsDeMirage: true,
     electronLiveReload: false,
     mostrarCodigoAEjecutarEnLaConsola: true,
+    versionURL: 'https://api.github.com/repos/Program-AR/pilas-bloques-jr/releases/latest',
+    linkDeDescarga: 'https://github.com/Program-AR/pilas-bloques-jr',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
