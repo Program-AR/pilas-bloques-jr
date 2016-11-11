@@ -1,11 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  queryParams: ['deslizador'],
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
   currentActor: '',
   ejecutando: false,
   finalizado: false,
+  deslizador: 0,
   highlightedBlockForCurrentActor: null,
   currentWorkspace: '', // Almacena el workspace mientras se modifica. El valor
                         // de esta propiedad sustituirá a currentActor.workspaceXMLCode
