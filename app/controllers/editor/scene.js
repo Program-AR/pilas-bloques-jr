@@ -1,7 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['deslizador'],
+  queryParams: {
+    deslizador: {
+      replace: true
+    }
+  },
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
   currentActor: '',
