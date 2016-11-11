@@ -104,6 +104,43 @@ export default Ember.Service.extend({
       }
     };
 
+    Blockly.Blocks['enviar_mensaje'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'Enviar el mensaje %1',
+          "args0": [
+            {
+              "type": "input_value",
+              "name": "mensaje",
+              "check": "String"
+            }
+          ],
+          "previousStatement": true,
+          "nextStatement": true,
+          "colour": 160
+        });
+      }
+    };
+
+    Blockly.Blocks['al_recibir_mensaje'] = {
+      init: function() {
+        this.jsonInit({
+          "message0": 'Al recibir el mensaje %1 hacer lo siguiente',
+          "colour": 200,
+          "args0": [
+            {
+              "type": "input_value",
+              "name": "mensaje",
+              "check": "String"
+            }
+          ],
+          "message1": "%1",
+          "args1": [
+            {"type": "input_statement", "name": "do"}
+          ],
+        });
+      }
+    };
   },
 
   _generarLenguaje() {
@@ -151,6 +188,37 @@ export default Ember.Service.extend({
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');
       let codigo = `${programa}`;
+
+      return codigo;
+    };
+
+    Blockly.MyLanguage['enviar_mensaje'] = function(block) {
+      let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
+
+      if (!mensaje) {
+        console.warn("No se especificó el mensaje a enviar.");
+        mensaje = "'Sin mensaje ...'";
+      }
+
+      return `hacer(actor_id, "EnviarMensaje", {mensaje: ${mensaje}});`;
+    };
+
+    Blockly.MyLanguage['al_recibir_mensaje'] = function(block) {
+      let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
+      let bloque_do = Blockly.JavaScript.statementToCode(block, 'do');
+
+      if (!mensaje) {
+        console.warn("No se especificó el mensaje a enviar.");
+        mensaje = "'Sin mensaje ...'";
+      }
+
+      //let funcion_serializada = btoa(bloque_do);
+
+      let codigo = `
+        conectar_al_mensaje(actor_id, ${mensaje}, function() {
+          ${bloque_do};
+        });
+      `;
 
       return codigo;
     };

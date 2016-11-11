@@ -91,7 +91,11 @@ export default Ember.Route.extend({
           var actor_id = '${actorId}';
 
           function hacer(actor, comportamiento, params) {
-            out_hacer(actor, comportamiento, JSON.stringify(params));;
+            out_hacer(actor, comportamiento, JSON.stringify(params));
+          }
+
+          function conectar_al_mensaje(actor, mensaje, funcion) {
+            out_conectar_al_mensaje(actor, mensaje, funcion);
           }
 
           ${codigoDesdeWorkspace}

@@ -93,12 +93,48 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'out_hacer', interpreter.createAsyncFunction(hacer_wrapper));
 
-    function wrapper(id) {
+
+    function out_highlightBlock(id) {
       id = id ? id.toString() : '';
       return interpreter.createPrimitive(callback_cuando_ejecuta_bloque.call(this, id));
     }
 
-    interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(wrapper));
+    interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(out_highlightBlock));
+
+    var out_conectar_al_mensaje = function(actor_id, mensaje, funcion, callback) {
+      actor_id = actor_id ? actor_id.toString() : '';
+      mensaje = mensaje ? mensaje.toString() : '';
+      let comportamiento = "ConectarMensaje";
+
+      var clase_comportamiento = pilasService.evaluar(`
+        var comportamiento = null;
+
+        if (window['${comportamiento}']) {
+          comportamiento = ${comportamiento};
+        } else {
+          if (pilas.comportamientos['${comportamiento}']) {
+            comportamiento = pilas.comportamientos['${comportamiento}'];
+          } else {
+            throw new Error("No existe un comportamiento llamado '${comportamiento}'.");
+          }
+        }
+
+        comportamiento;
+      `);
+
+      //let highlightBlock = out_highlightBlock;
+      //let hacer = hacer_wrapper;
+
+      //let codigo_para_la_funcion = atob(funcion_serializada);
+
+      var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
+
+      actor.hacer_luego(clase_comportamiento, {mensaje: mensaje, funcion_a_ejecutar: funcion});
+      actor.hacer_luego(ComportamientoLlamarCallback, {callback});
+    };
+
+    interpreter.setProperty(scope, 'out_conectar_al_mensaje', interpreter.createAsyncFunction(out_conectar_al_mensaje));
+
   }
 
 });
