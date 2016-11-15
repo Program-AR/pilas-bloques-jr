@@ -146,6 +146,11 @@ export default Ember.Service.extend({
   _generarLenguaje() {
 
     Blockly.MyLanguage = Blockly.JavaScript;
+    Blockly.MyLanguage.addReservedWords('main', 'hacer', 'out_hacer',
+      'highlightBlock', 'out_conectar_al_mensaje', 'atender_mensaje',
+      'atender_mensajes', 'out_proximo_mensaje' , 'msg_handlers',
+      'out_esperar_mensaje', 'out_mensajes_configurados');
+
 
     Blockly.MyLanguage['decir'] = function(block) {
       let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
@@ -187,7 +192,9 @@ export default Ember.Service.extend({
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');
-      let codigo = `${programa}`;
+      let codigo = `
+      out_mensajes_configurados();
+      ${programa}`;
 
       return codigo;
     };
@@ -205,7 +212,7 @@ export default Ember.Service.extend({
 
     Blockly.MyLanguage['al_recibir_mensaje'] = function(block) {
       let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
-      let bloque_do = Blockly.JavaScript.statementToCode(block, 'do');
+      let bloque_do = Blockly.MyLanguage.statementToCode(block, 'do');
 
       if (!mensaje) {
         console.warn("No se especificó el mensaje a enviar.");
@@ -219,8 +226,12 @@ export default Ember.Service.extend({
           ${bloque_do};
         });
       `;
-
-      return codigo;
+      if(Blockly.MyLanguage.definitions_['msg_handlers'] === undefined)
+      {
+        Blockly.MyLanguage.definitions_['msg_handlers'] = "";
+      }
+      Blockly.MyLanguage.definitions_['msg_handlers'] += codigo + "\n";
+      return null;
     };
 
     Blockly.MyLanguage.STATEMENT_PREFIX = 'highlightBlock(%1);\n';

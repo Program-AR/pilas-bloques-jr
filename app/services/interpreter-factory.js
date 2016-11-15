@@ -24,6 +24,8 @@ export default Ember.Service.extend({
    * pueda usar funcioens como "hacer", "console.log" etc..
    */
   _initFunction(interpreter, scope, callback_cuando_ejecuta_bloque) {
+    interpreter.pilas_msg_queue = [];
+    interpreter.pilas_mensajes_configurados = false; // Este interprete todavia no configuro sus mensajes
 
     var console_log_wrapper = function(txt) {
       txt = txt ? txt.toString() : '';
@@ -101,7 +103,7 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(out_highlightBlock));
 
-    var out_conectar_al_mensaje = function(actor_id, mensaje, funcion, callback) {
+    var out_conectar_al_mensaje = function(actor_id, mensaje, callback) {
       actor_id = actor_id ? actor_id.toString() : '';
       mensaje = mensaje ? mensaje.toString() : '';
       let comportamiento = "ConectarMensaje";
@@ -129,12 +131,55 @@ export default Ember.Service.extend({
 
       var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
 
-      actor.hacer_luego(clase_comportamiento, {mensaje: mensaje, funcion_a_ejecutar: funcion});
+      actor.hacer_luego(clase_comportamiento, {mensaje: mensaje,
+        funcion_a_ejecutar: (function (msg) {
+            return function () {
+              interpreter.pilas_msg_queue.push(msg);
+              if(interpreter.pilas_msg_callback !== undefined)
+              {
+                var callback = interpreter.pilas_msg_callback;
+                interpreter.pilas_msg_callback = undefined;
+                callback();
+              }
+            };
+          })(mensaje)
+      });
       actor.hacer_luego(ComportamientoLlamarCallback, {callback});
     };
 
     interpreter.setProperty(scope, 'out_conectar_al_mensaje', interpreter.createAsyncFunction(out_conectar_al_mensaje));
 
+    function out_proximo_mensaje() {
+      var msg = false;
+      if(interpreter.pilas_msg_queue.length > 0)
+      {
+        msg = interpreter.pilas_msg_queue.shift();
+      }
+
+      return interpreter.createPrimitive(msg);
+    }
+
+    interpreter.setProperty(scope, 'out_proximo_mensaje', interpreter.createNativeFunction(out_proximo_mensaje));
+
+    function out_esperar_mensaje(callback) {
+      if(interpreter.pilas_msg_queue.length > 0)
+      {
+        callback();
+      }
+      else
+      {
+        interpreter.pilas_msg_callback = callback;
+      }
+    }
+
+    interpreter.setProperty(scope, 'out_esperar_mensaje', interpreter.createAsyncFunction(out_esperar_mensaje));
+
+    function out_mensajes_configurados(callback) {
+      interpreter.pilas_mensajes_configurados = true;
+      interpreter.pilas_mensajes_configurados_callback = callback;
+    }
+
+    interpreter.setProperty(scope, 'out_mensajes_configurados', interpreter.createAsyncFunction(out_mensajes_configurados));
   }
 
 });

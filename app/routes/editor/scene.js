@@ -89,16 +89,52 @@ export default Ember.Route.extend({
           // Comienza el código para el actor de clase ${actorClass}:
 
           var actor_id = '${actorId}';
+          var msg_handlers = {};
+
+          function atender_mensajes()
+          {
+            var msg = out_proximo_mensaje();
+            if(msg)
+              atender_mensaje(msg);
+          }
+
+          function atender_mensaje(msg)
+          {
+            if(msg_handlers[msg] === undefined)
+              return;
+            for(var i=0;i<msg_handlers[msg].length;i++)
+              msg_handlers[msg][i]();
+            atender_mensajes();
+          }
 
           function hacer(actor, comportamiento, params) {
             out_hacer(actor, comportamiento, JSON.stringify(params));
+            atender_mensajes();
           }
 
           function conectar_al_mensaje(actor, mensaje, funcion) {
-            out_conectar_al_mensaje(actor, mensaje, funcion);
+            if(msg_handlers[mensaje] === undefined)
+            {
+              msg_handlers[mensaje] = [];
+            }
+            msg_handlers[mensaje].push(funcion);
+            out_conectar_al_mensaje(actor, mensaje);
           }
 
-          ${codigoDesdeWorkspace}
+          // TODO: desconectar al actor de todos los mensajes
+          // TODO: esperar a que todos los actores hayan conectado sus mensajes antes de seguir
+          function main()
+          {
+            ${codigoDesdeWorkspace}
+          }
+          main();
+
+          while(1)
+          {
+            out_esperar_mensaje();
+            atender_mensajes();
+          }
+
         `);
 
         listaDeCodigos.push({actorId: actorId, clase: actorClass, codigo: codigoCompleto, interprete: null});
@@ -117,6 +153,7 @@ export default Ember.Route.extend({
         item.interprete = this.get('interpreterFactory').crearInterprete(item.codigo, (pieza) => {
           this.get('controller').cuando_se_ejecuta_bloque(pieza, item.actorId);
         });
+        item.interprete.pilas_mensajes_configurados = false;
       });
 
       /*
@@ -146,6 +183,21 @@ export default Ember.Route.extend({
             if (running) {
               // No terminó, algún comportamiento está en ejecución, así
               // que se re-planifica para continuar más tarde.
+              if(interpreter.pilas_mensajes_configurados_callback !== undefined)
+              {
+                var todos_configurados = true;
+                listaDeCodigos.forEach((item) => {
+                  todos_configurados = todos_configurados && item.interprete.pilas_mensajes_configurados;
+                });
+                if(todos_configurados)
+                {
+                  listaDeCodigos.forEach((item) => {
+                    var callback = item.interprete.pilas_mensajes_configurados_callback;
+                    item.interprete.pilas_mensajes_configurados_callback = undefined;
+                    callback();
+                  });
+                }
+              }
               setTimeout(execInterpreterUntilEnd, 10, interpreter);
             } else {
               success();
