@@ -24,7 +24,20 @@ export default Ember.Service.extend({
    * pueda usar funcioens como "hacer", "console.log" etc..
    */
   _initFunction(interpreter, scope, callback_cuando_ejecuta_bloque) {
+    /**
+     * Cola de mensajes de este interprete
+     *
+     * Cuando un mensaje previamente conectado es emitido se guarda el mismo
+     * en esta cola, que luego puede ser consultada por el codigo corriendo
+     * dentro del interprete.
+     */
     interpreter.pilas_msg_queue = [];
+
+    /**
+     * Indica si el codigo corriendo dentro del interprete ya ejecuto
+     * out_mensajes_configurados para indicar que terminó de conectarse a
+     * mensajes.
+     */
     interpreter.pilas_mensajes_configurados = false; // Este interprete todavia no configuro sus mensajes
 
     var console_log_wrapper = function(txt) {
@@ -95,7 +108,9 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'out_hacer', interpreter.createAsyncFunction(hacer_wrapper));
 
-
+    /**
+     * Llama a callback_cuando_ejecuta_bloque con el id del bloque en ejecucion.
+     */
     function out_highlightBlock(id) {
       id = id ? id.toString() : '';
       return interpreter.createPrimitive(callback_cuando_ejecuta_bloque.call(this, id));
@@ -103,6 +118,12 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(out_highlightBlock));
 
+    /**
+     * Conecta este interprete a un mensaje
+     *
+     * Al recibirse el mensaje el mismo se encolara en la cola de mensajes
+     * de este interprete.
+     */
     var out_conectar_al_mensaje = function(actor_id, mensaje, callback) {
       actor_id = actor_id ? actor_id.toString() : '';
       mensaje = mensaje ? mensaje.toString() : '';
@@ -124,11 +145,6 @@ export default Ember.Service.extend({
         comportamiento;
       `);
 
-      //let highlightBlock = out_highlightBlock;
-      //let hacer = hacer_wrapper;
-
-      //let codigo_para_la_funcion = atob(funcion_serializada);
-
       var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
 
       actor.hacer_luego(clase_comportamiento, {mensaje: mensaje,
@@ -149,6 +165,10 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'out_conectar_al_mensaje', interpreter.createAsyncFunction(out_conectar_al_mensaje));
 
+    /**
+     * Retorna y desencola el proximo mensaje de la cola de mensajes o false, si
+     * no hay mensajes pendientes.
+     */
     function out_proximo_mensaje() {
       var msg = false;
       if(interpreter.pilas_msg_queue.length > 0)
@@ -161,6 +181,9 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'out_proximo_mensaje', interpreter.createNativeFunction(out_proximo_mensaje));
 
+    /**
+     * Esperar hasta que la cola de mensajes no este vacía.
+     */
     function out_esperar_mensaje(callback) {
       if(interpreter.pilas_msg_queue.length > 0)
       {
@@ -174,12 +197,31 @@ export default Ember.Service.extend({
 
     interpreter.setProperty(scope, 'out_esperar_mensaje', interpreter.createAsyncFunction(out_esperar_mensaje));
 
+    /**
+     * Permite al codigo corriendo dentro del interprete indicar que ya se
+     * conecto a todos los mensajes que le interesa escuchar.
+     *   Esta función no invoca al callback para continuar la ejecución.
+     * interpreter.pilas_mensajes_configurados_callback debe ser invocada de
+     * manera externa para continuar. Esto permite a un agente externo sincronizar
+     * múltiples interpretes, esperando a que todos hayan configurado sus mensajes
+     * antes de continuar.
+     */
     function out_mensajes_configurados(callback) {
       interpreter.pilas_mensajes_configurados = true;
       interpreter.pilas_mensajes_configurados_callback = callback;
     }
 
     interpreter.setProperty(scope, 'out_mensajes_configurados', interpreter.createAsyncFunction(out_mensajes_configurados));
-  }
 
+    /**
+     * Desconecta este interprete de todos los mensajes.
+     */
+    function out_desconectar_mensajes(actor_id) {
+      actor_id = actor_id ? actor_id.toString() : '';
+      var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
+      actor.desconectar_mensajes();
+    }
+
+    interpreter.setProperty(scope, 'out_desconectar_mensajes', interpreter.createNativeFunction(out_desconectar_mensajes));
+  }
 });

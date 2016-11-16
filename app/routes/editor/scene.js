@@ -116,15 +116,20 @@ export default Ember.Route.extend({
             if(msg_handlers[mensaje] === undefined)
             {
               msg_handlers[mensaje] = [];
+              out_conectar_al_mensaje(actor, mensaje);
             }
             msg_handlers[mensaje].push(funcion);
-            out_conectar_al_mensaje(actor, mensaje);
           }
 
-          // TODO: desconectar al actor de todos los mensajes
-          // TODO: esperar a que todos los actores hayan conectado sus mensajes antes de seguir
+          function desconectar_mensajes(actor)
+          {
+            out_desconectar_mensajes(actor);
+          }
+
           function main()
           {
+            desconectar_mensajes(actor_id);
+
             ${codigoDesdeWorkspace}
           }
           main();

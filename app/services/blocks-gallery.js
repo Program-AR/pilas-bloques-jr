@@ -149,7 +149,8 @@ export default Ember.Service.extend({
     Blockly.MyLanguage.addReservedWords('main', 'hacer', 'out_hacer',
       'highlightBlock', 'out_conectar_al_mensaje', 'atender_mensaje',
       'atender_mensajes', 'out_proximo_mensaje' , 'msg_handlers',
-      'out_esperar_mensaje', 'out_mensajes_configurados');
+      'out_esperar_mensaje', 'out_mensajes_configurados',
+      'desconectar_mensajes', 'out_desconectar_mensajes');
 
 
     Blockly.MyLanguage['decir'] = function(block) {
