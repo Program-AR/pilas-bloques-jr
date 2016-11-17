@@ -34,6 +34,10 @@ let bloquesSandia = [
   {
     category: 'Mis Procedimientos',
     blocks: ['procedures_defnoreturn', 'procedures_defreturn']
+  },
+  {
+    category: 'Mensajes',
+    blocks: ['enviar_mensaje', 'al_recibir_mensaje']
   }
 ];
 
