@@ -124,6 +124,22 @@ var CaminarHaciaLaDerecha = (function (_super) {
     };
     return CaminarHaciaLaDerecha;
 }(ComportamientoAnimado));
+var ConectarMensaje = (function (_super) {
+    __extends(ConectarMensaje, _super);
+    function ConectarMensaje() {
+        _super.apply(this, arguments);
+    }
+    ConectarMensaje.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+        var mensaje = this.obtenerArgumento('mensaje');
+        var funcion_a_ejecutar = this.obtenerArgumento('funcion_a_ejecutar');
+        this.receptor.conectar_al_mensaje(mensaje, funcion_a_ejecutar);
+    };
+    ConectarMensaje.prototype.actualizar = function () {
+        return true;
+    };
+    return ConectarMensaje;
+}(ComportamientoAnimado));
 var Consumir = (function (_super) {
     __extends(Consumir, _super);
     function Consumir() {
@@ -186,6 +202,20 @@ var DecirPosicion = (function (_super) {
     };
     return DecirPosicion;
 }(DecirMensaje));
+var EnviarMensaje = (function (_super) {
+    __extends(EnviarMensaje, _super);
+    function EnviarMensaje() {
+        _super.apply(this, arguments);
+    }
+    EnviarMensaje.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+        this.receptor.emitir_mensaje(this.obtenerArgumento('mensaje'));
+    };
+    EnviarMensaje.prototype.actualizar = function () {
+        return true;
+    };
+    return EnviarMensaje;
+}(ComportamientoAnimado));
 var EsperarSegundos = (function (_super) {
     __extends(EsperarSegundos, _super);
     function EsperarSegundos() {
