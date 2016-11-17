@@ -60,35 +60,22 @@ export default Ember.Route.extend({
     },
 
     ejecutar() {
-      // Una lista con el identificador del actor, su clase y el código del workspace completo.
-      // (por ejemplo [{actorId: 'AA223', clase: 'Aceituna', codigo: 'receptor.decir ....'}])
+      // Una lista con el acotr y el código del workspace completo.
+      // (por ejemplo [{actor: actor, codigo: 'hacer(...) ....'}])
       let listaDeCodigos = [];
 
       // Guarda el workspace del actor actual.
       this.controllerFor('editor.scene').sincronizarWorkspaceAlActorActual();
       this.get('controller').definir_modo_edicion(false);
-
-
       this.get('controller').set("ejecutando", true);
 
       // Por cada actor obtiene su workspace como código y lo carga
       // en la listaDeCodigos.
       this.currentModel.get('actors').forEach((actor) => {
-
         let codigoDesdeWorkspace = this._obtener_codigo_desde_workspace(actor.get('workspaceXMLCode'));
-
-        // El código completo a ejecutar es exactamente el mismo del workspace,
-        // pero con la declaración de una variable 'receptor' que señalará
-        // al actor dueño del workspace.
-
-        let actorId = actor.get('actorId');
-        let actorClass = actor.get('class.className');
 
         let codigoCompleto = js_beautify(`
           // -------------------------------------------------------
-          // Comienza el código para el actor de clase ${actorClass}:
-
-          var actor_id = '${actorId}';
           var msg_handlers = {};
 
           function atender_mensajes()
@@ -107,29 +94,28 @@ export default Ember.Route.extend({
             atender_mensajes();
           }
 
-          function hacer(actor, comportamiento, params) {
-            out_hacer(actor, comportamiento, JSON.stringify(params));
+          function hacer(comportamiento, params) {
+            out_hacer(comportamiento, JSON.stringify(params));
             atender_mensajes();
           }
 
-          function conectar_al_mensaje(actor, mensaje, funcion) {
+          function conectar_al_mensaje(mensaje, funcion) {
             if(msg_handlers[mensaje] === undefined)
             {
               msg_handlers[mensaje] = [];
-              out_conectar_al_mensaje(actor, mensaje);
+              out_conectar_al_mensaje(mensaje);
             }
             msg_handlers[mensaje].push(funcion);
           }
 
-          function desconectar_mensajes(actor)
+          function desconectar_mensajes()
           {
-            out_desconectar_mensajes(actor);
+            out_desconectar_mensajes();
           }
 
           function main()
           {
-            desconectar_mensajes(actor_id);
-
+            desconectar_mensajes();
             ${codigoDesdeWorkspace}
           }
           main();
@@ -142,23 +128,24 @@ export default Ember.Route.extend({
 
         `);
 
-        listaDeCodigos.push({actorId: actorId, clase: actorClass, codigo: codigoCompleto, interprete: null});
+        listaDeCodigos.push({actorId: actor.get('actorId'), codigo: codigoCompleto, interprete: null});
       });
 
       if (enviromnent.mostrarCodigoAEjecutarEnLaConsola) {
         console.warn("Mostrando código generado a continuación porque se activó 'mostrarCodigoAEjecutarEnLaConsola' en las preferencias de entorno:");
 
         listaDeCodigos.map((item) => {
-          console.log(item.codigo);
+          console.log("//Codigo para ", item.actorId, "\n", item.codigo);
         });
       }
 
       // Crear un interprete por actor y correrlos paralelamente
       listaDeCodigos.forEach((item) => {
-        item.interprete = this.get('interpreterFactory').crearInterprete(item.codigo, (pieza) => {
-          this.get('controller').cuando_se_ejecuta_bloque(pieza, item.actorId);
-        });
-        item.interprete.pilas_mensajes_configurados = false;
+        item.interprete = this.get('interpreterFactory').crearInterprete(
+          item.codigo,
+          (pieza) => { this.get('controller').cuando_se_ejecuta_bloque(pieza, item.actorId); },
+          item.actorId
+        );
       });
 
       /*

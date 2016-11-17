@@ -13,9 +13,9 @@ export default Ember.Service.extend({
    * así que las únicas funciones a las que podrá acceder están detalladas
    * en la función _initFunction, que aparece más abajo.
    */
-  crearInterprete(codigo, callback_cuando_ejecuta_bloque) {
+  crearInterprete(codigo, callback_cuando_ejecuta_bloque, actorId) {
     return new Interpreter(codigo, (interpreter, scope) => {
-      return this._initFunction(interpreter, scope, callback_cuando_ejecuta_bloque);
+      return this._initFunction(interpreter, scope, callback_cuando_ejecuta_bloque, actorId);
     });
   },
 
@@ -23,7 +23,7 @@ export default Ember.Service.extend({
    * Inicializa el intérprete y su scope inicial, para que
    * pueda usar funcioens como "hacer", "console.log" etc..
    */
-  _initFunction(interpreter, scope, callback_cuando_ejecuta_bloque) {
+  _initFunction(interpreter, scope, callback_cuando_ejecuta_bloque, actorId) {
     /**
      * Cola de mensajes de este interprete
      *
@@ -39,6 +39,9 @@ export default Ember.Service.extend({
      * mensajes.
      */
     interpreter.pilas_mensajes_configurados = false; // Este interprete todavia no configuro sus mensajes
+
+    let pilasService = this.get('pilas');
+    var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actorId}");`);
 
     var console_log_wrapper = function(txt) {
       txt = txt ? txt.toString() : '';
@@ -64,8 +67,6 @@ export default Ember.Service.extend({
       };
     };
 
-    let pilasService = this.get('pilas');
-
     // Genera la función "out_hacer" que se llamará dentro del intérprete.
     //
     // Esta función encadenará dos comportamientos para simplificar el uso
@@ -75,17 +76,15 @@ export default Ember.Service.extend({
     //
     // Por ejemplo, si en el código se llama a la función hacer así:
     //
-    //      hacer(actor_id, "Saltar", {});
-    //      hacer(actor_id, "Caminar", {pasos: 20});
+    //      hacer("Saltar", {});
+    //      hacer("Caminar", {pasos: 20});
     //
     // Internamente la función hará que el actor primero "salte" y luego
     // "camine" 20 pasos.
-    var hacer_wrapper = function(actor_id, comportamiento, params, callback) {
-      actor_id = actor_id ? actor_id.toString() : '';
+    var hacer_wrapper = function(comportamiento, params, callback) {
       comportamiento = comportamiento ? comportamiento.toString() : '';
       params = params ? params.toString() : '';
       params = JSON.parse(params);
-      var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
       var clase_comportamiento = pilasService.evaluar(`
         var comportamiento = null;
 
@@ -124,11 +123,9 @@ export default Ember.Service.extend({
      * Al recibirse el mensaje el mismo se encolara en la cola de mensajes
      * de este interprete.
      */
-    var out_conectar_al_mensaje = function(actor_id, mensaje) {
-      actor_id = actor_id ? actor_id.toString() : '';
+    var out_conectar_al_mensaje = function(mensaje) {
       mensaje = mensaje ? mensaje.toString() : '';
 
-      var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
       actor.conectar_al_mensaje(mensaje,
         (function (msg) {
             return function () {
@@ -197,9 +194,7 @@ export default Ember.Service.extend({
     /**
      * Desconecta este interprete de todos los mensajes.
      */
-    function out_desconectar_mensajes(actor_id) {
-      actor_id = actor_id ? actor_id.toString() : '';
-      var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
+    function out_desconectar_mensajes() {
       actor.desconectar_mensajes();
     }
 

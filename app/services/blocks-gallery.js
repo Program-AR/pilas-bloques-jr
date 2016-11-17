@@ -161,7 +161,7 @@ export default Ember.Service.extend({
         mensaje = "'Sin mensaje ...'";
       }
 
-      return `hacer(actor_id, "DecirMensaje", {mensaje: ${mensaje}});`;
+      return `hacer("DecirMensaje", {mensaje: ${mensaje}});`;
     };
 
     Blockly.MyLanguage['esperar'] = function(block) {
@@ -172,23 +172,23 @@ export default Ember.Service.extend({
         segundos = '1';
       }
 
-      return `hacer(actor_id, "EsperarSegundos", {segundos: ${segundos}});`;
+      return `hacer("EsperarSegundos", {segundos: ${segundos}});`;
     };
 
     Blockly.MyLanguage['saltar'] = function(/*block*/) {
-      return `hacer(actor_id, "SaltarNuevo", {});`;
+      return `hacer("SaltarNuevo", {});`;
     };
 
     Blockly.MyLanguage['consumir'] = function() {
-      return `hacer(actor_id, "Consumir", {});`;
+      return `hacer("Consumir", {});`;
     };
 
     Blockly.MyLanguage['caminar_hacia_la_derecha'] = function() {
-      return `hacer(actor_id, "CaminarHaciaLaDerecha", {});`;
+      return `hacer("CaminarHaciaLaDerecha", {});`;
     };
 
     Blockly.MyLanguage['decir_posicion'] = function() {
-      return `hacer(actor_id, "DecirPosicion", {});`;
+      return `hacer("DecirPosicion", {});`;
     };
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
@@ -208,7 +208,7 @@ export default Ember.Service.extend({
         mensaje = "'Sin mensaje ...'";
       }
 
-      return `hacer(actor_id, "EnviarMensaje", {mensaje: ${mensaje}});`;
+      return `hacer("EnviarMensaje", {mensaje: ${mensaje}});`;
     };
 
     Blockly.MyLanguage['al_recibir_mensaje'] = function(block) {
@@ -223,7 +223,7 @@ export default Ember.Service.extend({
       //let funcion_serializada = btoa(bloque_do);
 
       let codigo = `
-        conectar_al_mensaje(actor_id, ${mensaje}, function() {
+        conectar_al_mensaje(${mensaje}, function() {
           ${bloque_do};
         });
       `;
