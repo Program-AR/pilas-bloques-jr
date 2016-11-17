@@ -124,31 +124,13 @@ export default Ember.Service.extend({
      * Al recibirse el mensaje el mismo se encolara en la cola de mensajes
      * de este interprete.
      */
-    var out_conectar_al_mensaje = function(actor_id, mensaje, callback) {
+    var out_conectar_al_mensaje = function(actor_id, mensaje) {
       actor_id = actor_id ? actor_id.toString() : '';
       mensaje = mensaje ? mensaje.toString() : '';
-      let comportamiento = "ConectarMensaje";
-
-      var clase_comportamiento = pilasService.evaluar(`
-        var comportamiento = null;
-
-        if (window['${comportamiento}']) {
-          comportamiento = ${comportamiento};
-        } else {
-          if (pilas.comportamientos['${comportamiento}']) {
-            comportamiento = pilas.comportamientos['${comportamiento}'];
-          } else {
-            throw new Error("No existe un comportamiento llamado '${comportamiento}'.");
-          }
-        }
-
-        comportamiento;
-      `);
 
       var actor = pilasService.evaluar(`pilas.obtener_actor_por_id("${actor_id}");`);
-
-      actor.hacer_luego(clase_comportamiento, {mensaje: mensaje,
-        funcion_a_ejecutar: (function (msg) {
+      actor.conectar_al_mensaje(mensaje,
+        (function (msg) {
             return function () {
               interpreter.pilas_msg_queue.push(msg);
               if(interpreter.pilas_msg_callback !== undefined)
@@ -159,11 +141,10 @@ export default Ember.Service.extend({
               }
             };
           })(mensaje)
-      });
-      actor.hacer_luego(ComportamientoLlamarCallback, {callback});
+      );
     };
 
-    interpreter.setProperty(scope, 'out_conectar_al_mensaje', interpreter.createAsyncFunction(out_conectar_al_mensaje));
+    interpreter.setProperty(scope, 'out_conectar_al_mensaje', interpreter.createNativeFunction(out_conectar_al_mensaje));
 
     /**
      * Retorna y desencola el proximo mensaje de la cola de mensajes o false, si
