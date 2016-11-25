@@ -7,7 +7,10 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'hash',
     desactivarLogsDeMirage: true,
+    electronLiveReload: false,
     mostrarCodigoAEjecutarEnLaConsola: true,
+    versionURL: 'https://api.github.com/repos/Program-AR/pilas-bloques-jr/releases/latest',
+    linkDeDescarga: 'https://github.com/Program-AR/pilas-bloques-jr',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -20,6 +23,24 @@ module.exports = function(environment) {
       // when it is created
     }
   };
+
+  if (environment === 'electron') {
+    delete ENV['rootURL'];
+    ENV.electronLiveReload = true;
+
+    ENV['ember-cli-mirage'] = {
+      enabled: true
+    };
+  }
+
+  if (environment === 'electron-production') {
+    delete ENV['rootURL'];
+    ENV.electronLiveReload = false;
+
+    ENV['ember-cli-mirage'] = {
+      enabled: true
+    };
+  }
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

@@ -1,0 +1,6 @@
+{
+  "name": "pilas-bloques-jr",
+  "version": "VERSION",
+  "description": "Una herramienta aprender a programar con bloques.",
+  "main": "electron.js"
+}

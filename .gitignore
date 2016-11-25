@@ -9,6 +9,8 @@
 /node_modules
 /bower_components
 
+binarios
+
 # misc
 /.sass-cache
 /connect.lock

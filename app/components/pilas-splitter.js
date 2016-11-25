@@ -4,8 +4,13 @@ export default Ember.Component.extend({
   classNames: ['pilas-splitter-container'],
   panelIzquierdoID: null,
   panelDerechoID: null,
+  deslizador: null,
 
   didInsertElement() {
+
+    if (this.get('deslizador')) {
+      this.definirAnchoPanelIzquierdo(420 - this.get('deslizador'));
+    }
 
     this.$('#splitter').on("mousedown", (event) => {
       event.preventDefault();
@@ -44,6 +49,7 @@ export default Ember.Component.extend({
   },
 
   definirAnchoPanelIzquierdo(ancho) {
+    this.set('deslizador', 420 - ancho);
     this.obtenerPanelIzquierdo().width(ancho);
   },
 

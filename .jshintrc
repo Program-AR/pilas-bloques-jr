@@ -7,7 +7,11 @@
     "$",
     "Blockly",
     "js_beautify",
-    "Interpreter"
+    "Interpreter",
+    "requireNode",
+    "inElectron",
+    "process",
+    "require"
   ],
   "browser": true,
   "boss": true,

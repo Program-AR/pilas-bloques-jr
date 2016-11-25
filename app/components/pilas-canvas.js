@@ -1,15 +1,16 @@
 import Ember from 'ember';
 import ENV from '../config/environment';
 
+const PATH_PREFIX = ENV.rootURL || "";
+
 export default Ember.Component.extend({
   classNames: ['pilas-canvas-container'],
   iframeElement: null,
   pilas: Ember.inject.service(),   // Se espera que se defina al llamar al componente.
-  pilas_iframe_url: `${ENV.rootURL}pilas.html`,
+  pilas_iframe_url: `${PATH_PREFIX}pilas.html`,
 
   cargando: true,
   ocultarSpinner: Ember.computed.not('cargando'),
-
 
   didInsertElement() {
     Ember.run.scheduleOnce('afterRender', this, this.initElement);

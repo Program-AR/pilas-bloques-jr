@@ -1,11 +1,23 @@
 let bloquesComunes = [
   {
     category: 'Primitivas',
-    blocks: ['text', 'math_number', 'esperar', 'decir', 'saltar']
+    blocks: ['text', 'math_number', 'esperar', 'decir', 'saltar', 'caminar_hacia_la_derecha', 'decir_posicion']
   },
   {
     category: 'Repeticiones',
-    blocks: ['controls_repeat']
+    blocks: ['controls_repeat', 'controls_repeat_ext']
+  },
+  {
+    category: 'Otros',
+    blocks: ['procedures_defnoreturn']
+  },
+  {
+    category: 'Mis Procedimientos',
+    blocks: ['procedures_defnoreturn', 'procedures_defreturn']
+  },
+  {
+    category: 'Mensajes',
+    blocks: ['enviar_mensaje_de_color', 'al_recibir_mensaje_de_color']
   }
 ];
 
@@ -18,6 +30,14 @@ let bloquesSandia = [
   {
     category: 'Repeticiones',
     blocks: ['controls_repeat']
+  },
+  {
+    category: 'Mis Procedimientos',
+    blocks: ['procedures_defnoreturn', 'procedures_defreturn']
+  },
+  {
+    category: 'Mensajes',
+    blocks: ['enviar_mensaje', 'al_recibir_mensaje']
   }
 ];
 

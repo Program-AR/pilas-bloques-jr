@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+    <script>
+      window.module = undefined;
+      window.requireNode = window.require || null;
+      window.inElectron = (window && window.process && window.process.type);
+    </script>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>PilasBloquesJr</title>
+    <title>Pilas Bloques Jr</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico?v=pilas-bloques-jr">
 
     {{content-for "head"}}
 

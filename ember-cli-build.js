@@ -7,7 +7,7 @@ module.exports = function(defaults) {
 
   var app = new EmberApp(defaults, {
     fingerprint: {
-      exclude: ['data'],
+      exclude: ['data', 'favicon'],
     },
     minifyJS: { enabled: false },
   });
@@ -22,6 +22,6 @@ module.exports = function(defaults) {
     include: ['**'],
     destDir: '/libs/'
   });
-   
+
   return app.toTree(extraAssets);
 };
