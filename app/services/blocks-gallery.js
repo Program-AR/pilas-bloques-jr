@@ -77,64 +77,53 @@ export default Ember.Service.extend({
   },
 
   _definirBloques() {
+    let blockly = this.get('blockly');
 
-    Blockly.Blocks['decir'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Decir %1',
-          "args0": [
-            {
-              "type": "input_value",
-              "name": "mensaje",
-              "check": "String"
-            }
-          ],
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
+    blockly.createCustomBlock('decir', {
+      message0: 'Decir %1',
+      args0: [
+        {
+          "type": "field_input",
+          "name": "MENSAJE",
+          "text": "Hola !!!"
+        }
+      ],
+      previousStatement: true,
+      nextStatement: true,
+      colour: 160,
+      code: `hacer("DecirMensaje", {mensaje: $MENSAJE});`
+    });
 
-    Blockly.Blocks['esperar'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Esperar %1 segundos',
-          "args0": [
-            {
-              "type": "input_value",
-              "name": "segundos",
-              "check": "Number"
-            }
-          ],
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
+    blockly.createCustomBlock('esperar', {
+      message0: 'Esperar %1 segundos',
+      args0: [
+        {
+          "type": "field_number",
+          "name": "SEGUNDOS",
+          "value": 2
+        }
+      ],
+      previousStatement: true,
+      nextStatement: true,
+      colour: 160,
+      code: 'hacer("EsperarSegundos", {segundos: $SEGUNDOS});'
+    });
 
-    Blockly.Blocks['saltar'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Saltar',
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
+    blockly.createCustomBlock('saltar', {
+      message0: 'Saltar',
+      previousStatement: true,
+      nextStatement: true,
+      colour: 160,
+      code: 'hacer("SaltarNuevo", {});'
+    });
 
-    Blockly.Blocks['consumir'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Consumir',
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
+    blockly.createCustomBlock('consumir', {
+      message0: 'Consumir',
+      previousStatement: true,
+      nextStatement: true,
+      colour: 160,
+      code: 'hacer("Consumir", {});'
+    });
 
     Blockly.Blocks['al_empezar_a_ejecutar'] = {
       init: function() {
@@ -150,29 +139,21 @@ export default Ember.Service.extend({
       }
     };
 
+    blockly.createCustomBlock('caminar_hacia_la_derecha', {
+      message0: 'CaminarHaciaLaDerecha',
+      previousStatement: true,
+      nextStatement: true,
+      colour: 160,
+      code: 'hacer("CaminarHaciaLaDerecha", {});'
+    });
 
-    Blockly.Blocks['caminar_hacia_la_derecha'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'CaminarHaciaLaDerecha',
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
-
-    Blockly.Blocks['decir_posicion'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'DecirPosicion',
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
-
+    blockly.createCustomBlock('decir_posicion', {
+      message0: 'DecirPosicion',
+      previousStatement: true,
+      nextStatement: true,
+      colour: 160,
+      code: 'hacer("DecirPosicion", {});'
+    });
 
   },
 
@@ -184,45 +165,6 @@ export default Ember.Service.extend({
       'atender_mensajes', 'out_proximo_mensaje' , 'msg_handlers',
       'out_esperar_mensaje', 'out_mensajes_configurados',
       'desconectar_mensajes', 'out_desconectar_mensajes');
-
-
-    Blockly.MyLanguage['decir'] = function(block) {
-      let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
-
-      if (!mensaje) {
-        console.warn("No se especificó el mensaje, mostrando 'Sin mensaje ...'");
-        mensaje = "'Sin mensaje ...'";
-      }
-
-      return `hacer("DecirMensaje", {mensaje: ${mensaje}});`;
-    };
-
-    Blockly.MyLanguage['esperar'] = function(block) {
-      var segundos = Blockly.MyLanguage.valueToCode(block, 'segundos') || null;
-
-      if (!segundos) {
-        console.warn("No se especificó la cantidad de segundos a esperar, aplicando el valor por omisión 1.");
-        segundos = '1';
-      }
-
-      return `hacer("EsperarSegundos", {segundos: ${segundos}});`;
-    };
-
-    Blockly.MyLanguage['saltar'] = function(/*block*/) {
-      return `hacer("SaltarNuevo", {});`;
-    };
-
-    Blockly.MyLanguage['consumir'] = function() {
-      return `hacer("Consumir", {});`;
-    };
-
-    Blockly.MyLanguage['caminar_hacia_la_derecha'] = function() {
-      return `hacer("CaminarHaciaLaDerecha", {});`;
-    };
-
-    Blockly.MyLanguage['decir_posicion'] = function() {
-      return `hacer("DecirPosicion", {});`;
-    };
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');
