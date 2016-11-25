@@ -3,7 +3,7 @@ import moduleForAcceptance from 'pilas-bloques-jr/tests/helpers/module-for-accep
 
 moduleForAcceptance('Acceptance | navegacion inicial');
 
-test('visiting /navegacion-inicial', function(assert) {
+test('visiting /', function(assert) {
   visit('/');
 
   andThen(function() {

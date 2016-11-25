@@ -69,38 +69,47 @@ export default Ember.Service.extend(Ember.Evented, {
         pilas;
       `;
 
-      let pilas = iframeElement.contentWindow.eval(code);
+      let onload = () => {
 
+        let pilas = iframeElement.contentWindow.eval(code);
 
-      this.conectarEventos();
+        this.conectarEventos();
 
-      pilas.onready = () => {
+        pilas.onready = () => {
 
-        //this.sustituirFondo('fondo.cangrejo_aguafiestas.png');
+          //this.sustituirFondo('fondo.cangrejo_aguafiestas.png');
 
-        //this.get('actividad').iniciarEscena();
-        //var contenedor = document.getElementById('contenedor-blockly');
-        //this.get('actividad').iniciarBlockly(contenedor);
+          //this.get('actividad').iniciarEscena();
+          //var contenedor = document.getElementById('contenedor-blockly');
+          //this.get('actividad').iniciarBlockly(contenedor);
 
-        //if (this.get('actividad')['finalizaCargarBlockly']) {
-        //  this.get('actividad').finalizaCargarBlockly();
-        //}
+          //if (this.get('actividad')['finalizaCargarBlockly']) {
+          //  this.get('actividad').finalizaCargarBlockly();
+          //}
 
-        success(pilas);
+          success(pilas);
 
-        /*
-         * Si el usuario llamó a "reload" desde este servicio, tendría
-         * que existir una promesa en curso, así que estas lineas se
-         * encargan de satisfacer esa promesa llamando al callback success.
-         */
-        if (this.get("temporallyCallback")) {
-          this.get("temporallyCallback")(pilas);
-          this.set("temporallyCallback", null);
-        }
+          /*
+           * Si el usuario llamó a "reload" desde este servicio, tendría
+           * que existir una promesa en curso, así que estas lineas se
+           * encargan de satisfacer esa promesa llamando al callback success.
+           */
+          if (this.get("temporallyCallback")) {
+            this.get("temporallyCallback")(pilas);
+            this.set("temporallyCallback", null);
+          }
 
-        this.set("loading", false);
+          this.set("loading", false);
 
+        };
       };
+
+
+      if (iframeElement.contentWindow) {
+        onload();
+      } else {
+        iframeElement.onload = onload;
+      }
 
       // pilas.ejecutar();
 
