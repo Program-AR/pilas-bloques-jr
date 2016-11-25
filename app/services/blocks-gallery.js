@@ -1,10 +1,79 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+  blockly: Ember.inject.service(),
 
   start() {
+    let blockly = this.get('blockly');
+
+    this._crearBloquesParaEmitirMensajes(blockly);
+    this._crearBloquesParaRecibirMensajes(blockly);
+
     this._definirBloques();
     this._generarLenguaje();
+  },
+
+  _crearBloquesParaEmitirMensajes(blockly) {
+    Blockly.FieldColour.COLOURS = ['#f00', '#0f0', '#00f',
+                                   '#B437B0', '#888', '#0095FF',
+                                   '#FFFC00', '#fff', '#E665B4'];
+    Blockly.FieldColour.COLUMNS = 3;
+
+    blockly.createCustomBlock('enviar_mensaje_de_color', {
+      message0: "Enviar el color %1",
+      args0: [
+        {
+          "type": "field_colour",
+          "name": "COLOR",
+          "colour": "#ff0000"
+        }
+      ],
+      colour: 160,
+      previousStatement: true,
+      nextStatement: true,
+      code: "hacer('EnviarMensaje', {mensaje: '$COLOR'});"
+    });
+
+
+  },
+
+  _crearBloquesParaRecibirMensajes(blockly) {
+
+    blockly.createCustomBlock('al_recibir_mensaje_de_color', {
+      "message0": 'Al recibir el color %1 hacer lo siguiente',
+      "colour": 200,
+      "args0": [
+        {
+          "type": "field_colour",
+          "name": "COLOR",
+          "colour": "#ff0000"
+        }
+      ],
+      "message1": "%1",
+      "args1": [
+        {"type": "input_statement", "name": "do"}
+      ],
+    });
+
+
+    Blockly.MyLanguage['al_recibir_mensaje_de_color'] = function(block) {
+      let color = block.getFieldValue('COLOR');
+      let bloque_do = Blockly.MyLanguage.statementToCode(block, 'do');
+
+      let codigo = `
+        conectar_al_mensaje('${color}', function() {
+          ${bloque_do};
+        });
+      `;
+
+      if (Blockly.MyLanguage.definitions_['msg_handlers'] === undefined) {
+        Blockly.MyLanguage.definitions_['msg_handlers'] = "";
+      }
+
+      Blockly.MyLanguage.definitions_['msg_handlers'] += codigo + "\n";
+      return null;
+    };
+
   },
 
   _definirBloques() {
@@ -104,43 +173,7 @@ export default Ember.Service.extend({
       }
     };
 
-    Blockly.Blocks['enviar_mensaje'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Enviar el mensaje %1',
-          "args0": [
-            {
-              "type": "input_value",
-              "name": "mensaje",
-              "check": "String"
-            }
-          ],
-          "previousStatement": true,
-          "nextStatement": true,
-          "colour": 160
-        });
-      }
-    };
 
-    Blockly.Blocks['al_recibir_mensaje'] = {
-      init: function() {
-        this.jsonInit({
-          "message0": 'Al recibir el mensaje %1 hacer lo siguiente',
-          "colour": 200,
-          "args0": [
-            {
-              "type": "input_value",
-              "name": "mensaje",
-              "check": "String"
-            }
-          ],
-          "message1": "%1",
-          "args1": [
-            {"type": "input_statement", "name": "do"}
-          ],
-        });
-      }
-    };
   },
 
   _generarLenguaje() {
@@ -198,41 +231,6 @@ export default Ember.Service.extend({
       ${programa}`;
 
       return codigo;
-    };
-
-    Blockly.MyLanguage['enviar_mensaje'] = function(block) {
-      let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
-
-      if (!mensaje) {
-        console.warn("No se especificó el mensaje a enviar.");
-        mensaje = "'Sin mensaje ...'";
-      }
-
-      return `hacer("EnviarMensaje", {mensaje: ${mensaje}});`;
-    };
-
-    Blockly.MyLanguage['al_recibir_mensaje'] = function(block) {
-      let mensaje = Blockly.MyLanguage.valueToCode(block, 'mensaje') || null;
-      let bloque_do = Blockly.MyLanguage.statementToCode(block, 'do');
-
-      if (!mensaje) {
-        console.warn("No se especificó el mensaje a enviar.");
-        mensaje = "'Sin mensaje ...'";
-      }
-
-      //let funcion_serializada = btoa(bloque_do);
-
-      let codigo = `
-        conectar_al_mensaje(${mensaje}, function() {
-          ${bloque_do};
-        });
-      `;
-      if(Blockly.MyLanguage.definitions_['msg_handlers'] === undefined)
-      {
-        Blockly.MyLanguage.definitions_['msg_handlers'] = "";
-      }
-      Blockly.MyLanguage.definitions_['msg_handlers'] += codigo + "\n";
-      return null;
     };
 
     Blockly.MyLanguage.STATEMENT_PREFIX = 'highlightBlock(%1);\n';

@@ -17,7 +17,7 @@ let bloquesComunes = [
   },
   {
     category: 'Mensajes',
-    blocks: ['enviar_mensaje', 'al_recibir_mensaje']
+    blocks: ['enviar_mensaje_de_color', 'al_recibir_mensaje_de_color']
   }
 ];
 
