@@ -91,7 +91,7 @@ export default Ember.Service.extend({
       previousStatement: true,
       nextStatement: true,
       colour: 160,
-      code: `hacer("DecirMensaje", {mensaje: $MENSAJE});`
+      code: `hacer("DecirMensaje", {mensaje: "$MENSAJE"});`
     });
 
     blockly.createCustomBlock('esperar', {
