@@ -265,10 +265,15 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
 
 .pilas-notificador-cerrar {
   position: absolute;
-  right: 10px;
-  color: gray;
+  right: 3px;
+  color: red;
+  cursor: pointer;
+  opacity: 0.6;
 }
 
+.pilas-notificador-cerrar:hover {
+  opacity: 1;
+}
 
 .pilas-notificador-visible {
   top: -8px;
