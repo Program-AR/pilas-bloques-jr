@@ -72,8 +72,10 @@ export default Ember.Controller.extend({
   sincronizarRegistroActorDesdePilas(actor) {
     let actorId = actor.get('actorId');
     let objetoActor = this.get('pilas').evaluar(`pilas.obtener_actor_por_id("${actorId}")`);
+
     actor.set('x', objetoActor.x);
     actor.set('y', objetoActor.y);
+    actor.set('z', objetoActor.z);
   },
 
   /*
@@ -97,12 +99,12 @@ export default Ember.Controller.extend({
         actor = new ${clase};
       }
 
-      actor.z = 5;
+      actor.z = 0;
 
       actor;
     `);
 
-    console.warn(`Asumiendo que el actor ${clase} tiene z = 5.`);
+    console.warn(`Asumiendo que el actor ${clase} tiene z=0 cuando se instancia.`);
 
     let actorId = actor.id;
     let data = actor.serializar();
@@ -112,6 +114,7 @@ export default Ember.Controller.extend({
       actorId: actorId,
       x: data.x,
       y: data.y,
+      z: data.z,
       workspaceXMLCode: '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="al_empezar_a_ejecutar" id="aF,i.tK-O(jDm1^GT4bP" deletable="false" x="90" y="40"></block></xml>',
       scene: this.model
     });
@@ -172,11 +175,10 @@ export default Ember.Controller.extend({
 
     this.model.get('actors').then((data) => {
       data.forEach((actor) => {
-
         console.warn("Asumiendo que todos los actores tienen z=5, ese atributo se debería serializar en el modelo de datos.");
 
         actor.get("class").then(() => {
-          let data = actor.getProperties("class.className", "x", "y", "actorId");
+          let data = actor.getProperties("class.className", "x", "y", "z", "actorId");
           let className = actor.get("class.className");
 
           this.get("pilas").evaluar(`
@@ -189,7 +191,7 @@ export default Ember.Controller.extend({
 
             actor.x = ${data.x};
             actor.y = ${data.y};
-            actor.z = 5;
+            actor.z = ${data.z};
             actor.id = '${data.actorId}';
             `);
           });

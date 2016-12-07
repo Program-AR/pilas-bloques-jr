@@ -4,7 +4,7 @@
     "ember": "~2.8.0",
     "ember-cli-shims": "0.1.1",
     "blockly-package": "0.0.11",
-    "pilasweb": "0.3.11",
+    "pilasweb": "0.3.14",
     "semantic-ui": "^2.2.4",
     "remodal": "1.1.0",
     "pretender": "~1.1.0",
