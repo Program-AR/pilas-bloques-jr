@@ -20,6 +20,7 @@ export default Ember.Route.extend({
     controller.set('fondosDisponibles', model.get('aux-background'));
 
     controller.set('currentActor', null);
+    controller.set('workspaceFromCurrentActor', '');
   },
 
   afterModel(model) {

@@ -2,6 +2,11 @@
 
   {{#each actores as |actor|}}
     {{pilas-item-actor actor=actor actorSeleccionado=actorSeleccionado onSelect="onSelect" onRemove=(action onRemove)}}
+  {{else}}
+    <div class="item">
+      Escena nueva, pulsá <i class="plus icon no-margin"></i> para crear un actor.
+    </div>
   {{/each}}
+
 
 </div>

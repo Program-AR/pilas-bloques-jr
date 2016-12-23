@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
   },
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
-  currentActor: '',
+  currentActor: null,
   ejecutando: false,
   finalizado: false,
   deslizador: 0,
@@ -19,13 +19,30 @@ export default Ember.Controller.extend({
                         //
                         // (ver el método sincronizarWorkspaceAlActorActual)
 
-  blocksForCurrentActor: Ember.computed('currentActor.class.blocks', function() {
-    let bloques = this.get('currentActor.class.blocks');
-    let bloquesSiNoHayActorSeleccionado = [{category: '...', blocks: []}];
-    return bloques || bloquesSiNoHayActorSeleccionado;
+  workspaceFromCurrentActor: '',
+
+  overlayVisible: Ember.computed('ejecutando', 'estadoFinalNoEditable', function() {
+    return this.get('ejecutando') || this.get('estadoFinalNoEditable');
   }),
 
-  workspaceFromCurrentActor: Ember.computed.alias('currentActor.workspaceXMLCode'),
+  blocksForCurrentActor: Ember.computed('currentActor', function() {
+    let currentActor = this.get('currentActor');
+
+    if (currentActor) {
+      return this.get('currentActor.class.blocks');
+    } else {
+      return this.getEmptyToolbox();
+    }
+  }),
+
+  getEmptyToolbox() {
+    let bloquesSiNoHayActorSeleccionado = [{category: '...', blocks: []}];
+    return bloquesSiNoHayActorSeleccionado;
+  },
+
+  sincronizarWorkspaceFromCurrentActor: Ember.observer('currentActor.id', function() {
+    this.set('workspaceFromCurrentActor', this.get('currentActor.workspaceXMLCode'));
+  }),
 
   estadoFinalNoEditable: Ember.computed('ejecutando', 'finalizado', function() {
     return (!this.get('ejecutando') && this.get('finalizado'));
@@ -238,10 +255,19 @@ export default Ember.Controller.extend({
 
     onReady(/*pilas*/) {
       this.crearEscenaConActoresDesdeEstadoInicial();
+
+      if (this.get('model.actors.length') > 0) {
+        let actores = this.get('model.actors');
+        let primerActor = actores.get('firstObject');
+
+        if (primerActor) {
+          this.set('currentActor', primerActor);
+        }
+      }
     },
 
     abrirModalFondo() {
-      this.get('remodal').open('pilas-modal-fondo');
+      this.get('remodal').open('pilas-modal-fondos');
     },
 
     abrirModalActores() {
@@ -253,7 +279,7 @@ export default Ember.Controller.extend({
 
       this.get("pilas").sustituirFondo(nombreCompletoDelFondo);
       this.model.set('background', nombreCompletoDelFondo);
-      this.get('remodal').close('pilas-modal-fondo');
+      this.get('remodal').close('pilas-modal-fondos');
     },
 
     cuandoSeleccionaActor(claseDeActor) {
@@ -277,6 +303,10 @@ export default Ember.Controller.extend({
     onChangeWorkspace(workspace) {
       this.set('currentWorkspace', workspace);
     },
+
+    onClickOverOverlay() {
+      this.send('detener');
+    }
 
   }
 });

@@ -1,5 +1,13 @@
 {{outlet}}
 
+{{pilas-modal-fondo fondosDisponibles=fondosDisponibles cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
+{{pilas-modal-actores clasesDeActores=classes cuandoSeleccionaActor="cuandoSeleccionaActor"}}
+
+{{#if overlayVisible}}
+  <div class="overlay" {{action "onClickOverOverlay"}}>
+  </div>
+{{/if}}
+
 <div class="vbox">
 
   <div class="main-div">
@@ -7,8 +15,14 @@
       <div class="game" id="panel-izquierdo">
 
         <div class="padding-button-bar">
-          {{#async-button id="guardar-y-regresar" class="ui button basic" action="guardarYRegresar"}}
+          {{#async-button id="guardar-y-regresar" class="ui button basic" action="guardarYRegresar" as |component state|}}
+
             <i class="chevron left icon"></i> Guardar y Regresar
+
+            {{#if state.isPending}}
+              <div class="ui active mini inline loader"></div>
+            {{/if}}
+
           {{/async-button}}
         </div>
 
@@ -22,15 +36,6 @@
         </div>
 
         {{pilas-canvas pilas=pilas onReady="onReady"}}
-
-        {{#if estadoFinalNoEditable}}
-          <div class="nota-finalizaEjecucion">
-            Finalizó la ejecución.
-            <br/><br/>
-            Pulsá 'reiniciar' para volver<br/>
-            a editar la escena.
-          </div>
-        {{/if}}
 
       </div>
 
@@ -50,6 +55,7 @@
               <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
             {{/if}}
           {{/if}}
+
 
 
           {{#if ejecutando}}
@@ -75,7 +81,3 @@
   </div>
 
 </div>
-
-
-{{pilas-modal-fondo fondosDisponibles=fondosDisponibles cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
-{{pilas-modal-actores clasesDeActores=classes cuandoSeleccionaActor="cuandoSeleccionaActor"}}
