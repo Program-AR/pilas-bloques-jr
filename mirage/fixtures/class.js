@@ -8,6 +8,10 @@ let bloquesComunes = [
     blocks: ['controls_repeat']
   },
   {
+    category: 'Fondos',
+    blocks: ['cambiar_fondo']
+  },
+  {
     category: 'Otros',
     blocks: ['procedures_defnoreturn']
   },

@@ -5,6 +5,7 @@ export default Ember.Route.extend({
   pilas: Ember.inject.service(),
   blocksGallery: Ember.inject.service(),
   interpreterFactory: Ember.inject.service(),
+  fondos: Ember.inject.service(),
 
   activate() {
     this.get("blocksGallery").start();
@@ -17,7 +18,8 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.set('model', model);
     controller.set('classes', model.get('aux-classes'));
-    controller.set('fondosDisponibles', model.get('aux-background'));
+
+    this.get('fondos').cargarFondosDisponibles(model.get('aux-background'));
 
     controller.set('currentActor', null);
     controller.set('workspaceFromCurrentActor', '');
@@ -104,6 +106,10 @@ export default Ember.Route.extend({
           function hacer(comportamiento, params) {
             out_hacer(comportamiento, JSON.stringify(params));
             atender_mensajes();
+          }
+
+          function cambiar_fondo(fondo) {
+            out_cambiar_fondo(fondo);
           }
 
           function conectar_al_mensaje(mensaje, funcion) {

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   blockly: Ember.inject.service(),
+  fondos: Ember.inject.service(),
 
   start() {
     let blockly = this.get('blockly');
@@ -10,6 +11,7 @@ export default Ember.Service.extend({
     this._crearBloquesParaRecibirMensajes(blockly);
 
     this._definirBloques();
+    this._definirBloquesDeFondos();
     this._generarLenguaje();
   },
 
@@ -157,6 +159,24 @@ export default Ember.Service.extend({
 
   },
 
+  _definirBloquesDeFondos() {
+    let blockly = this.get('blockly');
+    let servicioDeFondos = this.get('fondos');
+
+    function obtenerFondosDeEscenaDisponibles() {
+      return servicioDeFondos.obtenerFondosParaDropdown();
+    }
+
+    blockly.createBlockWithAsyncDropdown('cambiar_fondo', {
+      label: "Poner fondo ",
+      previousStatement: true,
+      nextStatement: true,
+      callbackDropdown: obtenerFondosDeEscenaDisponibles,
+      code: 'cambiar_fondo("$DROPDOWN_VALUE");'
+    });
+
+  },
+
   _generarLenguaje() {
 
     Blockly.MyLanguage = Blockly.JavaScript;
@@ -164,7 +184,9 @@ export default Ember.Service.extend({
       'highlightBlock', 'out_conectar_al_mensaje', 'atender_mensaje',
       'atender_mensajes', 'out_proximo_mensaje' , 'msg_handlers',
       'out_esperar_mensaje', 'out_mensajes_configurados',
-      'desconectar_mensajes', 'out_desconectar_mensajes');
+      'desconectar_mensajes', 'out_desconectar_mensajes',
+      'out_cambiar_fondo'
+    );
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');

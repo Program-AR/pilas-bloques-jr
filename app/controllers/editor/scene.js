@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   },
   pilas: Ember.inject.service(),
   remodal: Ember.inject.service(),
+  fondos: Ember.inject.service(),
   currentActor: null,
   ejecutando: false,
   finalizado: false,
@@ -20,6 +21,8 @@ export default Ember.Controller.extend({
                         // (ver el método sincronizarWorkspaceAlActorActual)
 
   workspaceFromCurrentActor: '',
+
+  fondosDisponibles: Ember.computed.alias('fondos.listaDeFondos'),
 
   overlayVisible: Ember.computed('ejecutando', 'estadoFinalNoEditable', function() {
     return this.get('ejecutando') || this.get('estadoFinalNoEditable');

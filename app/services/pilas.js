@@ -330,9 +330,7 @@ export default Ember.Service.extend(Ember.Evented, {
       pilas.escena_actual().fondo.imagen = "fondos/${imagen_de_fondo}";
       pilas.escena_actual().fondo.z = 2000;
     `);
-
   },
-
 
   obtenerListaDeActores() {
     return this.evaluar(`
