@@ -12,6 +12,7 @@ export default Ember.Service.extend({
 
     this._definirBloques();
     this._definirBloquesDeFondos();
+    this._definirBloquesDeMovimientos();
     this._generarLenguaje();
   },
 
@@ -141,13 +142,6 @@ export default Ember.Service.extend({
       }
     };
 
-    blockly.createCustomBlock('caminar_hacia_la_derecha', {
-      message0: 'CaminarHaciaLaDerecha',
-      previousStatement: true,
-      nextStatement: true,
-      colour: 160,
-      code: 'hacer("CaminarHaciaLaDerecha", {});'
-    });
 
     blockly.createCustomBlock('decir_posicion', {
       message0: 'DecirPosicion',
@@ -174,6 +168,74 @@ export default Ember.Service.extend({
       callbackDropdown: obtenerFondosDeEscenaDisponibles,
       code: 'cambiar_fondo("$DROPDOWN_VALUE");'
     });
+
+  },
+
+  /*
+  * Método auxiliar para crear un bloque acción.
+  *
+  * El argumento 'opciones' tiene que definir estas propiedades:
+  *
+  *   - descripcion
+  *   - icono
+  *   - comportamiento
+  *   - argumentos
+  *
+  */
+  crearBloqueAccion(nombre, opciones) {
+    let blockly = this.get('blockly');
+    let opcionesObligatorias = ['descripcion',
+                                'icono',
+                                'comportamiento',
+                                'argumentos'];
+
+    opciones.code = `hacer("${opciones.comportamiento}", ${opciones.argumentos});`;
+
+    this._validar_opciones_obligatorias(nombre, opciones, opcionesObligatorias);
+    return blockly.createCustomBlockWithHelper(nombre, opciones);
+  },
+
+  /*
+  * Lanza una exception si un diccionario no presenta alguna clave obligatoria.
+  */
+  _validar_opciones_obligatorias(nombre, opciones, listaDeOpcionesObligatorias) {
+    listaDeOpcionesObligatorias.forEach((opcion) => {
+      if (!(opcion in opciones)) {
+        throw new Error(`No se puede crear el bloque ${nombre} porque no se indicó un valor para la opción ${opcion}.`);
+      }
+    });
+  },
+
+  _definirBloquesDeMovimientos() {
+
+    this.crearBloqueAccion('CaminarHaciaLaDerecha', {
+      descripcion: 'Caminar hacia la derecha',
+      icono: 'icono.derecha.png',
+      comportamiento: 'CaminarHaciaLaDerecha',
+      argumentos: "{}",
+    });
+
+    this.crearBloqueAccion('CaminarHaciaLaIzquierda', {
+      descripcion: 'Caminar hacia la izquierda',
+      icono: 'icono.izquierda.png',
+      comportamiento: 'CaminarHaciaLaIzquierda',
+      argumentos: "{}"
+    });
+
+    this.crearBloqueAccion('CaminarHaciaArriba', {
+      descripcion: 'Caminar hacia la arriba',
+      icono: 'icono.arriba.png',
+      comportamiento: 'CaminarHaciaArriba',
+      argumentos: "{}"
+    });
+
+    this.crearBloqueAccion('CaminarHaciaAbajo', {
+      descripcion: 'Caminar hacia la abajo',
+      icono: 'icono.abajo.png',
+      comportamiento: 'CaminarHaciaAbajo',
+      argumentos: "{}"
+    });
+
 
   },
 

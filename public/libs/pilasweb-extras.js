@@ -6,9 +6,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var ActorAnimado = (function (_super) {
     __extends(ActorAnimado, _super);
     function ActorAnimado(x, y, opciones) {
-        _super.call(this, "sin_imagen.png", x, y);
-        this.sanitizarOpciones(opciones);
-        this.imagen = this.animacionPara(this.opciones.grilla);
+        var _this = _super.call(this, "sin_imagen.png", x, y) || this;
+        _this.sanitizarOpciones(opciones);
+        _this.imagen = _this.animacionPara(_this.opciones.grilla);
+        return _this;
     }
     ActorAnimado.prototype.sanitizarOpciones = function (ops) {
         this.opciones = ops;
@@ -40,33 +41,36 @@ var ActorAnimado = (function (_super) {
 var Cangrejo = (function (_super) {
     __extends(Cangrejo, _super);
     function Cangrejo(x, y) {
-        _super.call(this, x, y, { grilla: 'actores/actor.CangrejoAnimado.png', cantColumnas: 8, cantFilas: 3 });
-        this.definirAnimacion("parado", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
-        this.definirAnimacion("saltar", [8], 6);
-        this.definirAnimacion("hablar", [14, 15], 5);
+        var _this = _super.call(this, x, y, { grilla: 'actores/actor.CangrejoAnimado.png', cantColumnas: 8, cantFilas: 3 }) || this;
+        _this.definirAnimacion("parado", [0, 1, 2, 3, 4, 5, 6, 7], 6, true);
+        _this.definirAnimacion("saltar", [8], 6);
+        _this.definirAnimacion("hablar", [14, 15], 5);
+        return _this;
     }
     return Cangrejo;
 }(ActorAnimado));
 var GatoAnimado = (function (_super) {
     __extends(GatoAnimado, _super);
     function GatoAnimado(x, y) {
-        _super.call(this, x, y, { grilla: 'actores/actor.GatoAnimado.png', cantColumnas: 7, cantFilas: 7 });
-        this.definirAnimacion("parado", [0], 6, true);
-        this.definirAnimacion("saltar", [46], 6);
-        this.definirAnimacion("hablar", [3, 5, 4, 5], 8);
+        var _this = _super.call(this, x, y, { grilla: 'actores/actor.GatoAnimado.png', cantColumnas: 7, cantFilas: 7 }) || this;
+        _this.definirAnimacion("parado", [0], 6, true);
+        _this.definirAnimacion("saltar", [46], 6);
+        _this.definirAnimacion("hablar", [3, 5, 4, 5], 8);
+        return _this;
     }
     return GatoAnimado;
 }(ActorAnimado));
 var Sandia = (function (_super) {
     __extends(Sandia, _super);
     function Sandia(x, y) {
-        _super.call(this, x, y, { grilla: 'actores/actor.Sandia.png', cantColumnas: 5, cantFilas: 1 });
-        this.cantidadDeMordidas = 0;
-        this.definirAnimacion("parado", [0], 6, true);
-        this.definirAnimacion("comida1", [1], 12);
-        this.definirAnimacion("comida2", [2], 12);
-        this.definirAnimacion("comida3", [3], 12);
-        this.definirAnimacion("comida4", [4], 12);
+        var _this = _super.call(this, x, y, { grilla: 'actores/actor.Sandia.png', cantColumnas: 5, cantFilas: 1 }) || this;
+        _this.cantidadDeMordidas = 0;
+        _this.definirAnimacion("parado", [0], 6, true);
+        _this.definirAnimacion("comida1", [1], 12);
+        _this.definirAnimacion("comida2", [2], 12);
+        _this.definirAnimacion("comida3", [3], 12);
+        _this.definirAnimacion("comida4", [4], 12);
+        return _this;
     }
     Sandia.prototype.consumir = function () {
         this.cantidadDeMordidas += 1;
@@ -81,7 +85,7 @@ var Sandia = (function (_super) {
 var ComportamientoAnimado = (function (_super) {
     __extends(ComportamientoAnimado, _super);
     function ComportamientoAnimado() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     ComportamientoAnimado.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
@@ -101,33 +105,75 @@ var ComportamientoAnimado = (function (_super) {
     };
     return ComportamientoAnimado;
 }(Comportamiento));
-var CaminarHaciaLaDerecha = (function (_super) {
-    __extends(CaminarHaciaLaDerecha, _super);
-    function CaminarHaciaLaDerecha() {
-        _super.apply(this, arguments);
+var CaminarHacia = (function (_super) {
+    __extends(CaminarHacia, _super);
+    function CaminarHacia() {
+        return _super.apply(this, arguments) || this;
     }
-    CaminarHaciaLaDerecha.prototype.iniciar = function (receptor) {
+    CaminarHacia.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
         this.receptor.cargarAnimacion('caminar');
         this.contador = 0;
         this.velocidad = 3;
-        this.longitud = 40;
+        this.longitud = 20;
     };
-    CaminarHaciaLaDerecha.prototype.actualizar = function () {
+    CaminarHacia.prototype.actualizar = function () {
+        this.realizar_movimiento();
         this.avanzarAnimacion();
-        this.receptor.x += this.velocidad;
         this.contador += 1;
         if (this.contador > this.longitud) {
             this.receptor.cargarAnimacion('parado');
             return true;
         }
     };
-    return CaminarHaciaLaDerecha;
+    CaminarHacia.prototype.realizar_movimiento = function () {
+    };
+    return CaminarHacia;
 }(ComportamientoAnimado));
+var CaminarHaciaLaDerecha = (function (_super) {
+    __extends(CaminarHaciaLaDerecha, _super);
+    function CaminarHaciaLaDerecha() {
+        return _super.apply(this, arguments) || this;
+    }
+    CaminarHaciaLaDerecha.prototype.realizar_movimiento = function () {
+        this.receptor.x += this.velocidad;
+    };
+    return CaminarHaciaLaDerecha;
+}(CaminarHacia));
+var CaminarHaciaLaIzquierda = (function (_super) {
+    __extends(CaminarHaciaLaIzquierda, _super);
+    function CaminarHaciaLaIzquierda() {
+        return _super.apply(this, arguments) || this;
+    }
+    CaminarHaciaLaIzquierda.prototype.realizar_movimiento = function () {
+        this.receptor.x -= this.velocidad;
+    };
+    return CaminarHaciaLaIzquierda;
+}(CaminarHacia));
+var CaminarHaciaArriba = (function (_super) {
+    __extends(CaminarHaciaArriba, _super);
+    function CaminarHaciaArriba() {
+        return _super.apply(this, arguments) || this;
+    }
+    CaminarHaciaArriba.prototype.realizar_movimiento = function () {
+        this.receptor.y += this.velocidad;
+    };
+    return CaminarHaciaArriba;
+}(CaminarHacia));
+var CaminarHaciaAbajo = (function (_super) {
+    __extends(CaminarHaciaAbajo, _super);
+    function CaminarHaciaAbajo() {
+        return _super.apply(this, arguments) || this;
+    }
+    CaminarHaciaAbajo.prototype.realizar_movimiento = function () {
+        this.receptor.y -= this.velocidad;
+    };
+    return CaminarHaciaAbajo;
+}(CaminarHacia));
 var ConectarMensaje = (function (_super) {
     __extends(ConectarMensaje, _super);
     function ConectarMensaje() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     ConectarMensaje.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
@@ -143,7 +189,7 @@ var ConectarMensaje = (function (_super) {
 var Consumir = (function (_super) {
     __extends(Consumir, _super);
     function Consumir() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     Consumir.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
@@ -167,8 +213,9 @@ var Consumir = (function (_super) {
 var DecirMensaje = (function (_super) {
     __extends(DecirMensaje, _super);
     function DecirMensaje() {
-        _super.apply(this, arguments);
-        this.tiempoParaAvanzar = 3.2;
+        var _this = _super.apply(this, arguments) || this;
+        _this.tiempoParaAvanzar = 3.2;
+        return _this;
     }
     DecirMensaje.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
@@ -193,7 +240,7 @@ var DecirMensaje = (function (_super) {
 var DecirPosicion = (function (_super) {
     __extends(DecirPosicion, _super);
     function DecirPosicion() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     DecirPosicion.prototype.obtener_mensaje = function () {
         var x = this.receptor.x;
@@ -205,7 +252,7 @@ var DecirPosicion = (function (_super) {
 var EnviarMensaje = (function (_super) {
     __extends(EnviarMensaje, _super);
     function EnviarMensaje() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     EnviarMensaje.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
@@ -219,7 +266,7 @@ var EnviarMensaje = (function (_super) {
 var EsperarSegundos = (function (_super) {
     __extends(EsperarSegundos, _super);
     function EsperarSegundos() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     EsperarSegundos.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
@@ -238,7 +285,7 @@ var EsperarSegundos = (function (_super) {
 var SaltarNuevo = (function (_super) {
     __extends(SaltarNuevo, _super);
     function SaltarNuevo() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     SaltarNuevo.prototype.iniciar = function (receptor) {
         _super.prototype.iniciar.call(this, receptor);
