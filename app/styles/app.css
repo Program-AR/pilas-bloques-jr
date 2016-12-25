@@ -12,7 +12,7 @@ iframe {
   width: 100%;
   height: calc(100% - 100px) !important;
   position: relative;
-  z-index: 10;
+  z-index: 150;
 }
 
 .ember-blockly-container {
@@ -293,5 +293,5 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 5;
+  z-index: 100;
 }
