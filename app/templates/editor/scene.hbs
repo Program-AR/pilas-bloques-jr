@@ -56,8 +56,6 @@
             {{/if}}
           {{/if}}
 
-
-
           {{#if ejecutando}}
             <button class="ui basic button orange" {{action "detener"}}><i class="stop icon"></i> Detener</button>
           {{/if}}
@@ -66,15 +64,24 @@
 
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect" onRemove=(action "onRemove")}}
 
-        {{ember-blockly blocks=blocksForCurrentActor onChangeWorkspace="onChangeWorkspace" workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true
-          media="blockly-package/media/"
-          highlightedBlock=highlightedBlockForCurrentActor
-          duplicate=false
-          help=false
-          disableBlock=false
-          comment=false
-          disableNotConnectedToMainBlock=true
-        }}
+        {{#if hayActoresEnLaEscena}}
+          {{ember-blockly blocks=blocksForCurrentActor onChangeWorkspace="onChangeWorkspace" workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true
+            media="blockly-package/media/"
+            highlightedBlock=highlightedBlockForCurrentActor
+            duplicate=false
+            help=false
+            disableBlock=false
+            comment=false
+            disableNotConnectedToMainBlock=true
+          }}
+        {{else}}
+          {{ember-blockly
+            readOnly=true
+            class="ember-blockly-container ember-blockly-container-disabled"
+            withZoom=true
+            withTrash=true
+          }}
+        {{/if}}
 
       </div>
     </div>

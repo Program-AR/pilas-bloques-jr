@@ -24,6 +24,8 @@ export default Ember.Controller.extend({
 
   fondosDisponibles: Ember.computed.alias('fondos.listaDeFondos'),
 
+  hayActoresEnLaEscena: Ember.computed.alias('model.actors.length'),
+
   overlayVisible: Ember.computed('ejecutando', 'estadoFinalNoEditable', function() {
     return this.get('ejecutando') || this.get('estadoFinalNoEditable');
   }),

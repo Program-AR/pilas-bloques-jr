@@ -295,3 +295,8 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
   right: 0;
   z-index: 100;
 }
+
+
+.ember-blockly-container-disabled {
+  opacity: 0.7;
+}
