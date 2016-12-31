@@ -1,7 +1,7 @@
 let bloquesComunes = [
   {
     category: 'Primitivas',
-    blocks: ['esperar', 'decir', 'saltar', 'decir_posicion']
+    blocks: ['esperar', 'decir', 'saltar', 'cambiar_fondo']
   },
   {
     category: 'Movimientos',
@@ -10,14 +10,6 @@ let bloquesComunes = [
   {
     category: 'Repeticiones',
     blocks: ['controls_repeat']
-  },
-  {
-    category: 'Fondos',
-    blocks: ['cambiar_fondo']
-  },
-  {
-    category: 'Otros',
-    blocks: ['procedures_defnoreturn']
   },
   {
     category: 'Mis Procedimientos',

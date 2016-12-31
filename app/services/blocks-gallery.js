@@ -23,7 +23,7 @@ export default Ember.Service.extend({
     Blockly.FieldColour.COLUMNS = 3;
 
     blockly.createCustomBlock('enviar_mensaje_de_color', {
-      message0: "Enviar el color %1",
+      message0: "Enviar el mensaje %1",
       args0: [
         {
           "type": "field_colour",
@@ -43,17 +43,17 @@ export default Ember.Service.extend({
   _crearBloquesParaRecibirMensajes(blockly) {
 
     blockly.createCustomBlock('al_recibir_mensaje_de_color', {
-      "message0": 'Al recibir el color %1 hacer lo siguiente',
-      "colour": 200,
-      "args0": [
+      message0: 'Al recibir el mensaje %1 hacer lo siguiente',
+      color: 200,
+      args0: [
         {
           "type": "field_colour",
           "name": "COLOR",
           "colour": "#ff0000"
         }
       ],
-      "message1": "%1",
-      "args1": [
+      message1: "%1",
+      args1: [
         {"type": "input_statement", "name": "do"}
       ],
     });
