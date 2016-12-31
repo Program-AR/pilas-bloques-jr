@@ -3,9 +3,14 @@
   <head>
 
     <script>
-      window.module = undefined;
-      window.requireNode = window.require || null;
       window.inElectron = (window && window.process && window.process.type);
+      window.requireNode = window.require;
+      window.moduleNode = window.module;
+      window.processNode = window.process;
+
+      delete window.process;
+      delete window.require;
+      delete window.module;
     </script>
 
     <meta charset="utf-8">

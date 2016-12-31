@@ -1,15 +1,15 @@
 let bloquesComunes = [
   {
     category: 'Primitivas',
-    blocks: ['esperar', 'decir', 'saltar', 'caminar_hacia_la_derecha', 'decir_posicion']
+    blocks: ['esperar', 'decir', 'saltar', 'cambiar_fondo']
+  },
+  {
+    category: 'Movimientos',
+    blocks: ['CaminarHaciaLaDerecha', 'CaminarHaciaArriba', 'CaminarHaciaLaIzquierda', 'CaminarHaciaAbajo']
   },
   {
     category: 'Repeticiones',
     blocks: ['controls_repeat']
-  },
-  {
-    category: 'Otros',
-    blocks: ['procedures_defnoreturn']
   },
   {
     category: 'Mis Procedimientos',

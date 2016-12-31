@@ -5,6 +5,7 @@ export default Ember.Route.extend({
   pilas: Ember.inject.service(),
   blocksGallery: Ember.inject.service(),
   interpreterFactory: Ember.inject.service(),
+  fondos: Ember.inject.service(),
 
   activate() {
     this.get("blocksGallery").start();
@@ -17,9 +18,11 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.set('model', model);
     controller.set('classes', model.get('aux-classes'));
-    controller.set('fondosDisponibles', model.get('aux-background'));
+
+    this.get('fondos').cargarFondosDisponibles(model.get('aux-background'));
 
     controller.set('currentActor', null);
+    controller.set('workspaceFromCurrentActor', '');
   },
 
   afterModel(model) {
@@ -78,19 +81,25 @@ export default Ember.Route.extend({
           // -------------------------------------------------------
           var msg_handlers = {};
 
-          function atender_mensajes()
-          {
+          function atender_mensajes() {
             var msg = out_proximo_mensaje();
-            if(msg)
+
+            if (msg) {
               atender_mensaje(msg);
+            }
           }
 
-          function atender_mensaje(msg)
-          {
-            if(msg_handlers[msg] === undefined)
+          function atender_mensaje(msg) {
+
+            if (msg_handlers[msg] === undefined) {
+
               return;
-            for(var i=0;i<msg_handlers[msg].length;i++)
+            }
+
+            for (var i = 0; i < msg_handlers[msg].length; i++) {
               msg_handlers[msg][i]();
+            }
+
             atender_mensajes();
           }
 
@@ -99,29 +108,32 @@ export default Ember.Route.extend({
             atender_mensajes();
           }
 
+          function cambiar_fondo(fondo) {
+            out_cambiar_fondo(fondo);
+          }
+
           function conectar_al_mensaje(mensaje, funcion) {
-            if(msg_handlers[mensaje] === undefined)
-            {
+
+            if (msg_handlers[mensaje] === undefined) {
               msg_handlers[mensaje] = [];
               out_conectar_al_mensaje(mensaje);
             }
+
             msg_handlers[mensaje].push(funcion);
           }
 
-          function desconectar_mensajes()
-          {
+          function desconectar_mensajes() {
             out_desconectar_mensajes();
           }
 
-          function main()
-          {
+          function main() {
             desconectar_mensajes();
             ${codigoDesdeWorkspace}
           }
+
           main();
 
-          while(1)
-          {
+          while(1) {
             out_esperar_mensaje();
             atender_mensajes();
           }

@@ -11,6 +11,8 @@ iframe {
 .pilas-canvas-container {
   width: 100%;
   height: calc(100% - 100px) !important;
+  position: relative;
+  z-index: 150;
 }
 
 .ember-blockly-container {
@@ -265,10 +267,15 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
 
 .pilas-notificador-cerrar {
   position: absolute;
-  right: 10px;
-  color: gray;
+  right: 3px;
+  color: red;
+  cursor: pointer;
+  opacity: 0.6;
 }
 
+.pilas-notificador-cerrar:hover {
+  opacity: 1;
+}
 
 .pilas-notificador-visible {
   top: -8px;
@@ -276,4 +283,20 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
 
 .pilas-notificador-oculto {
   top: -100px;
+}
+
+.overlay {
+  position: fixed;
+  opacity: 0.3;
+  background-color: black;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+
+.ember-blockly-container-disabled {
+  opacity: 0.7;
 }

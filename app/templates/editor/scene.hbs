@@ -1,5 +1,13 @@
 {{outlet}}
 
+{{pilas-modal-fondo fondosDisponibles=fondosDisponibles cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
+{{pilas-modal-actores clasesDeActores=classes cuandoSeleccionaActor="cuandoSeleccionaActor"}}
+
+{{#if overlayVisible}}
+  <div class="overlay" {{action "onClickOverOverlay"}}>
+  </div>
+{{/if}}
+
 <div class="vbox">
 
   <div class="main-div">
@@ -7,8 +15,14 @@
       <div class="game" id="panel-izquierdo">
 
         <div class="padding-button-bar">
-          {{#async-button id="guardar-y-regresar" class="ui button basic" action="guardarYRegresar"}}
+          {{#async-button id="guardar-y-regresar" class="ui button basic" action="guardarYRegresar" as |component state|}}
+
             <i class="chevron left icon"></i> Guardar y Regresar
+
+            {{#if state.isPending}}
+              <div class="ui active mini inline loader"></div>
+            {{/if}}
+
           {{/async-button}}
         </div>
 
@@ -22,15 +36,6 @@
         </div>
 
         {{pilas-canvas pilas=pilas onReady="onReady"}}
-
-        {{#if estadoFinalNoEditable}}
-          <div class="nota-finalizaEjecucion">
-            Finalizó la ejecución.
-            <br/><br/>
-            Pulsá 'reiniciar' para volver<br/>
-            a editar la escena.
-          </div>
-        {{/if}}
 
       </div>
 
@@ -51,7 +56,6 @@
             {{/if}}
           {{/if}}
 
-
           {{#if ejecutando}}
             <button class="ui basic button orange" {{action "detener"}}><i class="stop icon"></i> Detener</button>
           {{/if}}
@@ -60,21 +64,27 @@
 
         {{pilas-lista-de-actores actorSeleccionado=currentActor actores=model.actors onSelect="onSelect" onRemove=(action "onRemove")}}
 
-        {{ember-blockly blocks=blocksForCurrentActor onChangeWorkspace="onChangeWorkspace" workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true
-          media="blockly-package/media/"
-          highlightedBlock=highlightedBlockForCurrentActor
-          duplicate=false
-          help=false
-          disableBlock=false
-          comment=false
-        }}
+        {{#if hayActoresEnLaEscena}}
+          {{ember-blockly blocks=blocksForCurrentActor onChangeWorkspace="onChangeWorkspace" workspace=workspaceFromCurrentActor class="ember-blockly-container" withZoom=true withTrash=true
+            media="blockly-package/media/"
+            highlightedBlock=highlightedBlockForCurrentActor
+            duplicate=false
+            help=false
+            disableBlock=false
+            comment=false
+            disableNotConnectedToMainBlock=true
+          }}
+        {{else}}
+          {{ember-blockly
+            readOnly=true
+            class="ember-blockly-container ember-blockly-container-disabled"
+            withZoom=true
+            withTrash=true
+          }}
+        {{/if}}
 
       </div>
     </div>
   </div>
 
 </div>
-
-
-{{pilas-modal-fondo fondosDisponibles=fondosDisponibles cuandoSeleccionaFondo="cuandoSeleccionaFondo"}}
-{{pilas-modal-actores clasesDeActores=classes cuandoSeleccionaActor="cuandoSeleccionaActor"}}

@@ -11,6 +11,7 @@ export default Ember.Component.extend({
 
   actions: {
     abrirConNavegadorExterno(url) {
+      console.log("open external:", url);
       const {shell} = require('electron');
       shell.openExternal(url);
     }

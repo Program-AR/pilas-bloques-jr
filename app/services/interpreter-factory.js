@@ -199,5 +199,16 @@ export default Ember.Service.extend({
     }
 
     interpreter.setProperty(scope, 'out_desconectar_mensajes', interpreter.createNativeFunction(out_desconectar_mensajes));
+
+
+    /**
+     * Permite cambiar el fondo de una escena.
+     */
+    function out_cambiar_fondo(fondo) {
+      pilasService.sustituirFondo(`${fondo}.png`);
+    }
+
+    interpreter.setProperty(scope, 'out_cambiar_fondo', interpreter.createNativeFunction(out_cambiar_fondo));
+
   }
 });

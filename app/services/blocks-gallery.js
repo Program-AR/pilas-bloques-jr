@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   blockly: Ember.inject.service(),
+  fondos: Ember.inject.service(),
 
   start() {
     let blockly = this.get('blockly');
@@ -10,6 +11,8 @@ export default Ember.Service.extend({
     this._crearBloquesParaRecibirMensajes(blockly);
 
     this._definirBloques();
+    this._definirBloquesDeFondos();
+    this._definirBloquesDeMovimientos();
     this._generarLenguaje();
   },
 
@@ -20,7 +23,7 @@ export default Ember.Service.extend({
     Blockly.FieldColour.COLUMNS = 3;
 
     blockly.createCustomBlock('enviar_mensaje_de_color', {
-      message0: "Enviar el color %1",
+      message0: "Enviar el mensaje %1",
       args0: [
         {
           "type": "field_colour",
@@ -28,7 +31,7 @@ export default Ember.Service.extend({
           "colour": "#ff0000"
         }
       ],
-      colour: 160,
+      color: 160,
       previousStatement: true,
       nextStatement: true,
       code: "hacer('EnviarMensaje', {mensaje: '$COLOR'});"
@@ -40,17 +43,17 @@ export default Ember.Service.extend({
   _crearBloquesParaRecibirMensajes(blockly) {
 
     blockly.createCustomBlock('al_recibir_mensaje_de_color', {
-      "message0": 'Al recibir el color %1 hacer lo siguiente',
-      "colour": 200,
-      "args0": [
+      message0: 'Al recibir el mensaje %1 hacer lo siguiente',
+      color: 200,
+      args0: [
         {
           "type": "field_colour",
           "name": "COLOR",
           "colour": "#ff0000"
         }
       ],
-      "message1": "%1",
-      "args1": [
+      message1: "%1",
+      args1: [
         {"type": "input_statement", "name": "do"}
       ],
     });
@@ -90,7 +93,7 @@ export default Ember.Service.extend({
       ],
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: `hacer("DecirMensaje", {mensaje: "$MENSAJE"});`
     });
 
@@ -105,7 +108,7 @@ export default Ember.Service.extend({
       ],
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("EsperarSegundos", {segundos: $SEGUNDOS});'
     });
 
@@ -113,7 +116,7 @@ export default Ember.Service.extend({
       message0: 'Saltar',
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("SaltarNuevo", {});'
     });
 
@@ -121,7 +124,7 @@ export default Ember.Service.extend({
       message0: 'Consumir',
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("Consumir", {});'
     });
 
@@ -139,21 +142,102 @@ export default Ember.Service.extend({
       }
     };
 
-    blockly.createCustomBlock('caminar_hacia_la_derecha', {
-      message0: 'CaminarHaciaLaDerecha',
-      previousStatement: true,
-      nextStatement: true,
-      colour: 160,
-      code: 'hacer("CaminarHaciaLaDerecha", {});'
-    });
 
     blockly.createCustomBlock('decir_posicion', {
       message0: 'DecirPosicion',
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("DecirPosicion", {});'
     });
+
+  },
+
+  _definirBloquesDeFondos() {
+    let blockly = this.get('blockly');
+    let servicioDeFondos = this.get('fondos');
+
+    function obtenerFondosDeEscenaDisponibles() {
+      return servicioDeFondos.obtenerFondosParaDropdown();
+    }
+
+    blockly.createBlockWithAsyncDropdown('cambiar_fondo', {
+      label: "Poner fondo ",
+      previousStatement: true,
+      color: 160,
+      nextStatement: true,
+      callbackDropdown: obtenerFondosDeEscenaDisponibles,
+      code: 'cambiar_fondo("$DROPDOWN_VALUE");'
+    });
+
+  },
+
+  /*
+  * Método auxiliar para crear un bloque acción.
+  *
+  * El argumento 'opciones' tiene que definir estas propiedades:
+  *
+  *   - descripcion
+  *   - icono
+  *   - comportamiento
+  *   - argumentos
+  *
+  */
+  crearBloqueAccion(nombre, opciones) {
+    let blockly = this.get('blockly');
+    let opcionesObligatorias = ['descripcion',
+                                'icono',
+                                'comportamiento',
+                                'argumentos'];
+
+    opciones.code = `hacer("${opciones.comportamiento}", ${opciones.argumentos});`;
+
+    this._validar_opciones_obligatorias(nombre, opciones, opcionesObligatorias);
+    opciones.color = 160;
+    return blockly.createCustomBlockWithHelper(nombre, opciones);
+  },
+
+  /*
+  * Lanza una exception si un diccionario no presenta alguna clave obligatoria.
+  */
+  _validar_opciones_obligatorias(nombre, opciones, listaDeOpcionesObligatorias) {
+    listaDeOpcionesObligatorias.forEach((opcion) => {
+      if (!(opcion in opciones)) {
+        throw new Error(`No se puede crear el bloque ${nombre} porque no se indicó un valor para la opción ${opcion}.`);
+      }
+    });
+  },
+
+  _definirBloquesDeMovimientos() {
+
+    this.crearBloqueAccion('CaminarHaciaLaDerecha', {
+      descripcion: 'Caminar hacia la derecha',
+      icono: 'icono.derecha.png',
+      comportamiento: 'CaminarHaciaLaDerecha',
+      argumentos: "{}",
+    });
+
+    this.crearBloqueAccion('CaminarHaciaLaIzquierda', {
+      descripcion: 'Caminar hacia la izquierda',
+      icono: 'icono.izquierda.png',
+      comportamiento: 'CaminarHaciaLaIzquierda',
+      argumentos: "{}"
+    });
+
+    this.crearBloqueAccion('CaminarHaciaArriba', {
+      descripcion: 'Caminar hacia la arriba',
+      icono: 'icono.arriba.png',
+      comportamiento: 'CaminarHaciaArriba',
+      argumentos: "{}"
+    });
+
+    this.crearBloqueAccion('CaminarHaciaAbajo', {
+      descripcion: 'Caminar hacia la abajo',
+      icono: 'icono.abajo.png',
+      comportamiento: 'CaminarHaciaAbajo',
+      argumentos: "{}"
+    });
+
 
   },
 
@@ -164,7 +248,9 @@ export default Ember.Service.extend({
       'highlightBlock', 'out_conectar_al_mensaje', 'atender_mensaje',
       'atender_mensajes', 'out_proximo_mensaje' , 'msg_handlers',
       'out_esperar_mensaje', 'out_mensajes_configurados',
-      'desconectar_mensajes', 'out_desconectar_mensajes');
+      'desconectar_mensajes', 'out_desconectar_mensajes',
+      'out_cambiar_fondo'
+    );
 
     Blockly.MyLanguage['al_empezar_a_ejecutar'] = function(block) {
       let programa = Blockly.JavaScript.statementToCode(block, 'program');

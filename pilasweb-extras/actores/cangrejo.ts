@@ -7,7 +7,7 @@ class Cangrejo extends ActorAnimado {
     //this.definirAnimacion("correr", [9, 10, 11, 12, 13], 12);
     //this.definirAnimacion("recoger", [17, 18, 19, 20, 21, 21, 21, 19, 19], 6);
     this.definirAnimacion("saltar", [8], 6);
-    this.definirAnimacion("hablar", [14, 15, 22, 15], 5);
+    this.definirAnimacion("hablar", [14, 15], 5);
   }
 
 }
