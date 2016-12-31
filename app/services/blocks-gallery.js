@@ -31,7 +31,7 @@ export default Ember.Service.extend({
           "colour": "#ff0000"
         }
       ],
-      colour: 160,
+      color: 160,
       previousStatement: true,
       nextStatement: true,
       code: "hacer('EnviarMensaje', {mensaje: '$COLOR'});"
@@ -93,7 +93,7 @@ export default Ember.Service.extend({
       ],
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: `hacer("DecirMensaje", {mensaje: "$MENSAJE"});`
     });
 
@@ -108,7 +108,7 @@ export default Ember.Service.extend({
       ],
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("EsperarSegundos", {segundos: $SEGUNDOS});'
     });
 
@@ -116,7 +116,7 @@ export default Ember.Service.extend({
       message0: 'Saltar',
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("SaltarNuevo", {});'
     });
 
@@ -124,7 +124,7 @@ export default Ember.Service.extend({
       message0: 'Consumir',
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("Consumir", {});'
     });
 
@@ -147,7 +147,7 @@ export default Ember.Service.extend({
       message0: 'DecirPosicion',
       previousStatement: true,
       nextStatement: true,
-      colour: 160,
+      color: 160,
       code: 'hacer("DecirPosicion", {});'
     });
 
@@ -164,6 +164,7 @@ export default Ember.Service.extend({
     blockly.createBlockWithAsyncDropdown('cambiar_fondo', {
       label: "Poner fondo ",
       previousStatement: true,
+      color: 160,
       nextStatement: true,
       callbackDropdown: obtenerFondosDeEscenaDisponibles,
       code: 'cambiar_fondo("$DROPDOWN_VALUE");'
@@ -192,6 +193,7 @@ export default Ember.Service.extend({
     opciones.code = `hacer("${opciones.comportamiento}", ${opciones.argumentos});`;
 
     this._validar_opciones_obligatorias(nombre, opciones, opcionesObligatorias);
+    opciones.color = 160;
     return blockly.createCustomBlockWithHelper(nombre, opciones);
   },
 
