@@ -63,7 +63,7 @@ export default Ember.Route.extend({
     },
 
     ejecutar() {
-      // Una lista con el acotr y el código del workspace completo.
+      // Una lista diccionarios que tiene el actor y el código del workspace completo.
       // (por ejemplo [{actor: actor, codigo: 'hacer(...) ....'}])
       let listaDeCodigos = [];
 
