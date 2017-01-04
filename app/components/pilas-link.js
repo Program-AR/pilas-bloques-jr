@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   inElectron: false,
 
   didInsertElement() {
-    this.set('inElectron', (typeof process !== "undefined"));
+    this.set('inElectron', inElectron);
   },
 
   actions: {
