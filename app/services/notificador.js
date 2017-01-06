@@ -11,7 +11,6 @@ export default Ember.Service.extend({
    * cualquier otro caso va a retornar 0.
    */
   comparar(v1, v2) {
-
     function parseVersionString (str) {
       if (typeof(str) !== 'string') {
         return false;

@@ -105,6 +105,24 @@ var ComportamientoAnimado = (function (_super) {
     };
     return ComportamientoAnimado;
 }(Comportamiento));
+var Aparecer = (function (_super) {
+    __extends(Aparecer, _super);
+    function Aparecer() {
+        return _super.apply(this, arguments) || this;
+    }
+    Aparecer.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+    };
+    Aparecer.prototype.actualizar = function () {
+        _super.prototype.actualizar.call(this);
+        this.receptor.transparencia -= 1;
+        if (this.receptor.transparencia <= 0) {
+            this.receptor.transparencia = 0;
+            return true;
+        }
+    };
+    return Aparecer;
+}(ComportamientoAnimado));
 var CaminarHacia = (function (_super) {
     __extends(CaminarHacia, _super);
     function CaminarHacia() {
@@ -249,6 +267,24 @@ var DecirPosicion = (function (_super) {
     };
     return DecirPosicion;
 }(DecirMensaje));
+var Desaparecer = (function (_super) {
+    __extends(Desaparecer, _super);
+    function Desaparecer() {
+        return _super.apply(this, arguments) || this;
+    }
+    Desaparecer.prototype.iniciar = function (receptor) {
+        _super.prototype.iniciar.call(this, receptor);
+    };
+    Desaparecer.prototype.actualizar = function () {
+        _super.prototype.actualizar.call(this);
+        this.receptor.transparencia += 1;
+        if (this.receptor.transparencia >= 100) {
+            this.receptor.transparencia = 100;
+            return true;
+        }
+    };
+    return Desaparecer;
+}(ComportamientoAnimado));
 var EnviarMensaje = (function (_super) {
     __extends(EnviarMensaje, _super);
     function EnviarMensaje() {
