@@ -151,6 +151,20 @@ export default Ember.Service.extend({
       code: 'hacer("DecirPosicion", {});'
     });
 
+    this.crearBloqueAccion('desaparecer', {
+      descripcion: 'Desaparecer',
+      icono: 'icono.desaparecer.png',
+      comportamiento: 'Desaparecer',
+      argumentos: "{}"
+    });
+
+    this.crearBloqueAccion('aparecer', {
+      descripcion: 'Aparecer',
+      icono: 'icono.aparecer.png',
+      comportamiento: 'Aparecer',
+      argumentos: "{}"
+    });
+
   },
 
   _definirBloquesDeFondos() {

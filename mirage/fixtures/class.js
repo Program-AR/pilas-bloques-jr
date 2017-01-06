@@ -1,7 +1,7 @@
 let bloquesComunes = [
   {
     category: 'Primitivas',
-    blocks: ['esperar', 'decir', 'saltar', 'cambiar_fondo']
+    blocks: ['esperar', 'decir', 'saltar', 'cambiar_fondo', 'aparecer', 'desaparecer']
   },
   {
     category: 'Movimientos',
