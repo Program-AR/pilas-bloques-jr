@@ -14,7 +14,7 @@ test('it renders', function(assert) {
 
   let actor = new Ember.Object({
     id: 1,
-    iconPath: 'data/thumb.actor.mono.png',
+    iconPath: 'data/miniaturas/iconos/icono.alien.png',
     class: {className: 'ClaseDeEjemplo'}
   });
 
