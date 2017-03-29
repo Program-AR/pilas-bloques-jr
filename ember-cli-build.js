@@ -14,6 +14,7 @@ module.exports = function(defaults) {
 
   app.import('vendor/beautify.js');
   app.import('vendor/acorn_interpreter.js');
+  app.import('vendor/utilidades_de_depuracion.js');
 
   process.setMaxListeners(1000);
 
