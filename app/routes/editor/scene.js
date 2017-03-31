@@ -80,6 +80,7 @@ export default Ember.Route.extend({
         let codigoCompleto = js_beautify(`
           // -------------------------------------------------------
           var msg_handlers = {};
+          var debe_finalizar = false;
 
           function atender_mensajes() {
             var msg = out_proximo_mensaje();
@@ -129,11 +130,12 @@ export default Ember.Route.extend({
           function main() {
             desconectar_mensajes();
             ${codigoDesdeWorkspace}
+            debe_finalizar = true;
           }
 
           main();
 
-          while(1) {
+          while (!debe_finalizar) {
             out_esperar_mensaje();
             atender_mensajes();
           }
