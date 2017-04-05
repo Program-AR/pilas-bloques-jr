@@ -12,7 +12,9 @@ export default Ember.Controller.extend({
   currentActor: null,
   ejecutando: false,
   finalizado: false,
+  pausado: true,
   deslizador: 0,
+  pasoAPaso: false,
   highlightedBlockForCurrentActor: null,
   currentWorkspace: '', // Almacena el workspace mientras se modifica. El valor
                         // de esta propiedad sustituirá a currentActor.workspaceXMLCode
@@ -311,7 +313,16 @@ export default Ember.Controller.extend({
 
     onClickOverOverlay() {
       this.send('detener');
-    }
+    },
+
+    avanzarUnPaso() {
+      this.set('pausado', false);
+
+      Ember.run.later(() => {
+        this.set('pausado', true);
+      }, 500);
+
+    },
 
   }
 });

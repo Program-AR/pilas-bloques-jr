@@ -62,6 +62,11 @@ export default Ember.Route.extend({
       });
     },
 
+    ejecutarPasoAPaso() {
+      this.get('controller').set('pasoAPaso', true);
+      this.send('ejecutar');
+    },
+
     ejecutar() {
       // Una lista diccionarios que tiene el actor y el código del workspace completo.
       // (por ejemplo [{actor: actor, codigo: 'hacer(...) ....'}])
@@ -166,7 +171,7 @@ export default Ember.Route.extend({
        * Ejecuta un intérprete y mantiene una promesa en suspenso hasta
        * que el intérprete termine de ejecutar todo el código.
        */
-      function ejecutarInterpreteHastaTerminar(nombreIdentificador, interprete, condicion_de_corte) {
+      function ejecutarInterpreteHastaTerminar(nombreIdentificador, interprete, condicion_de_corte, condicion_de_pausa) {
 
         return new Ember.RSVP.Promise((success, reject) => {
 
@@ -178,6 +183,11 @@ export default Ember.Route.extend({
             if (condicion_de_corte()) {
               success();
               return;
+            }
+
+            if (condicion_de_pausa()) {
+              setTimeout(execInterpreterUntilEnd, 500, interpreter);
+              return ;
             }
 
             try {
@@ -220,11 +230,22 @@ export default Ember.Route.extend({
       // Listos,... preparados, ... ahora corran todos
 
       let condicion_de_corte = () => {
-        return ! this.get('controller').get("ejecutando");
+        return (! this.get('controller').get("ejecutando"));
+      };
+
+      /* Solo se activa una condición de pausa si el intérprete corre en
+       * en modo depuración.
+       */
+      let condicion_de_pausa = () => {
+        if (this.get('controller.pasoAPaso')) {
+          return this.get('controller').get("pausado");
+        } else {
+          return false;
+        }
       };
 
       let promesasDeInterpretes = listaDeCodigos.map((item) => {
-        return ejecutarInterpreteHastaTerminar(item.clase, item.interprete, condicion_de_corte);
+        return ejecutarInterpreteHastaTerminar(item.clase, item.interprete, condicion_de_corte, condicion_de_pausa);
       });
 
       let label = "Contenedor de promesas de intérpretes";
@@ -244,6 +265,7 @@ export default Ember.Route.extend({
         }
 
         this.get('controller').set("ejecutando", false);
+        this.get('controller').set('pasoAPaso', false);
 
         if (result.mapBy('state').indexOf('rejected') > -1) {
           console.error("Terminó la ejecución pero surgieron los siguientes errores:");

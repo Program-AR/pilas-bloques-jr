@@ -300,3 +300,14 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
 .ember-blockly-container-disabled {
   opacity: 0.7;
 }
+
+
+.ui.basic.button.step-button, .ui.basic.button.step-button:visited {
+  z-index: 200;
+  position: relative;
+  background: #ffffb4 !important;
+}
+
+.ui.basic.button.step-button:hover {
+  background: white !important;
+}

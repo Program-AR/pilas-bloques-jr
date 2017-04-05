@@ -52,6 +52,16 @@
         <div class="padding-button-bar">
 
           {{#if ejecutando}}
+
+            {{#if pasoAPaso}}
+              {{#if pausado}}
+                <button class="ui basic button orange step-button" {{action "avanzarUnPaso"}}><i class="step forward icon"></i> Avanzar un paso </button>
+              {{else}}
+                <button class="ui basic button disabled orange step-button" {{action "avanzarUnPaso"}}><i class="step forward icon"></i> Avanzar un paso </button>
+              {{/if}}
+            {{/if}}
+
+
             <button class="ui basic button primary disabled">
               <i class="play icon"></i> Ejecutando ...</button>
           {{else}}
@@ -59,6 +69,7 @@
               <button class="ui basic button warning" {{action "reiniciar"}}><i class="refresh icon"></i> Reiniciar</button>
             {{else}}
               <button class="ui basic button primary" {{action "ejecutar"}}><i class="play icon"></i> Ejecutar</button>
+              <button class="ui basic button primary" {{action "ejecutarPasoAPaso"}}><i class="play icon"></i> Ejecutar paso a paso</button>
             {{/if}}
           {{/if}}
 
