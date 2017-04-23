@@ -311,3 +311,7 @@ a.item.active:hover .pilas-item-actor-boton-eliminar {
 .ui.basic.button.step-button:hover {
   background: white !important;
 }
+
+.aplicar-modo-lectura-simple {
+  font-variant: small-caps !important;
+}
