@@ -2,7 +2,7 @@
   "name": "pilas-bloques-jr",
   "version": "0.1.9",
   "description": "Small description for pilas-bloques-jr goes here",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "author": "",
   "private": true,
   "main": "electron.js",
